@@ -254,8 +254,14 @@ function HomePage() {
           horiz.querySelector<HTMLElement>(".horizontal-progress");
 
         if (track) {
-          const getScrollAmount = () =>
-            Math.max(0, track.scrollWidth - window.innerWidth);
+          // Cache the scroll amount so the initial tween target is computed
+          // synchronously during setup — not lazily on the first scroll frame.
+          // invalidateOnRefresh re-measures on every ScrollTrigger.refresh().
+          let cachedScrollAmount = Math.max(
+            0,
+            track.scrollWidth - window.innerWidth
+          );
+          const getScrollAmount = () => cachedScrollAmount;
 
           const horizontalTween = gsap.to(track, {
             x: () => -getScrollAmount(),
@@ -268,9 +274,20 @@ function HomePage() {
             start: "top top",
             end: () => `+=${getScrollAmount()}`,
             pin: true,
-            scrub: 1,
+            // scrub: true = 1:1 instant sync with scroll position.
+            // scrub: 1 was causing a 1-second catch-up animation on the very
+            // first interaction — the tween starts at x:0 and GSAP takes 1s
+            // to reach the correct x, producing a visible abrupt jump.
+            scrub: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
+            onRefresh: () => {
+              // Re-measure after any layout change (fonts, images, resize).
+              cachedScrollAmount = Math.max(
+                0,
+                track.scrollWidth - window.innerWidth
+              );
+            },
             animation: horizontalTween,
             onUpdate: (self) => {
               if (progressBar) {
@@ -288,8 +305,16 @@ function HomePage() {
     const refreshLayout = () => {
       if (!disposed) ScrollTrigger.refresh();
     };
-    const images = Array.from(container.querySelectorAll("img"));
-    images.forEach((image) => {
+
+    // Only listen for load events on images *inside* the horizontal section.
+    // Images elsewhere on the page (hero portrait, about, etc.) loading after
+    // init should not trigger a full refresh that repositions the horizontal
+    // track mid-scroll. The horizontal section's own images are the only ones
+    // that can change track.scrollWidth after initialization.
+    const horizImages = horizontalRef.current
+      ? Array.from(horizontalRef.current.querySelectorAll("img"))
+      : [];
+    horizImages.forEach((image) => {
       image.addEventListener("load", refreshLayout);
       image.addEventListener("error", refreshLayout);
     });
@@ -298,7 +323,7 @@ function HomePage() {
 
     return () => {
       disposed = true;
-      images.forEach((image) => {
+      horizImages.forEach((image) => {
         image.removeEventListener("load", refreshLayout);
         image.removeEventListener("error", refreshLayout);
       });

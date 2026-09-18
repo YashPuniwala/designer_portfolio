@@ -15,7 +15,7 @@ const PROJECTS: Project[] = [
     title: "Monolith",
     category: "Brand Identity",
     year: "2024",
-    image: "/images/hero.jpg",
+    image: "/public/horizontal_images/outfit_of_the_day.png",
     color: "#ff8a3c",
   },
   {
@@ -24,7 +24,7 @@ const PROJECTS: Project[] = [
     category: "Web Experience",
     year: "2024",
     image:
-      "https://cdn.21st.dev/assets/mirror/68/68fd4edf19855762d0020e6ddbf3fdd31b7f768a6c65014d50ec6b36ef305b54.jpg",
+      "/public/horizontal_images/aesthetically.png",
     color: "#7c9cff",
   },
   {
@@ -32,8 +32,7 @@ const PROJECTS: Project[] = [
     title: "Nebula",
     category: "Art Direction",
     year: "2023",
-    image:
-      "https://cdn.21st.dev/assets/mirror/bc/bca64f76b38b6b3e0f1c2357292903fc428e16d47b49005201be8ba51377ce8c.jpg",
+    image: "/public/horizontal_images/she.png",
     color: "#ff5d8f",
   },
   {
@@ -41,7 +40,7 @@ const PROJECTS: Project[] = [
     title: "Vertex",
     category: "Product Launch",
     year: "2023",
-    image: "/about-section-image.png",
+    image: "/public/horizontal_images/model.png",
     color: "#5fe0c5",
   },
   {

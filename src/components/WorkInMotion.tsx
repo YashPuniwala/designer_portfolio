@@ -45,50 +45,58 @@ export default function WorkInMotion() {
           id: "work-in-motion-zoom",
           trigger: section,
           start: "top top",
-          end: "+=600%",
+          end: "+=320%",
           pin: true,
-          scrub: true,
-          anticipatePin: 1,
+          scrub: 1.2,
           invalidateOnRefresh: true,
         },
       });
 
+      // Phase 1 (0 → 0.15): Section settles into view — text fades in gently.
+      // No zoom yet; this is the "arrival" moment.
       tl.fromTo(
         centerText,
-        { opacity: 0, y: 26, scale: 0.94 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.08, ease: "power2.out" },
+        { opacity: 0, y: 20, scale: 0.96 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.15, ease: "power2.out" },
         0
       );
 
+      // Phase 2 (0.15 → 0.82): Dolly/camera zoom begins after the settle.
+      // Starts slow (power1.in ease), accelerates naturally toward the end.
       tl.fromTo(
         world,
         { z: 0 },
         {
           z: () => calculateDollyZ(),
-          duration: 0.94,
-          ease: "power2.in",
+          duration: 0.67,
+          ease: "power1.in",
         },
-        0.06
+        0.15
       );
 
+      // Phase 3 (0.56 → 0.76): Surrounding images fade out as the camera
+      // approaches — overlaps with the zoom for a natural depth-of-field feel.
       if (surrounding) {
         tl.to(
           surrounding,
-          { opacity: 0, duration: 0.16, ease: "power1.in" },
-          0.72
+          { opacity: 0, duration: 0.2, ease: "power1.in" },
+          0.56
         );
       }
 
+      // Phase 4 (0.72 → 0.84): Vision text fades out as zoom accelerates.
       tl.to(
         centerText,
-        { opacity: 0, y: -20, scale: 1.05, duration: 0.1, ease: "power2.in" },
-        0.8
+        { opacity: 0, y: -16, scale: 1.04, duration: 0.12, ease: "power2.in" },
+        0.72
       );
 
+      // Phase 5 (0.84 → 1.0): Center card border-radius collapses to
+      // fullscreen as the dolly lands — cinematic finish.
       tl.to(
         centerCard,
-        { borderRadius: "0px", duration: 0.12, ease: "power1.inOut" },
-        0.86
+        { borderRadius: "0px", duration: 0.16, ease: "power1.inOut" },
+        0.84
       );
     }, section);
 

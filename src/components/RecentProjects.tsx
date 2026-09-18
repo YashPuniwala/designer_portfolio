@@ -112,7 +112,7 @@ export default function RecentProjects() {
       if (reduceMotion.matches) {
         cards.forEach((card) => {
           const frame = card.querySelector<HTMLElement>(".rp-frame");
-          if (frame) gsap.set(frame, { scaleX: 1, y: 0 });
+          if (frame) gsap.set(frame, { scale: 1, y: 0 });
         });
         return;
       }
@@ -130,14 +130,15 @@ export default function RecentProjects() {
         const scrub = parseFloat(card.dataset.scrub ?? "0.8");
         const isFeatured = ratio === "16-9";
 
-        gsap.set(frame, { scaleX: scaleFrom, y: yFrom });
+        // Use scale (both axes) instead of scaleX to avoid horizontal squish
+        gsap.set(frame, { scale: scaleFrom, y: yFrom });
         if (meta) gsap.set(meta, { y: yFrom * 0.35, opacity: 0 });
 
-        const start = "top 80%";
-        const end = isFeatured ? "top 20%" : "top 30%";
+        const start = "top 82%";
+        const end = isFeatured ? "top 22%" : "top 32%";
 
         gsap.to(frame, {
-          scaleX: 1,
+          scale: 1,
           y: yTo,
           ease: "none",
           scrollTrigger: {
@@ -157,8 +158,8 @@ export default function RecentProjects() {
             ease: "none",
             scrollTrigger: {
               trigger: card,
-              start: "top 85%",
-              end: isFeatured ? "top 35%" : "top 45%",
+              start: "top 86%",
+              end: isFeatured ? "top 36%" : "top 46%",
               scrub,
               invalidateOnRefresh: true,
               refreshPriority: 1,
@@ -173,7 +174,7 @@ export default function RecentProjects() {
 
   const renderCard = (project: Project) => (
     <article
-      className="rp-card flex cursor-pointer flex-col gap-4 outline-none sm:gap-6"
+      className="rp-card flex cursor-pointer flex-col gap-3 outline-none sm:gap-4"
       data-ratio={project.ratio}
       data-scale-from={project.scaleFrom}
       data-y-from={project.yFrom}
@@ -191,8 +192,18 @@ export default function RecentProjects() {
       role="link"
       aria-label={`Open ${project.title} case study`}
     >
+      {/*
+        Image frame.
+        • 4:3 cards → 16:9 on mobile so stacked single-column cards
+          aren't excessively tall; restores to 4:3 at md breakpoint.
+        • Featured 16:9 card keeps its ratio at all sizes.
+      */}
       <div
-        className={`rp-frame relative overflow-hidden rounded-[14px] shadow-[0_30px_70px_rgba(0,0,0,0.18)] [transform-origin:50%_50%] [will-change:transform] ${RATIO_CLASS[project.ratio]}`}
+        className={`rp-frame relative overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.13)] [transform-origin:50%_50%] [will-change:transform] ${
+          project.ratio === "4-3"
+            ? "aspect-[16/9] md:aspect-[4/3]"
+            : RATIO_CLASS[project.ratio]
+        }`}
       >
         <img
           src={project.src}
@@ -205,14 +216,15 @@ export default function RecentProjects() {
         </span>
       </div>
 
-      <div className="rp-caption relative flex items-end justify-between gap-[1.2rem] px-[0.4rem]">
+      {/* Caption — wraps on narrow screens so text never clips */}
+      <div className="rp-caption relative flex flex-wrap items-end justify-between gap-x-3 gap-y-1 px-1">
         <span
-          className="rp-title -mt-[0.6rem] font-bold italic leading-none text-[#ff8a3c] text-[clamp(1.8rem,3vw,2.6rem)]"
+          className="rp-title font-bold italic leading-none text-[#ff8a3c] text-[clamp(1.6rem,2.8vw,2.6rem)]"
           style={{ fontFamily: SCRIPT_FONT }}
         >
           {project.title}
         </span>
-        <span className="rp-meta whitespace-nowrap pb-[0.4rem] font-mono text-[10px] uppercase tracking-[0.3em] text-black/50">
+        <span className="rp-meta pb-[0.2rem] font-mono text-[10px] uppercase tracking-[0.28em] text-black/45 whitespace-nowrap">
           {project.category}
         </span>
       </div>
@@ -223,11 +235,11 @@ export default function RecentProjects() {
     <section
       ref={sectionRef}
       id="recent-projects"
-      className="recent-projects relative bg-white px-[4vw] py-[12vh] pb-[16vh] text-[#0a0a0a] sm:px-[5vw] sm:py-[9vh] sm:pb-[12vh]"
+      className="recent-projects relative bg-white px-[5vw] py-[10vh] pb-[14vh] text-[#0a0a0a]"
       aria-label="Recent Projects"
     >
-      {/* Header */}
-      <header className="rp-header px-[4vw] pb-[6vh] pt-[4vh] text-center sm:px-0 sm:pb-[5vh] sm:pt-[3vh]">
+      {/* Header — no extra horizontal padding; section already has px-[5vw] */}
+      <header className="rp-header pb-[6vh] pt-[2vh] text-center">
         <h2 className="font-display font-bold leading-[0.96] tracking-[-0.02em] text-[#0a0a0a] text-[clamp(2.4rem,6.2vw,5.6rem)]">
           We let the{" "}
           <span
@@ -241,20 +253,20 @@ export default function RecentProjects() {
         </h2>
       </header>
 
-      {/* First row */}
-      <div className="rp-row mx-auto mb-[10vh] grid max-w-[96vw] grid-cols-1 gap-[2vw] sm:mb-16 sm:max-w-full sm:gap-16 md:grid-cols-2">
+      {/* Row 1 — two cards, consistent gap */}
+      <div className="rp-row mb-[8vh] grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2">
         {FIRST_ROW.map((project) => (
           <div key={project.id}>{renderCard(project)}</div>
         ))}
       </div>
 
-      {/* Featured full-width row */}
-      <div className="rp-row rp-row-featured mx-auto mb-[14vh] grid max-w-[94vw] grid-cols-1 sm:mb-32 sm:max-w-full">
+      {/* Featured full-width card */}
+      <div className="rp-row rp-row-featured mb-[8vh]">
         {renderCard(FEATURED)}
       </div>
 
-      {/* Second row */}
-      <div className="rp-row mx-auto mb-[10vh] grid max-w-[96vw] grid-cols-1 gap-[2vw] sm:mb-16 sm:max-w-full sm:gap-16 md:grid-cols-2">
+      {/* Row 2 — two cards, consistent gap */}
+      <div className="rp-row grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2">
         {SECOND_ROW.map((project) => (
           <div key={project.id}>{renderCard(project)}</div>
         ))}
