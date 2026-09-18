@@ -75,6 +75,37 @@ html.lenis body {
   z-index: 1;
 }
 
+/* ------------------------------------------------------------------ */
+/* Hero section — responsive portrait sizing                           */
+/* Scoped only to the Hero; no other section is affected.             */
+/* ------------------------------------------------------------------ */
+
+/* Default (mobile-first): portrait scales with viewport width — large & prominent */
+.hero-portrait-img-wrap {
+  height: clamp(300px, 80vw, 420px);
+}
+
+/* Small tablet (≥ 640px) */
+@media (min-width: 640px) {
+  .hero-portrait-img-wrap {
+    height: clamp(380px, 65vw, 500px);
+  }
+}
+
+/* Medium tablet (≥ 768px) */
+@media (min-width: 768px) {
+  .hero-portrait-img-wrap {
+    height: clamp(440px, 58vw, 560px);
+  }
+}
+
+/* Desktop (≥ 1024px): restore original 72vh */
+@media (min-width: 1024px) {
+  .hero-portrait-img-wrap {
+    height: 72vh;
+  }
+}
+
 /* About slides UP over the Hero (GSAP drives yPercent 100 → 0).
    Its solid background fully covers the Hero once it arrives. */
 .about-panel {
