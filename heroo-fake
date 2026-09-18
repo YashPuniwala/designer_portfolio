@@ -1,0 +1,206 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+const socials = [
+  { name: "Dribbble", icon: "Dr" },
+  { name: "Instagram", icon: "Ig" },
+  { name: "LinkedIn", icon: "in" },
+  { name: "Behance", icon: "Bē" },
+];
+
+const WORDS = ["Graphic", "Branding", "Web"];
+const HOLD_MS = 2000; // each word stays fully visible for 2 seconds
+
+function Arrow() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-3.5 w-3.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
+  );
+}
+
+export default function Hero() {
+  const wordRef = useRef<HTMLSpanElement>(null);
+  const indexRef = useRef(0);
+
+  useEffect(() => {
+    const el = wordRef.current;
+    if (!el) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    el.textContent = WORDS[0];
+
+    // Reduced motion: just cycle text on a plain interval, no animation.
+    if (reduceMotion) {
+      const id = setInterval(() => {
+        indexRef.current = (indexRef.current + 1) % WORDS.length;
+        el.textContent = WORDS[indexRef.current];
+      }, HOLD_MS + 1100);
+      return () => clearInterval(id);
+    }
+
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let cancelled = false;
+
+    // Slide the first word in on mount, then schedule the loop.
+    gsap.fromTo(
+      el,
+      { yPercent: 100, opacity: 0 },
+      {
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: "power3.out",
+        onComplete: () => {
+          scheduleNext();
+        },
+      }
+    );
+
+    function scheduleNext() {
+      if (cancelled) return;
+      // Wait the FULL hold time BEFORE starting the exit animation.
+      timeoutId = setTimeout(() => {
+        if (cancelled) return;
+
+        // 1. Slide current word out.
+        gsap.to(el, {
+          yPercent: -100,
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.in",
+          onComplete: () => {
+            if (cancelled) return;
+
+            // 2. Swap to next word.
+            indexRef.current = (indexRef.current + 1) % WORDS.length;
+            el.textContent = WORDS[indexRef.current];
+
+            // 3. Slide new word in from below.
+            gsap.fromTo(
+              el,
+              { yPercent: 100, opacity: 0 },
+              {
+                yPercent: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power3.out",
+                onComplete: () => {
+                  // 4. Only NOW schedule the next cycle — guarantees the
+                  //    word is fully settled before the timer starts.
+                  scheduleNext();
+                },
+              }
+            );
+          },
+        });
+      }, HOLD_MS);
+    }
+
+    return () => {
+      cancelled = true;
+      if (timeoutId) clearTimeout(timeoutId);
+      gsap.killTweensOf(el);
+    };
+  }, []);
+
+  return (
+    <section
+      id="home"
+      className="relative min-h-screen w-full overflow-hidden bg-[#fafafa] text-neutral-900"
+    >
+      {/* GIANT NAME — wraps on very small phones instead of risking
+          overflow; from `sm` up it's the original single-line nowrap. */}
+      <div className="pointer-events-none relative z-10 mt-24 w-full px-3 sm:mt-28 md:mt-32 md:px-6">
+        <h1
+          className="whitespace-normal text-center font-black uppercase leading-[0.95] tracking-[-0.02em] sm:whitespace-nowrap sm:leading-[0.8]"
+          style={{ fontSize: "clamp(2rem, 11vw, 13rem)" }}
+        >
+          <span
+            className="text-transparent"
+            style={{ WebkitTextStroke: "0.02em #171717" }}
+          >
+            YASH
+          </span>{" "}
+          <span className="text-neutral-900">PUNIWALA</span>
+        </h1>
+      </div>
+
+      {/* PORTRAIT — flows normally below the name on mobile/tablet (no
+          vh-guessing needed), and only becomes absolute + overlapping at
+          `lg`, matching the original desktop layout exactly. */}
+      <div className="pointer-events-none relative z-20 mt-6 flex justify-center sm:mt-8 md:mt-10 lg:absolute lg:inset-x-0 lg:bottom-0 lg:mt-0">
+        <div className="h-[240px] w-auto overflow-hidden sm:h-[300px] md:h-[360px] lg:h-[72vh]">
+          <img
+            src="/hero-image4.png"
+            alt="Yash Puniwala"
+            className="h-full w-auto object-cover object-top"
+          />
+        </div>
+      </div>
+
+      {/* LEFT INFO + SOCIALS — just follows the portrait in normal flow
+          pre-`lg`, so it can't drift out of sync with it. At `lg` it's
+          absolutely positioned exactly as before. */}
+      <div className="relative z-30 mx-auto mt-6 flex w-full max-w-[1600px] flex-col gap-6 px-5 pb-10 pt-6 sm:mt-8 sm:gap-8 sm:pt-8 md:px-8 lg:absolute lg:inset-x-0 lg:bottom-16 lg:mt-0 lg:flex-row lg:items-end lg:justify-between lg:pb-0 lg:pt-0">
+        {/* LEFT — Bolder rotating headline */}
+        <h1
+          className="font-black uppercase leading-[0.9] tracking-[-0.03em] text-neutral-900 ml-[6px]"
+          style={{ fontSize: "clamp(2.5rem, 6.5vw, 5rem)" }}
+        >
+          Your
+          <br />
+
+          {/* Rotating slot:
+      - lineHeight: 1 keeps the slot on the same baseline grid
+        as "Your" and "Agency".
+      - height is set to match one line of the parent's
+        leading-[0.9], so nothing shifts or clips. */}
+          <span
+            className="relative block w-max overflow-hidden align-baseline"
+            style={{ height: "0.9em", lineHeight: 1 }}
+          >
+            <span
+              ref={wordRef}
+              className="block whitespace-nowrap will-change-transform, ml-[5px]"
+              style={{ lineHeight: 0.9 }}
+            >
+              Graphic
+            </span>
+          </span>
+
+          Agency{" "}
+          <span className="inline-block align-middle text-[#E8491D]">
+            &#10038;
+          </span>
+        </h1>
+
+        {/* RIGHT — socials */}
+        <div className="flex flex-wrap gap-2 sm:gap-2.5 lg:flex-col lg:items-end">
+          {socials.map((s) => (
+            <span
+              key={s.name}
+              className="flex w-auto items-center gap-2 rounded-full border border-neutral-200 bg-white/90 px-3 py-2 text-[12px] font-medium backdrop-blur sm:w-[130px] sm:px-4 sm:py-2.5 sm:text-[13px]"
+            >
+              <span className="w-4 text-[10px] text-neutral-500 sm:w-5 sm:text-[11px]">
+                {s.icon}
+              </span>
+              {s.name}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
