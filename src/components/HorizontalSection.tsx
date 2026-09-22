@@ -1,65 +1,95 @@
 import { useRef } from "react";
 
-type Project = {
-  index: string;
-  title: string;
+/**
+ * aspectRatio: width ÷ height of the source artwork.
+ *
+ * All cards share one fixed height defined by --card-h in CSS.
+ * Each card's width = calc(--card-h * aspectRatio) so every artwork
+ * fills its card at its natural proportions — no stretching or heavy crop.
+ *
+ * The GSAP horizontal scroll in App.tsx reads track.scrollWidth
+ * dynamically, so adding or removing cards is automatically accounted for.
+ */
+
+type Artwork = {
+  /** Unique key — not shown on card */
+  id: string;
+  /** Shown on card: concise professional category */
   category: string;
+  /** Shown on card: year */
   year: string;
   image: string;
+  /** Accent color for the category label */
   color: string;
+  /** width ÷ height of the source image */
+  aspectRatio: number;
+  /** CSS object-position — keeps the most important region visible */
+  objectPosition?: string;
 };
 
-const PROJECTS: Project[] = [
+const ARTWORKS: Artwork[] = [
   {
-    index: "01",
-    title: "Monolith",
-    category: "Brand Identity",
+    id: "ootd",
+    category: "Editorial Design",
     year: "2024",
-    image: "/public/horizontal_images/outfit_of_the_day.png",
+    image: "/horizontal_images/outfit_of_the_day.png",
     color: "#ff8a3c",
+    aspectRatio: 1086 / 1448, // ~0.75 — portrait
+    objectPosition: "center top",
   },
   {
-    index: "02",
-    title: "Aurora Labs",
-    category: "Web Experience",
+    id: "aesthetically",
+    category: "Visual Exploration",
     year: "2024",
-    image:
-      "/public/horizontal_images/aesthetically.png",
+    image: "/horizontal_images/aesthetically.png",
     color: "#7c9cff",
+    aspectRatio: 1223 / 1286, // ~0.95 — near square
+    objectPosition: "center center",
   },
   {
-    index: "03",
-    title: "Nebula",
+    id: "she",
     category: "Art Direction",
     year: "2023",
-    image: "/public/horizontal_images/she.png",
+    image: "/horizontal_images/she.png",
     color: "#ff5d8f",
+    aspectRatio: 4571 / 6588, // ~0.69 — portrait
+    objectPosition: "center top",
   },
   {
-    index: "04",
-    title: "Vertex",
-    category: "Product Launch",
+    id: "momo",
+    category: "Illustration",
     year: "2023",
-    image: "/public/horizontal_images/model.png",
+    image: "/horizontal_images/momo.png",
     color: "#5fe0c5",
+    aspectRatio: 3579 / 5032, // ~0.71 — portrait
+    objectPosition: "center top",
   },
   {
-    index: "05",
-    title: "Helios",
-    category: "Campaign Film",
-    year: "2022",
-    image:
-      "https://cdn.21st.dev/assets/mirror/04/04691b2e29925f30eac3817ea8f65d973484b711822252a13c15248859e464da.jpg",
+    id: "burger",
+    category: "Product Visuals",
+    year: "2023",
+    image: "/horizontal_images/burger.png",
     color: "#ffd166",
+    aspectRatio: 1122 / 1402, // ~0.80 — portrait
+    objectPosition: "center center",
   },
   {
-    index: "06",
-    title: "Orbit",
-    category: "Motion System",
+    id: "phone",
+    category: "Graphic Design",
     year: "2022",
-    image:
-      "https://cdn.21st.dev/assets/mirror/71/711f1a9ccb3786dcc00e8031191dc4d58c9377cefb54bf927806921a4a05a818.jpg",
+    image: "/horizontal_images/phone.png",
     color: "#c08bff",
+    aspectRatio: 1122 / 1402, // ~0.80 — portrait
+    objectPosition: "center center",
+  },
+  {
+    id: "perfume",
+    category: "Campaign Artwork",
+    year: "2022",
+    image: "/horizontal_images/perfume.png",
+    color: "#ff8a3c",
+    aspectRatio: 1122 / 1402, // ~0.80 — portrait
+    objectPosition: "center center",
   },
 ];
 
@@ -78,64 +108,88 @@ export default function HorizontalSection({
       aria-label="Selected Work"
     >
       <div className="horizontal-track">
-        {/* Intro panel */}
-        <div className="horizontal-intro flex h-full w-[88vw] shrink-0 flex-col justify-center px-6 md:w-[42vw] md:px-16">
-          <h2 className="font-display text-[15vw] font-bold uppercase leading-[0.85] tracking-tight text-white md:text-[8vw]">
-            The
-            <br />
-            <span className="text-outline">Work</span>
-          </h2>
-          <p className="mt-8 max-w-sm text-sm leading-relaxed text-white/60 md:text-base">
-            A horizontal cut through recent releases — brand systems, digital
-            experiences and films built for ambitious teams.
+        {/* ── Intro panel ─────────────────────────────────────────── */}
+        <div className="horizontal-intro flex h-full w-[88vw] shrink-0 flex-col justify-center px-6 md:w-[44vw] md:px-16">
+          {/* Label */}
+          <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.4em] text-white/40">
+            Selected Work
           </p>
-          <div className="mt-10 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/40">
+
+          {/* Display headline */}
+          <h2 className="font-display text-[13vw] font-bold uppercase leading-[0.88] tracking-tight text-white md:text-[7vw]">
+            Visual
+            <br />
+            <span className="text-outline">Works</span>
+          </h2>
+
+          {/* Descriptor */}
+          <p className="mt-7 max-w-[32ch] text-sm leading-relaxed text-white/55 md:text-base">
+            Illustration, graphic compositions, visual identities, and
+            experimental artwork created to make ideas impossible to ignore.
+          </p>
+
+          {/* Scroll cue */}
+          <div className="mt-10 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/35">
             <span>Scroll sideways</span>
-            <span className="inline-block h-px w-16 bg-white/30" />
+            <span className="inline-block h-px w-16 bg-white/25" />
           </div>
         </div>
 
-        {/* Project cards */}
-        {PROJECTS.map((p) => (
+        {/* ── Artwork cards ────────────────────────────────────────── */}
+        {/*
+         * Height comes from --card-h (CSS custom prop on .horizontal-track).
+         * Width = calc(--card-h × aspectRatio) — set inline per card so each
+         * piece of artwork occupies its natural proportions.
+         * All cards share the same top/bottom edge: a true editorial gallery.
+         */}
+        {ARTWORKS.map((art) => (
           <article
-            key={p.index}
-            className="horizontal-card group relative h-[64vh] w-[78vw] shrink-0 overflow-hidden rounded-2xl md:h-[70vh] md:w-[34vw]"
+            key={art.id}
+            className="horizontal-card group relative shrink-0 overflow-hidden rounded-2xl"
+            style={{
+              height: "var(--card-h)",
+              width: `calc(var(--card-h) * ${art.aspectRatio.toFixed(4)})`,
+            }}
           >
+            {/* Artwork image */}
             <img
-              src={p.image}
-              alt={p.title}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              src={art.image}
+              alt={art.category}
+              className="absolute inset-0 h-full w-full transition-transform duration-700 ease-out group-hover:scale-105"
+              style={{
+                objectFit: "cover",
+                objectPosition: art.objectPosition ?? "center center",
+              }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/30" />
 
-            <div className="absolute inset-0 flex flex-col justify-between p-6 md:p-8">
-              <div className="flex items-start justify-between">
-                <span
-                  className="font-display text-2xl font-bold"
-                  style={{ color: p.color }}
-                >
-                  {p.index}
-                </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/60">
-                  {p.year}
-                </span>
-              </div>
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/5 to-black/20" />
 
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/50">
-                  {p.category}
-                </p>
-                <h3 className="mt-2 font-display text-3xl font-semibold uppercase tracking-tight md:text-4xl">
-                  {p.title}
-                </h3>
-              </div>
+            {/* Metadata — only category + year, no number or title */}
+            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+              <p
+                className="font-mono text-[9px] uppercase tracking-[0.35em]"
+                style={{ color: art.color }}
+              >
+                {art.category}
+              </p>
+              <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.3em] text-white/45">
+                {art.year}
+              </p>
             </div>
           </article>
         ))}
 
-        {/* Outro CTA panel */}
-        <div className="horizontal-outro flex h-full w-[88vw] shrink-0 flex-col items-start justify-center px-6 md:w-[46vw] md:px-20">
-          <h2 className="font-display text-[9vw] font-bold uppercase leading-[0.9] text-white md:text-[4.5vw]">
+        {/* ── Outro / CTA panel ───────────────────────────────────── */}
+        {/*
+         * pr-[6vw] mirrors the track's right padding so the CTA text lands
+         * fully inside the scrollable area and is never clipped.
+         * The GSAP tween measures track.scrollWidth - window.innerWidth
+         * dynamically, so this panel is always fully reachable regardless
+         * of how many cards are in the track.
+         */}
+        <div className="horizontal-outro flex h-full w-[80vw] shrink-0 flex-col items-start justify-center pl-6 pr-[6vw] md:w-[44vw] md:pl-16 md:pr-[6vw]">
+          <h2 className="font-display text-[8.5vw] font-bold uppercase leading-[0.9] text-white md:text-[4.5vw]">
             Let's build
             <br />
             something

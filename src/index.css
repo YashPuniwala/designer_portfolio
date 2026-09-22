@@ -207,10 +207,25 @@ html.lenis body {
   gap: 2.5vw;
   padding: 0 6vw;
   will-change: transform;
+  /*
+   * --card-h: the single source of truth for card height.
+   * Each card's width = calc(--card-h * aspectRatio) — computed
+   * inline per card in HorizontalSection.tsx so portrait and
+   * near-square artwork maintain their real proportions.
+   */
+  --card-h: 64vh;
+}
+
+@media (min-width: 768px) {
+  .horizontal-track {
+    --card-h: 70vh;
+  }
 }
 
 .horizontal-card {
   box-shadow: 0 40px 90px rgba(0, 0, 0, 0.5);
+  /* Height and width are set via inline style in the component.
+     flex-shrink: 0 is applied via Tailwind's shrink-0 utility. */
 }
 
 /* ------------------------------------------------------------------ */

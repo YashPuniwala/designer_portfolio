@@ -23,7 +23,7 @@ const FIRST_ROW: Project[] = [
     slug: "after",
     title: "After",
     category: "Micro Interaction",
-    src: "/images/recent-01.jpg",
+    src: "/images/breww/17.png",
     ratio: "4-3",
     scaleFrom: 0.05,
     yFrom: -28,
@@ -199,11 +199,10 @@ export default function RecentProjects() {
         • Featured 16:9 card keeps its ratio at all sizes.
       */}
       <div
-        className={`rp-frame relative overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.13)] [transform-origin:50%_50%] [will-change:transform] ${
-          project.ratio === "4-3"
+        className={`rp-frame relative overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.13)] [transform-origin:50%_50%] [will-change:transform] ${project.ratio === "4-3"
             ? "aspect-[16/9] md:aspect-[4/3]"
             : RATIO_CLASS[project.ratio]
-        }`}
+          }`}
       >
         <img
           src={project.src}
