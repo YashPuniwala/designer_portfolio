@@ -15,6 +15,7 @@ import ProjectDetailPage from "@/components/ProjectDetailPage";
 import RecentProjects from "@/components/RecentProjects";
 import ServicesSection from "@/components/ServicesSection";
 import ContactPage from "@/pages/ContactPage";
+import LoadingScreen from "@/components/loadingScreen";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -379,19 +380,22 @@ function HomePage() {
 
 export default function App() {
   const route = useHashRoute();
+  const [loading, setLoading] = useState(true);
 
-  if (route.name === "contact") {
-    return <ContactPage />;
-  }
+  return (
+    <>
+      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
 
-  if (route.name === "project") {
-    return (
-      <>
-        <Nav />
-        <ProjectDetailPage slug={route.slug} />
-      </>
-    );
-  }
+      {route.name === "contact" && <ContactPage />}
 
-  return <HomePage />;
+      {route.name === "project" && (
+        <>
+          <Nav />
+          <ProjectDetailPage slug={route.slug} />
+        </>
+      )}
+
+      {route.name === "home" && <HomePage />}
+    </>
+  );
 }
