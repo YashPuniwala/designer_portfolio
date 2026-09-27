@@ -5,9 +5,11 @@ import Lenis from "lenis";
 import ProjectFooter from "@/components/ProjectFooter";
 import { BrandIdentityProject } from "./projects/brand-identity";
 import { SocialMediaProject } from "./projects/social-media";
+import { NilyProject } from "./projects/nily";
 import {
   getNextProject,
   getProjectBySlug,
+  isNilyProject,
   isSocialMediaProject,
 } from "@/data/projects";
 
@@ -174,6 +176,8 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
         {/* Body isolated by discriminated union project type */}
         {isSocialMediaProject(project) ? (
           <SocialMediaProject project={project} />
+        ) : isNilyProject(project) ? (
+          <NilyProject project={project} />
         ) : (
           <BrandIdentityProject project={project} />
         )}

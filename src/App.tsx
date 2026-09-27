@@ -264,6 +264,25 @@ function HomePage() {
           );
           const getScrollAmount = () => cachedScrollAmount;
 
+          // The tween itself still travels exactly getScrollAmount() px —
+          // the cards' actual horizontal distance is untouched.
+          //
+          // What was wrong: `end` was set to that *same* getScrollAmount(),
+          // giving a strict 1:1 vertical-scroll-px → horizontal-track-px
+          // mapping. That's why it felt fast — a wide gallery (7 cards +
+          // intro/outro) only got as much vertical scroll room as its own
+          // pixel width, so a normal wheel/trackpad gesture (amplified by
+          // Lenis momentum) burned through most of the section in one go.
+          //
+          // Fix: stretch the pinned scroll distance to a multiple of the
+          // horizontal distance. The cards still end up translated by the
+          // exact same -getScrollAmount() by the time the pin releases —
+          // it just now takes more vertical scrolling to get there, so the
+          // gallery reads at a deliberate, "one card at a time" pace instead
+          // of flying by. 1.6–1.8 reads well for a gallery this wide; raise
+          // it further if it still feels quick, lower it if it now feels slow.
+          const HORIZONTAL_SCROLL_MULTIPLIER = 1.7;
+
           const horizontalTween = gsap.to(track, {
             x: () => -getScrollAmount(),
             ease: "none",
@@ -273,7 +292,8 @@ function HomePage() {
             id: "horizontal-work",
             trigger: horiz,
             start: "top top",
-            end: () => `+=${getScrollAmount()}`,
+            end: () =>
+              `+=${getScrollAmount() * HORIZONTAL_SCROLL_MULTIPLIER}`,
             pin: true,
             // scrub: true = 1:1 instant sync with scroll position.
             // scrub: 1 was causing a 1-second catch-up animation on the very

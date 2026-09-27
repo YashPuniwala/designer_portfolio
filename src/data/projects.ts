@@ -55,6 +55,45 @@ export interface BrandIdentityProject extends ProjectBase {
   mockups: ProjectImage[];
 }
 
+// --- NILY project (dedicated branding case study) ----------------------------
+
+export interface NilyLogoStage {
+  num: string;  // "01" | "02" | "03"
+  heading: string;
+  description: string;
+  /** Replace with actual NILY image path when assets are ready */
+  imageSrc: string;
+  imageAlt: string;
+}
+
+export interface NilyTypeface {
+  name: string;
+  role: string;
+  specimen: string;
+  weight?: string;
+}
+
+export interface NilyColorSwatch {
+  name: string;
+  hex: string;
+}
+
+export interface NilyMockupItem {
+  num: string;
+  src: string;
+  alt: string;
+  label: string;
+}
+
+export interface NilyProject extends ProjectBase {
+  type: "nily";
+  logoStages: NilyLogoStage[];
+  typography: NilyTypeface[];
+  colors: NilyColorSwatch[];
+  brandElements: { src: string; alt: string; label: string }[];
+  mockups: NilyMockupItem[];
+}
+
 // --- Social Media project -----------------------------------------------------
 
 export interface SocialMediaProject extends ProjectBase {
@@ -70,7 +109,7 @@ export interface SocialMediaProject extends ProjectBase {
 
 // --- Discriminated union ------------------------------------------------------
 
-export type ProjectData = BrandIdentityProject | SocialMediaProject;
+export type ProjectData = BrandIdentityProject | SocialMediaProject | NilyProject;
 
 // --- Legacy alias -------------------------------------------------------------
 
@@ -95,6 +134,132 @@ const A = {
 // --- Project data -------------------------------------------------------------
 
 export const PROJECTS: ProjectData[] = [
+  // -- NILY (Dedicated branding case study) ------------------------------------
+  {
+    slug: "nily",
+    id: "00",
+    title: "NILY",
+    client: "NILY Brand",
+    year: 2024,
+    services: ["Brand Identity", "Logo Design", "Visual Identity"],
+    description:
+      "A complete brand identity system built from the ground up — from first mark exploration through to a refined, ownable logo and a full visual language that scales across every touchpoint.",
+    mainImage: "/images/breww/17.png", // TODO: replace with actual NILY hero image
+    type: "nily",
+    logoStages: [
+      {
+        num: "01",
+        heading: "Initial Concept",
+        description:
+          "The first round of explorations focused on finding the right mark — testing wordmarks, symbols and letterform-based directions. Each sketch pushed toward something unique and ownable.",
+        // TODO: replace with actual NILY logo concept image
+        imageSrc: "/images/breww/27.png",
+        imageAlt: "NILY — Initial logo concept exploration",
+      },
+      {
+        num: "02",
+        heading: "Brand Simplification",
+        description:
+          "From the strongest directions, we stripped away complexity. The focus shifted to clarity — a mark that would read instantly at any size and carry the brand's character without noise.",
+        // TODO: replace with actual NILY simplified logo image
+        imageSrc: "/images/breww/25.png",
+        imageAlt: "NILY — Simplified brand direction",
+      },
+      {
+        num: "03",
+        heading: "Refined Core Mark",
+        description:
+          "The final mark — refined, resolved and ready. Every curve, weight and proportion considered. A logo that is quiet enough to be versatile and strong enough to be remembered.",
+        // TODO: replace with actual NILY final logo image
+        imageSrc: "/images/breww/5.png",
+        imageAlt: "NILY — Refined final core mark",
+      },
+    ],
+    typography: [
+      {
+        name: "Space Grotesk",
+        role: "Primary Display",
+        specimen: "Nn",
+        weight: "Bold",
+      },
+      {
+        name: "Inter",
+        role: "Secondary Body",
+        specimen: "Ii",
+        weight: "Regular",
+      },
+    ],
+    colors: [
+      { name: "Obsidian", hex: "#0A0A0A" },
+      { name: "Bone", hex: "#F0EDE6" },
+      { name: "Warm Slate", hex: "#2C2C2C" },
+      { name: "Muted Gold", hex: "#C9A96E" },
+    ],
+    brandElements: [
+      {
+        // TODO: replace with actual NILY logo variation image
+        src: "/images/breww/18.png",
+        alt: "NILY — Primary logo mark",
+        label: "Primary Mark",
+      },
+      {
+        // TODO: replace with actual NILY monogram/icon image
+        src: "/images/breww/21.png",
+        alt: "NILY — Monogram / icon",
+        label: "Monogram",
+      },
+      {
+        // TODO: replace with actual NILY wordmark image
+        src: "/images/breww/19.png",
+        alt: "NILY — Wordmark horizontal",
+        label: "Wordmark",
+      },
+    ],
+    mockups: [
+      {
+        num: "01",
+        // TODO: replace with actual NILY business card mockup
+        src: "/images/breww/18.png",
+        alt: "NILY — Business card",
+        label: "Business Card",
+      },
+      {
+        num: "02",
+        // TODO: replace with actual NILY packaging mockup
+        src: "/images/breww/21.png",
+        alt: "NILY — Packaging",
+        label: "Packaging",
+      },
+      {
+        num: "03",
+        // TODO: replace with actual NILY stationery mockup
+        src: "/images/breww/5.png",
+        alt: "NILY — Stationery",
+        label: "Stationery",
+      },
+      {
+        num: "04",
+        // TODO: replace with actual NILY brand collateral mockup
+        src: "/images/breww/9.png",
+        alt: "NILY — Brand collateral",
+        label: "Brand Collateral",
+      },
+      {
+        num: "05",
+        // TODO: replace with actual NILY signage mockup
+        src: "/images/breww/10.png",
+        alt: "NILY — Signage",
+        label: "Signage",
+      },
+      {
+        num: "06",
+        // TODO: replace with actual NILY social/digital mockup
+        src: "/images/breww/15.png",
+        alt: "NILY — Social media / digital",
+        label: "Digital",
+      },
+    ],
+  },
   // -- Brand Identity ----------------------------------------------------------
   {
     slug: "after",
@@ -426,6 +591,13 @@ export function isBrandIdentityProject(project: ProjectData): project is BrandId
   return project.type === "brand-identity";
 }
 
+/** Type guard - true when project is the NILY branding case study. */
+export function isNilyProject(project: ProjectData): project is NilyProject {
+  return project.type === "nily";
+}
+
 export function getProjectTypeLabel(project: ProjectData): string {
-  return project.type === "social-media" ? "Social Media Posts" : "Brand Identity";
+  if (project.type === "social-media") return "Social Media Posts";
+  if (project.type === "nily") return "Brand Identity / Logo Design";
+  return "Brand Identity";
 }

@@ -45,11 +45,11 @@ const FIRST_ROW: Project[] = [
 ];
 
 const FEATURED: Project = {
-  id: "03",
-  slug: "pulse",
-  title: "Pulse",
-  category: "GSAP Animation",
-  src: "/images/recent-04.jpg",
+  id: "00",
+  slug: "nily",
+  title: "NILY",
+  category: "Brand Identity / Logo Design",
+  src: "/images/breww/17.png", // TODO: replace with actual NILY hero image
   ratio: "16-9",
   scaleFrom: 0.04,
   yFrom: 40,
