@@ -6,10 +6,12 @@ import ProjectFooter from "@/components/ProjectFooter";
 import { BrandIdentityProject } from "./projects/brand-identity";
 import { SocialMediaProject } from "./projects/social-media";
 import { NilyProject } from "./projects/nily";
+import { ComfortoProject } from "./projects/comforto";
 import {
   getNextProject,
   getProjectBySlug,
   isNilyProject,
+  isComfortoProject,
   isSocialMediaProject,
 } from "@/data/projects";
 
@@ -178,6 +180,8 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
           <SocialMediaProject project={project} />
         ) : isNilyProject(project) ? (
           <NilyProject project={project} />
+        ) : isComfortoProject(project) ? (
+          <ComfortoProject project={project} />
         ) : (
           <BrandIdentityProject project={project} />
         )}

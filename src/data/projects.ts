@@ -94,6 +94,12 @@ export interface NilyProject extends ProjectBase {
   mockups: NilyMockupItem[];
 }
 
+// --- COMFORTO project (dedicated branding case study) -------------------------
+
+export interface ComfortoProject extends ProjectBase {
+  type: "comforto";
+}
+
 // --- Social Media project -----------------------------------------------------
 
 export interface SocialMediaProject extends ProjectBase {
@@ -109,7 +115,7 @@ export interface SocialMediaProject extends ProjectBase {
 
 // --- Discriminated union ------------------------------------------------------
 
-export type ProjectData = BrandIdentityProject | SocialMediaProject | NilyProject;
+export type ProjectData = BrandIdentityProject | SocialMediaProject | NilyProject | ComfortoProject;
 
 // --- Legacy alias -------------------------------------------------------------
 
@@ -134,6 +140,19 @@ const A = {
 // --- Project data -------------------------------------------------------------
 
 export const PROJECTS: ProjectData[] = [
+  // -- COMFORTO (Dedicated branding case study) --------------------------------
+  {
+    slug: "comforto",
+    id: "comforto-00",
+    title: "COMFORTO",
+    client: "COMFORTO Brand",
+    year: 2024,
+    services: ["Brand Identity", "Logo Design", "Visual Identity"],
+    description:
+      "A complete brand identity system for COMFORTO — from the first mark explorations through a fully resolved logo, typeface selection, colour palette and a cohesive visual language across every touchpoint.",
+    mainImage: "/images/comforto/image.png",
+    type: "comforto",
+  },
   // -- NILY (Dedicated branding case study) ------------------------------------
   {
     slug: "nily",
@@ -596,8 +615,14 @@ export function isNilyProject(project: ProjectData): project is NilyProject {
   return project.type === "nily";
 }
 
+/** Type guard - true when project is the COMFORTO branding case study. */
+export function isComfortoProject(project: ProjectData): project is ComfortoProject {
+  return project.type === "comforto";
+}
+
 export function getProjectTypeLabel(project: ProjectData): string {
   if (project.type === "social-media") return "Social Media Posts";
   if (project.type === "nily") return "Brand Identity / Logo Design";
+  if (project.type === "comforto") return "Brand Identity / Logo Design";
   return "Brand Identity";
 }

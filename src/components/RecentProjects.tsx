@@ -32,10 +32,10 @@ const FIRST_ROW: Project[] = [
   },
   {
     id: "02",
-    slug: "vogue",
-    title: "Vogue",
+    slug: "comforto",
+    title: "COMFORTO",
     category: "Brand Identity",
-    src: "/images/recent-02.jpg",
+    src: "/images/comforto/image.png",
     ratio: "4-3",
     scaleFrom: 0.05,
     yFrom: 20,
