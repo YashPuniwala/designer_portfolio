@@ -113,14 +113,36 @@ export interface SocialMediaProject extends ProjectBase {
   storiesReels: SocialStory[];
 }
 
+// --- Social Campaigns project (multi-brand campaign case study) ---------------
+
+export interface CampaignBrand {
+  /** "01", "02", "03" */
+  num: string;
+  name: string;
+  category: string;
+  description: string;
+  posts: ProjectImage[];
+}
+
+export interface SocialCampaignsProject extends ProjectBase {
+  type: "social-campaigns";
+  introTagline: string;
+  brands: CampaignBrand[];
+}
+
 // --- Discriminated union ------------------------------------------------------
 
-export type ProjectData = BrandIdentityProject | SocialMediaProject | NilyProject | ComfortoProject;
+export type ProjectData =
+  | BrandIdentityProject
+  | SocialMediaProject
+  | NilyProject
+  | ComfortoProject
+  | SocialCampaignsProject;
 
 // --- Legacy alias -------------------------------------------------------------
 
 /** @deprecated Use `project.type === "brand-identity"` instead */
-export type ProjectType = "brand-identity" | "social-media";
+export type ProjectType = "brand-identity" | "social-media" | "social-campaigns";
 
 // --- Image asset map ---------------------------------------------------------
 
@@ -450,59 +472,84 @@ export const PROJECTS: ProjectData[] = [
       { src: A.r4, alt: "Pulse � mockup 11" },
     ],
   },
+  // -- Social Media Campaigns --------------------------------------------------
   {
-    slug: "atlas",
+    slug: "social-campaigns",
     id: "04",
-    title: "Atlas",
-    client: "Editorial Client",
-    year: 2023,
-    services: ["Micro Interaction", "Interface Design", "Brand Identity"],
+    title: "Social Media Campaigns",
+    client: "Multiple Brands",
+    year: 2024,
+    services: ["Social Media Design", "Brand Campaigns", "Visual Identity"],
     description:
-      "A compact digital tool wrapped in a calm, considered interface � clarity and restraint as the product language.",
-    mainImage: A.r3,
-    type: "brand-identity",
-    logos: [
-      { src: A.r3, alt: "Atlas � primary logo" },
-      { src: A.about, alt: "Atlas � monogram" },
-      { src: A.r1, alt: "Atlas � wordmark" },
-    ],
-    typography: [
-      { name: "Space Grotesk", role: "Display", specimen: "Aa", weight: "SemiBold" },
-      { name: "Inter", role: "Body", specimen: "Aa", weight: "Regular" },
-    ],
-    colors: [
-      { name: "Carbon", hex: "#111111" },
-      { name: "Mist", hex: "#E8E4DC" },
-      { name: "Teal", hex: "#3D7A7A" },
-      { name: "Sand", hex: "#C9BFAF" },
-    ],
-    brainstorming: {
-      phrase: "Explore. Question. Refine.",
-      images: [
-        { src: A.r2, alt: "Atlas � flows" },
-        { src: A.c3, alt: "Atlas � wireframes" },
-        { src: A.c1, alt: "Atlas � structure" },
-      ],
-    },
-    concept: {
-      phrase: "Finding the right direction.",
-      images: [
-        { src: A.r4, alt: "Atlas � concept UI" },
-        { src: A.hero, alt: "Atlas � system" },
-        { src: A.c2, alt: "Atlas � final" },
-      ],
-    },
-    mockups: [
-      { src: A.r3, alt: "Atlas � mockup 01" },
-      { src: A.r1, alt: "Atlas � mockup 02" },
-      { src: A.r2, alt: "Atlas � mockup 03" },
-      { src: A.c1, alt: "Atlas � mockup 04" },
-      { src: A.c4, alt: "Atlas � mockup 05" },
-      { src: A.about, alt: "Atlas � mockup 06" },
-      { src: A.hero, alt: "Atlas � mockup 07" },
-      { src: A.c3, alt: "Atlas � mockup 08" },
-      { src: A.r4, alt: "Atlas � mockup 09" },
-      { src: A.c2, alt: "Atlas � mockup 10" },
+      "A curated collection of social media campaigns created for different brands — each translated into a consistent, ownable Instagram visual system.",
+    mainImage: "/images/retro/1.png",
+    type: "social-campaigns" as const,
+    introTagline:
+      "Visual campaigns designed to translate distinct brands into cohesive social identities.",
+    brands: [
+      {
+        num: "01",
+        name: "RETRO",
+        category: "Contemporary Lifestyle Footwear",
+        description:
+          "A bold, attitude-driven Instagram system for a contemporary sneaker brand — built around energy, culture and street-level authenticity.",
+        posts: [
+          { src: "/images/retro/1.png", alt: "RETRO — Campaign post 01" },
+          { src: "/images/retro/2.png", alt: "RETRO — Campaign post 02" },
+          { src: "/images/retro/3.png", alt: "RETRO — Campaign post 03" },
+          { src: "/images/retro/4.png", alt: "RETRO — Campaign post 04" },
+          { src: "/images/retro/5.png", alt: "RETRO — Campaign post 05" },
+          { src: "/images/retro/6.png", alt: "RETRO — Campaign post 06" },
+          { src: "/images/retro/7.png", alt: "RETRO — Campaign post 07" },
+          { src: "/images/retro/8.png", alt: "RETRO — Campaign post 08" },
+          { src: "/images/retro/9.png", alt: "RETRO — Campaign post 09" },
+          { src: "/images/retro/10.png", alt: "RETRO — Campaign post 10" },
+          { src: "/images/retro/11.png", alt: "RETRO — Campaign post 11" },
+          { src: "/images/retro/12.png", alt: "RETRO — Campaign post 12" },
+        ],
+      },
+      {
+        num: "02",
+        name: "BITZ",
+        category: "Digital Lifestyle & Street Culture",
+        description:
+          "A high-energy Instagram system built for a digital-native brand — vivid visuals, bold type and a feed that demands a second look.",
+        posts: [
+          { src: "/images/bitz/1.png",  alt: "BITZ — Campaign post 01" },
+          { src: "/images/bitz/2.png",  alt: "BITZ — Campaign post 02" },
+          { src: "/images/bitz/3.png",  alt: "BITZ — Campaign post 03" },
+          { src: "/images/bitz/4.png",  alt: "BITZ — Campaign post 04" },
+          { src: "/images/bitz/5.png",  alt: "BITZ — Campaign post 05" },
+          { src: "/images/bitz/6.png",  alt: "BITZ — Campaign post 06" },
+          { src: "/images/bitz/7.png",  alt: "BITZ — Campaign post 07" },
+          { src: "/images/bitz/8.png",  alt: "BITZ — Campaign post 08" },
+          { src: "/images/bitz/9.png",  alt: "BITZ — Campaign post 09" },
+          { src: "/images/bitz/10.png", alt: "BITZ — Campaign post 10" },
+          { src: "/images/bitz/11.png", alt: "BITZ — Campaign post 11" },
+          { src: "/images/bitz/12.png", alt: "BITZ — Campaign post 12" },
+        ],
+      },
+      {
+        num: "03",
+        name: "PODCAST",
+        category: "Podcast / Audio Brand",
+        description:
+          "A distinct social media system built for a podcast brand — crafted to communicate personality, depth and editorial authority across every post.",
+        posts: [
+          { src: "/images/podcast/1.png",  alt: "PODCAST — Campaign post 01" },
+          { src: "/images/podcast/2.png",  alt: "PODCAST — Campaign post 02" },
+          { src: "/images/podcast/3.png",  alt: "PODCAST — Campaign post 03" },
+          { src: "/images/podcast/4.png",  alt: "PODCAST — Campaign post 04" },
+          { src: "/images/podcast/5.png",  alt: "PODCAST — Campaign post 05" },
+          { src: "/images/podcast/6.png",  alt: "PODCAST — Campaign post 06" },
+          { src: "/images/podcast/7.png",  alt: "PODCAST — Campaign post 07" },
+          { src: "/images/podcast/8.png",  alt: "PODCAST — Campaign post 08" },
+          { src: "/images/podcast/9.png",  alt: "PODCAST — Campaign post 09" },
+          { src: "/images/podcast/10.png", alt: "PODCAST — Campaign post 10" },
+          { src: "/images/podcast/11.png", alt: "PODCAST — Campaign post 11" },
+          { src: "/images/podcast/12.png", alt: "PODCAST — Campaign post 12" },
+        ],
+      },
     ],
   },
   // -- Social Media ------------------------------------------------------------
@@ -620,8 +667,16 @@ export function isComfortoProject(project: ProjectData): project is ComfortoProj
   return project.type === "comforto";
 }
 
+/** Type guard — true when project is the Social Media Campaigns case study. */
+export function isSocialCampaignsProject(
+  project: ProjectData
+): project is SocialCampaignsProject {
+  return project.type === "social-campaigns";
+}
+
 export function getProjectTypeLabel(project: ProjectData): string {
   if (project.type === "social-media") return "Social Media Posts";
+  if (project.type === "social-campaigns") return "Social Media / Brand Campaigns";
   if (project.type === "nily") return "Brand Identity / Logo Design";
   if (project.type === "comforto") return "Brand Identity / Logo Design";
   return "Brand Identity";

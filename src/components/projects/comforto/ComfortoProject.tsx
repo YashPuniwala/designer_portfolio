@@ -482,9 +482,7 @@ function ComfortoCaseStudy() {
             className="w-full h-auto block"
           />
         </div>
-
       </section>
-
     </div>
   );
 }

@@ -14,6 +14,19 @@
       href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <!--
+      Preload the WorkInMotion grid images. These 6 images are all visible
+      when the section first enters view, and decoding them simultaneously
+      during the About→Work scroll was the primary source of first-entry jank.
+      Preloading starts decode during the loading screen, before any scrolling.
+    -->
+    <link rel="preload" as="image" href="/images/1.png" />
+    <link rel="preload" as="image" href="/images/2.png" />
+    <link rel="preload" as="image" href="/images/3.png" />
+    <link rel="preload" as="image" href="/images/4.png" />
+    <link rel="preload" as="image" href="/images/6.png" />
+    <link rel="preload" as="image" href="/images/7.png" />
+    <link rel="preload" as="image" href="/images/8.png" />
   </head>
   <body>
     <div id="root"></div>

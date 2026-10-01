@@ -323,8 +323,18 @@ function HomePage() {
     }, container);
 
     let disposed = false;
+
+    // Guard: only trigger a refresh if the user hasn't yet reached or passed
+    // the horizontal section's scroll trigger. Refreshing while the user is
+    // already inside a pinned section causes a visible mid-animation jump.
     const refreshLayout = () => {
-      if (!disposed) ScrollTrigger.refresh();
+      if (disposed) return;
+      const horizTrigger = ScrollTrigger.getById("horizontal-work");
+      const wimTrigger = ScrollTrigger.getById("work-in-motion-zoom");
+      // Skip if we're already inside WorkInMotion or HorizontalSection.
+      if (wimTrigger && wimTrigger.progress > 0) return;
+      if (horizTrigger && horizTrigger.progress > 0) return;
+      ScrollTrigger.refresh();
     };
 
     // Only listen for load events on images *inside* the horizontal section.
@@ -335,10 +345,18 @@ function HomePage() {
     const horizImages = horizontalRef.current
       ? Array.from(horizontalRef.current.querySelectorAll("img"))
       : [];
-    horizImages.forEach((image) => {
-      image.addEventListener("load", refreshLayout);
-      image.addEventListener("error", refreshLayout);
+
+    // Only register load listeners for images not yet decoded.
+    // Already-cached images won't fire 'load' again, so no refresh needed.
+    const pendingHorizImages = horizImages.filter((img) => !img.complete);
+    pendingHorizImages.forEach((image) => {
+      image.addEventListener("load", refreshLayout, { once: true });
+      image.addEventListener("error", refreshLayout, { once: true });
     });
+
+    // fonts.ready is the authoritative single refresh point for the whole page.
+    // WorkInMotion no longer calls its own fonts.ready refresh, so this is
+    // the only place that handles font-swap layout recalculation.
     void document.fonts.ready.then(refreshLayout);
     ScrollTrigger.refresh();
 

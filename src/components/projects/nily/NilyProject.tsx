@@ -23,101 +23,160 @@ function NilyCaseStudy() {
     <div className="bg-[#050505] text-white p-0">
 
       {/* ════════════════════════════════════════════════════════════
-          1. LOGO DESIGN — FROZEN, do not modify
+          1. LOGO DESIGN — Comforto-style alternating timeline
+             Structure copied from Comforto; ALL NILY content preserved.
           ════════════════════════════════════════════════════════════ */}
-      <section className="max-w-[80rem] mx-auto px-[clamp(1.25rem,4vw,3.5rem)] pt-[clamp(2.5rem,5vh,4rem)] pb-0" aria-label="Logo Design">
-        <p className="font-mono text-[9px] tracking-[0.42em] uppercase text-white/[0.32] mb-[0.9rem] block">
-          Logo Design
-        </p>
-        <p className="font-display text-[clamp(0.82rem,1.1vw,0.96rem)] leading-[1.65] text-white/[0.48] max-w-[44rem] mb-[clamp(1.5rem,4vh,3rem)]">
-          The logo was developed through a disciplined process of exploration,
-          refinement and simplification — moving from raw ideas toward a mark
-          that is quiet, precise and entirely ownable.
-        </p>
+      <section
+        className="max-w-[80rem] mx-auto px-[clamp(1.25rem,4vw,3.5rem)] pt-[clamp(2.5rem,5vh,4rem)] pb-[clamp(2.5rem,5vh,4rem)]"
+        aria-label="Logo Design"
+      >
+        {/* Section heading & intro — NILY copy, Comforto heading style */}
+        <div className="mb-[clamp(2rem,4vh,3.25rem)]">
+          <h2 className="font-display font-extrabold text-[clamp(1.75rem,2.8vw,2.4rem)] text-white tracking-tight uppercase mb-3">
+            Logo Design
+          </h2>
+          <p className="font-body text-[clamp(0.95rem,1.15vw,1.05rem)] font-medium text-white/90 leading-[1.6] max-w-[50rem] mb-2">
+            The logo was developed through a disciplined process of exploration,
+            refinement and simplification.
+          </p>
+          <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/55 max-w-[54rem]">
+            Moving from raw ideas toward a mark that is quiet, precise and entirely
+            ownable — every curve, weight and proportion considered until the mark
+            could stand alone at any scale.
+          </p>
+        </div>
 
-        <div className="relative flex flex-col gap-[clamp(1.5rem,4vh,3rem)] mb-[clamp(1.5rem,4vh,3rem)]">
+        {/* ── 3-Stage Alternating Timeline Container ── */}
+        <div className="relative">
 
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80px] h-full pointer-events-none z-0 max-[600px]:hidden" aria-hidden="true">
+          {/* Straight center spine + branch stubs — Desktop/Tablet only.
+              Same system as Comforto: one continuous vertical spine at x=500,
+              short horizontal stubs reaching to the image column, circle nodes
+              marking the junction. Three stages → nodes at ~17%, 50%, 83%. */}
+          <div
+            className="absolute inset-0 w-full h-full pointer-events-none z-0 hidden md:block"
+            aria-hidden="true"
+          >
             <svg
               className="w-full h-full block"
-              viewBox="0 0 100 900"
+              viewBox="0 0 1000 1000"
               preserveAspectRatio="none"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                d="M 50 0 L 50 80 Q 50 110 20 110 L 20 160 Q 20 180 50 180 L 50 340 Q 50 370 80 370 L 80 420 Q 80 440 50 440 L 50 620 Q 50 650 20 650 L 20 700 Q 20 720 50 720 L 50 900"
-                stroke="rgba(255,255,255,0.18)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              {/* The spine — one continuous straight vertical line */}
+              <line
+                x1="500" y1="15" x2="500" y2="985"
+                stroke="#f0ece1" strokeOpacity="0.85" strokeWidth="2.5" strokeLinecap="round"
               />
+
+              {/* Stage 01 — text left, image right → stub reaches right */}
+              <line x1="500" y1="167" x2="640" y2="167" stroke="#f0ece1" strokeOpacity="0.55" strokeWidth="2" />
+              <circle cx="500" cy="167" r="5.5" fill="#f0ece1" />
+              <circle cx="500" cy="167" r="9" stroke="#f0ece1" strokeWidth="1" strokeOpacity="0.3" />
+
+              {/* Stage 02 — image left, text right → stub reaches left */}
+              <line x1="360" y1="500" x2="500" y2="500" stroke="#f0ece1" strokeOpacity="0.55" strokeWidth="2" />
+              <circle cx="500" cy="500" r="4.5" fill="#f0ece1" />
+
+              {/* Stage 03 — text left, image right → stub reaches right */}
+              <line x1="500" y1="833" x2="640" y2="833" stroke="#f0ece1" strokeOpacity="0.55" strokeWidth="2" />
+              <circle cx="500" cy="833" r="6" fill="#f0ece1" />
+              <circle cx="500" cy="833" r="11" stroke="#f0ece1" strokeWidth="1.5" strokeOpacity="0.4" />
             </svg>
           </div>
 
-          <div className="relative z-[1] grid grid-cols-[1fr_40px_1fr] max-[900px]:grid-cols-[1fr_28px_1fr] max-[600px]:flex max-[600px]:flex-col gap-x-[clamp(1rem,2.5vw,2rem)] max-[900px]:gap-x-[0.75rem] max-[600px]:gap-y-[1rem] items-center max-[600px]:items-start">
-            <div className="col-start-1 row-start-1 text-right max-[600px]:text-left pr-[clamp(0.75rem,2vw,2rem)] max-[600px]:p-0 max-[600px]:m-0 max-[600px]:order-1">
-              <span className="block font-display font-bold text-[clamp(2rem,5vw,4rem)] tracking-[-0.04em] leading-[0.85] text-white/[0.05] mb-[0.4rem] select-none pointer-events-none">01</span>
-              <h3 className="font-display font-bold text-[clamp(0.82rem,1.2vw,1rem)] tracking-[0.01em] text-white/90 uppercase mb-[0.4rem]">Initial Concept</h3>
-              <p className="font-body text-[clamp(0.74rem,0.9vw,0.84rem)] leading-[1.65] text-white/40 max-w-[22rem] max-[600px]:max-w-none ml-auto max-[600px]:ml-0">
-                The first round of explorations — testing wordmarks, symbols and
-                letterform-based directions toward something unique and ownable.
-              </p>
-            </div>
-            <div className="col-start-2 row-start-1 w-[8px] h-[8px] rounded-full bg-white/[0.18] border-[1.5px] border-white/40 mx-auto shrink-0 relative z-[2] max-[600px]:hidden" aria-hidden="true" />
-            <div className="col-start-3 row-start-1 max-[600px]:order-2 rounded-[10px] overflow-hidden bg-[#0d0d0d] border border-white/[0.06] group">
-              <img
-                src="/images/nily 2/logo_step1.png"
-                alt="NILY — Initial logo concept exploration"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-auto block transition-transform duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
-              />
-            </div>
-          </div>
+          {/* ── Stage rows — rendered from one shared pattern ── */}
+          <div className="relative z-[1] flex flex-col gap-[clamp(1.75rem,3.25vh,3rem)]">
 
-          <div className="relative z-[1] grid grid-cols-[1fr_40px_1fr] max-[900px]:grid-cols-[1fr_28px_1fr] max-[600px]:flex max-[600px]:flex-col gap-x-[clamp(1rem,2.5vw,2rem)] max-[900px]:gap-x-[0.75rem] max-[600px]:gap-y-[1rem] items-center max-[600px]:items-start">
-            <div className="col-start-1 row-start-1 max-[600px]:order-2 rounded-[10px] overflow-hidden bg-[#0d0d0d] border border-white/[0.06] group">
-              <img
-                src="/images/nily 2/logo_step2.png"
-                alt="NILY — Simplified brand direction"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-auto block transition-transform duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
-              />
+            {/* Stage 01 — text left, image right (imageFirst=false → even index) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 items-center">
+              {/* Text column */}
+              <div className="md:pr-10 lg:pr-12 flex flex-col justify-center max-md:border-l-2 max-md:border-white/20 max-md:pl-4">
+                <span className="font-display font-black text-[clamp(2.25rem,4.5vw,3.75rem)] text-white tracking-tight leading-none mb-1">
+                  01
+                </span>
+                <h3 className="font-display font-bold text-[clamp(1rem,1.3vw,1.25rem)] text-white tracking-wide uppercase mb-2">
+                  Initial Concept
+                </h3>
+                <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/60 max-w-[28rem]">
+                  The first round of explorations — testing wordmarks, symbols and
+                  letterform-based directions toward something unique and ownable.
+                </p>
+              </div>
+              {/* Image column */}
+              <div className="flex items-center justify-center">
+                <div className="w-[172px] h-[172px] sm:w-[196px] sm:h-[196px] md:w-[212px] md:h-[212px] lg:w-[228px] lg:h-[228px] flex items-center justify-center group">
+                  <img
+                    src="/images/nily 2/logo_step1.png"
+                    alt="NILY — Initial logo concept exploration"
+                    loading="lazy"
+                    decoding="async"
+                    className="max-w-full max-h-full object-contain block transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="col-start-2 row-start-1 w-[8px] h-[8px] rounded-full bg-white/[0.18] border-[1.5px] border-white/40 mx-auto shrink-0 relative z-[2] max-[600px]:hidden" aria-hidden="true" />
-            <div className="col-start-3 row-start-1 text-left pl-[clamp(0.75rem,2vw,2rem)] max-[600px]:p-0 max-[600px]:m-0 max-[600px]:order-1">
-              <span className="block font-display font-bold text-[clamp(2rem,5vw,4rem)] tracking-[-0.04em] leading-[0.85] text-white/[0.05] mb-[0.4rem] select-none pointer-events-none">02</span>
-              <h3 className="font-display font-bold text-[clamp(0.82rem,1.2vw,1rem)] tracking-[0.01em] text-white/90 uppercase mb-[0.4rem]">Brand Simplification</h3>
-              <p className="font-body text-[clamp(0.74rem,0.9vw,0.84rem)] leading-[1.65] text-white/40 max-w-[22rem] max-[600px]:max-w-none">
-                Stripping away complexity — a mark that reads instantly at any
-                size and carries the brand character without noise.
-              </p>
-            </div>
-          </div>
 
-          <div className="relative z-[1] grid grid-cols-[1fr_40px_1fr] max-[900px]:grid-cols-[1fr_28px_1fr] max-[600px]:flex max-[600px]:flex-col gap-x-[clamp(1rem,2.5vw,2rem)] max-[900px]:gap-x-[0.75rem] max-[600px]:gap-y-[1rem] items-center max-[600px]:items-start">
-            <div className="col-start-1 row-start-1 text-right max-[600px]:text-left pr-[clamp(0.75rem,2vw,2rem)] max-[600px]:p-0 max-[600px]:m-0 max-[600px]:order-1">
-              <span className="block font-display font-bold text-[clamp(2rem,5vw,4rem)] tracking-[-0.04em] leading-[0.85] text-white/[0.05] mb-[0.4rem] select-none pointer-events-none">03</span>
-              <h3 className="font-display font-bold text-[clamp(0.82rem,1.2vw,1rem)] tracking-[0.01em] text-white/90 uppercase mb-[0.4rem]">Refined Core Mark</h3>
-              <p className="font-body text-[clamp(0.74rem,0.9vw,0.84rem)] leading-[1.65] text-white/40 max-w-[22rem] max-[600px]:max-w-none ml-auto max-[600px]:ml-0">
-                The final mark — refined, resolved and ready. Every curve, weight
-                and proportion considered.
-              </p>
+            {/* Stage 02 — image left, text right (imageFirst=true → odd index) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 items-center">
+              {/* Image column */}
+              <div className="flex items-center justify-center max-md:order-2">
+                <div className="w-[172px] h-[172px] sm:w-[196px] sm:h-[196px] md:w-[212px] md:h-[212px] lg:w-[228px] lg:h-[228px] flex items-center justify-center group">
+                  <img
+                    src="/images/nily 2/logo_step2.png"
+                    alt="NILY — Simplified brand direction"
+                    loading="lazy"
+                    decoding="async"
+                    className="max-w-full max-h-full object-contain block transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                  />
+                </div>
+              </div>
+              {/* Text column */}
+              <div className="md:pl-10 lg:pl-12 flex flex-col justify-center max-md:border-l-2 max-md:border-white/20 max-md:pl-4 max-md:order-1">
+                <span className="font-display font-black text-[clamp(2.25rem,4.5vw,3.75rem)] text-white tracking-tight leading-none mb-1">
+                  02
+                </span>
+                <h3 className="font-display font-bold text-[clamp(1rem,1.3vw,1.25rem)] text-white tracking-wide uppercase mb-2">
+                  Brand Simplification
+                </h3>
+                <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/60 max-w-[28rem]">
+                  Stripping away complexity — a mark that reads instantly at any
+                  size and carries the brand character without noise.
+                </p>
+              </div>
             </div>
-            <div className="col-start-2 row-start-1 w-[8px] h-[8px] rounded-full bg-white/[0.18] border-[1.5px] border-white/40 mx-auto shrink-0 relative z-[2] max-[600px]:hidden" aria-hidden="true" />
-            <div className="col-start-3 row-start-1 max-[600px]:order-2 rounded-[10px] overflow-hidden bg-[#0d0d0d] border border-white/[0.06] group">
-              <img
-                src="/images/nily 2/logo_step3.png"
-                alt="NILY — Refined final core mark"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-auto block transition-transform duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
-              />
-            </div>
-          </div>
 
+            {/* Stage 03 — text left, image right (imageFirst=false → even index) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 items-center">
+              {/* Text column */}
+              <div className="md:pr-10 lg:pr-12 flex flex-col justify-center max-md:border-l-2 max-md:border-white/20 max-md:pl-4">
+                <span className="font-display font-black text-[clamp(2.25rem,4.5vw,3.75rem)] text-white tracking-tight leading-none mb-1">
+                  03
+                </span>
+                <h3 className="font-display font-bold text-[clamp(1rem,1.3vw,1.25rem)] text-white tracking-wide uppercase mb-2">
+                  Refined Core Mark
+                </h3>
+                <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/60 max-w-[28rem]">
+                  The final mark — refined, resolved and ready. Every curve, weight
+                  and proportion considered until the mark could stand alone.
+                </p>
+              </div>
+              {/* Image column */}
+              <div className="flex items-center justify-center">
+                <div className="w-[172px] h-[172px] sm:w-[196px] sm:h-[196px] md:w-[212px] md:h-[212px] lg:w-[228px] lg:h-[228px] flex items-center justify-center group">
+                  <img
+                    src="/images/nily 2/logo_step3.png"
+                    alt="NILY — Refined final core mark"
+                    loading="lazy"
+                    decoding="async"
+                    className="max-w-full max-h-full object-contain block transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                  />
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 

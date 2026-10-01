@@ -94,8 +94,11 @@ export default function ServicesSection() {
           );
         });
       }, section);
-
-      ScrollTrigger.refresh();
+      // Note: do NOT call ScrollTrigger.refresh() here.
+      // App.tsx calls it once after all layout effects have run (including
+      // this one). Calling it again from setup() fires a second full
+      // layout remeasure that can overlap with WorkInMotion's initialization
+      // and create a mid-scroll stutter on first page load.
     };
 
     setup();

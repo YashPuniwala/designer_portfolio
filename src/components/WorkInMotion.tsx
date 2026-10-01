@@ -24,7 +24,12 @@ export default function WorkInMotion() {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const calculateDollyZ = () => {
+    // Calculate the dolly-Z value and cache it. Calling getBoundingClientRect()
+    // inside the GSAP tween callback (which runs every animation frame) forced
+    // a synchronous layout measurement on every frame, contributing to jank
+    // on the first entry. We cache the value now and invalidate it only on
+    // ScrollTrigger.refresh() via invalidateOnRefresh + the onRefresh callback.
+    const computeDollyZ = () => {
       const cardRect = centerCard.getBoundingClientRect();
       if (!cardRect.width || !cardRect.height) return CAMERA_PERSPECTIVE * 0.72;
       const needed =
@@ -34,6 +39,8 @@ export default function WorkInMotion() {
         ) * 1.05;
       return CAMERA_PERSPECTIVE * (1 - 1 / needed);
     };
+    // Cached value — only updated on explicit refresh, not every frame.
+    let cachedDollyZ = computeDollyZ();
 
     if (reduceMotion) {
       return;
@@ -59,6 +66,12 @@ export default function WorkInMotion() {
           anticipatePin: 1,
           fastScrollEnd: true,
           invalidateOnRefresh: true,
+          onRefresh: () => {
+            // Re-compute the cached dolly target when ScrollTrigger remeasures
+            // the layout (resize, font swap, image load). This is the ONLY
+            // place we call getBoundingClientRect() now — not every frame.
+            cachedDollyZ = computeDollyZ();
+          },
         },
       });
 
@@ -82,7 +95,10 @@ export default function WorkInMotion() {
         world,
         { z: 0 },
         {
-          z: () => calculateDollyZ(),
+          // Use the cached value — no per-frame getBoundingClientRect().
+          // invalidateOnRefresh (set on the scrollTrigger) re-evaluates
+          // the tween start/end values by calling onRefresh below.
+          z: () => cachedDollyZ,
           duration: 0.7,
           ease: "power1.inOut",
         },
@@ -116,37 +132,52 @@ export default function WorkInMotion() {
     }, section);
 
     // --- First-visit stutter fix ---------------------------------------
-    // ScrollTrigger measures pin distances and this component's dolly
-    // target (calculateDollyZ) as soon as the timeline above is created.
-    // If any <img> in this section is still decoding, or the "Caveat"
-    // web font hasn't swapped in yet, those measurements are taken against
-    // a layout that's about to shift slightly — which is exactly what
-    // produces "lag then hits a wall" on the very first scroll, and why
-    // it's fine again once you leave and come back (you're just scrolling
-    // past the one stale frame, not fixing anything).
+    // The stutter was caused by multiple concurrent ScrollTrigger.refresh()
+    // calls firing from this component (fonts.ready + window.load + image
+    // load events) while the user was actively scrolling through the
+    // About → Work boundary. Each refresh forces GSAP to re-measure ALL
+    // pinned section heights, which stalls the main thread mid-scroll.
     //
-    // Fix: once every image in this section has actually finished loading
-    // (and fonts are ready), force one ScrollTrigger.refresh() so the pin
-    // spacing and the dolly-zoom target are recalculated against final,
-    // settled layout. invalidateOnRefresh: true (already set above) makes
-    // sure calculateDollyZ() gets re-evaluated at that point too.
+    // Fix strategy:
+    // 1. Only watch images in THIS section (not the entire page).
+    // 2. Do NOT call refresh from fonts.ready here — App.tsx already
+    //    calls ScrollTrigger.refresh() from its own fonts.ready handler.
+    //    Calling it a second time from here would fire two reflows.
+    // 3. Do NOT use window.load — it fires after all resources load,
+    //    which is too late and overlaps with the user's first scroll.
+    // 4. Use a single debounced refresh that only fires once all section
+    //    images are decoded, and only before the user has scrolled
+    //    past this section's trigger point.
     const images = Array.from(section.querySelectorAll("img"));
     let cancelled = false;
 
+    // A flag that prevents refresh from running if the user has already
+    // scrolled past the trigger point (the refresh would be wasted work
+    // and could cause a mid-scroll stutter).
+    const shouldSkipRefresh = () => {
+      if (cancelled) return true;
+      const trigger = ScrollTrigger.getById("work-in-motion-zoom");
+      // If we're already past the section's start, skip the refresh;
+      // the section is already active or finished and a re-measure would
+      // cause a visible mid-animation jump.
+      return trigger ? trigger.progress > 0 : false;
+    };
+
     const refreshWhenReady = () => {
-      if (cancelled) return;
-      // Double rAF: wait a frame for layout to settle, then one more for
-      // paint, before asking ScrollTrigger to remeasure.
+      if (shouldSkipRefresh()) return;
+      // Double rAF: wait for layout and paint to settle before measuring.
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          if (!cancelled) ScrollTrigger.refresh();
+          if (!shouldSkipRefresh()) ScrollTrigger.refresh();
         });
       });
     };
 
     const pending = images.filter((img) => !img.complete);
     if (pending.length === 0) {
-      refreshWhenReady();
+      // All images already cached — still defer one tick so the GSAP
+      // context above has fully initialized before we remeasure.
+      requestAnimationFrame(refreshWhenReady);
     } else {
       let remaining = pending.length;
       const onSettle = () => {
@@ -158,19 +189,12 @@ export default function WorkInMotion() {
         img.addEventListener("error", onSettle, { once: true });
       });
     }
-
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(refreshWhenReady);
-    }
-
-    // Belt-and-suspenders: also catch the full window load event, in case
-    // something outside this section (another image, another section's
-    // fonts) shifts total document height after this component mounts.
-    window.addEventListener("load", refreshWhenReady);
+    // NOTE: fonts.ready and window.load refresh calls are intentionally
+    // removed here. App.tsx handles the authoritative post-load refresh
+    // for the entire page's layout from one central place.
 
     return () => {
       cancelled = true;
-      window.removeEventListener("load", refreshWhenReady);
       ctx.revert();
     };
   }, []);
@@ -213,6 +237,8 @@ export default function WorkInMotion() {
                     src="/images/1.png"
                     alt="Grid image 1"
                     className="h-full w-full object-cover"
+                    decoding="async"
+                    fetchPriority="high"
                   />
                 </div>
 
@@ -221,6 +247,8 @@ export default function WorkInMotion() {
                     src="/images/2.png"
                     alt="Grid image 2"
                     className="h-full w-full object-cover"
+                    decoding="async"
+                    fetchPriority="high"
                   />
                   <svg
                     className="absolute bottom-2 left-6 w-28 sm:w-44 h-16 pointer-events-none text-[#ff8a3c] opacity-85"
@@ -243,6 +271,8 @@ export default function WorkInMotion() {
                     src="/images/3.png"
                     alt="Grid image 3"
                     className="h-full w-full object-cover"
+                    decoding="async"
+                    fetchPriority="high"
                   />
                 </div>
 
@@ -253,6 +283,8 @@ export default function WorkInMotion() {
                     src="/images/8.png"
                     alt="Grid image 4"
                     className="h-full w-full object-cover"
+                    decoding="async"
+                    fetchPriority="high"
                   />
                 </div>
               </div>
@@ -263,6 +295,8 @@ export default function WorkInMotion() {
                     src="/images/7.png"
                     alt="Grid image 5"
                     className="h-full w-full object-cover"
+                    decoding="async"
+                    fetchPriority="high"
                   />
                 </div>
 
@@ -271,6 +305,8 @@ export default function WorkInMotion() {
                     src="/images/6.png"
                     alt="Grid image 6"
                     className="h-full w-full object-cover"
+                    decoding="async"
+                    fetchPriority="high"
                   />
                 </div>
               </div>
@@ -288,6 +324,8 @@ export default function WorkInMotion() {
                   src="/images/4.png"
                   alt="Center focal image"
                   className="h-full w-full object-cover"
+                  decoding="async"
+                  fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-radial-[ellipse_at_center] from-transparent via-black/10 to-black/30 pointer-events-none" />
               </div>

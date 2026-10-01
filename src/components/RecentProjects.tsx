@@ -60,10 +60,10 @@ const FEATURED: Project = {
 const SECOND_ROW: Project[] = [
   {
     id: "04",
-    slug: "atlas",
-    title: "Atlas",
-    category: "Micro Interaction",
-    src: "/images/recent-03.jpg",
+    slug: "social-campaigns",
+    title: "Social Media Campaigns",
+    category: "Social Media / Brand Campaigns",
+    src: "/images/retro/1.png",
     ratio: "4-3",
     scaleFrom: 0.05,
     yFrom: -32,

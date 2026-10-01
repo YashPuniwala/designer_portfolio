@@ -7,12 +7,14 @@ import { BrandIdentityProject } from "./projects/brand-identity";
 import { SocialMediaProject } from "./projects/social-media";
 import { NilyProject } from "./projects/nily";
 import { ComfortoProject } from "./projects/comforto";
+import { SocialCampaignsProject } from "./projects/social-campaigns";
 import {
   getNextProject,
   getProjectBySlug,
   isNilyProject,
   isComfortoProject,
   isSocialMediaProject,
+  isSocialCampaignsProject,
 } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -176,7 +178,9 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
         </section>
 
         {/* Body isolated by discriminated union project type */}
-        {isSocialMediaProject(project) ? (
+        {isSocialCampaignsProject(project) ? (
+          <SocialCampaignsProject project={project} />
+        ) : isSocialMediaProject(project) ? (
           <SocialMediaProject project={project} />
         ) : isNilyProject(project) ? (
           <NilyProject project={project} />

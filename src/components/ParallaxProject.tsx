@@ -19,7 +19,7 @@ const PROJECT_IMAGES = [
   },
   {
     src: "/images/recent-03.jpg",
-    alt: "Atlas — Editorial design",
+    alt: "Social Media Campaigns — Brand campaigns",
   },
   {
     src: "/images/recent-04.jpg",
