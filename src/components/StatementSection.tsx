@@ -21,12 +21,14 @@ export default function StatementSection() {
     const REST_SHADOW = "0 25px 60px rgba(0, 0, 0, 0)";
     const OPEN_SHADOW = "0 25px 60px rgba(0, 0, 0, 0.7)";
 
+    // Promote the frame to its own compositor layer for the duration of the
+    // animation. This avoids layout recalculations on every scroll frame.
+    frame.style.willChange = "width, height, margin, box-shadow";
+
     const mm = gsap.matchMedia();
 
     // -----------------------------------------------------------------
     // DESKTOP & TABLET (> 640px)
-    // Timeline now has NO empty holds — one continuous tween across the
-    // entire pin. This removes the scrub catch-up jerk.
     // -----------------------------------------------------------------
     mm.add("(min-width: 641px)", () => {
       const getTargetWidth = () => {
@@ -66,11 +68,14 @@ export default function StatementSection() {
           start: "top top",
           end: "+=120%",
           pin: true,
-          scrub: 0.8,
+          // scrub: true = directly tied to scroll position, no lerp lag.
+          // This eliminates the "freeze then catch-up jump" when scrolling fast.
+          scrub: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onRefresh: () => {
-            setTargetDimensions();
+            // Defer DOM writes to avoid layout thrashing during refresh.
+            requestAnimationFrame(() => setTargetDimensions());
           },
         },
       });
@@ -91,8 +96,6 @@ export default function StatementSection() {
 
     // -----------------------------------------------------------------
     // MOBILE (<= 640px)
-    // Same treatment — the frame expansion + image zoom fill the full
-    // pin with no dead segments, so the mobile scrub is also smooth.
     // -----------------------------------------------------------------
     mm.add("(max-width: 640px)", () => {
       const IMAGE_RATIO = 2.4;
@@ -138,11 +141,12 @@ export default function StatementSection() {
           start: "top top",
           end: "+=150%",
           pin: true,
-          scrub: 0.8,
+          // scrub: true = directly tied to scroll position, no lerp lag.
+          scrub: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onRefresh: () => {
-            setMobileDimensions();
+            requestAnimationFrame(() => setMobileDimensions());
           },
         },
       });
@@ -177,7 +181,10 @@ export default function StatementSection() {
       }
     });
 
-    return () => mm.revert();
+    return () => {
+      frame.style.willChange = "auto";
+      mm.revert();
+    };
   }, []);
 
   return (

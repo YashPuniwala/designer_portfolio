@@ -30,7 +30,7 @@ export default function MarqueeSection({
       <InfiniteTextMarquee
         text={MARQUEE_TEXT}
         link="#home"
-        speed={26}
+        speed={90}
         tooltipText={TOOLTIP_TEXT}
         fontSize="clamp(2.6rem, 10vw, 8rem)"
         textColor="#ffffff"

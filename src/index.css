@@ -125,6 +125,341 @@ html.lenis body {
   height: 100%;
 }
 
+/* Skills panel — slides UP over About exactly as About slides over Hero.
+   Higher z-index so it fully covers About once it arrives. */
+.skills-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  will-change: transform;
+  overflow: visible;
+}
+
+.skills-inner-wrap {
+  position: relative;
+  height: 100%;
+  transform-origin: bottom left;
+  will-change: transform;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ------------------------------------------------------------------ */
+/* Skills Section — editorial off-white                                */
+/* ------------------------------------------------------------------ */
+.skills-section {
+  position: relative;
+  min-height: 100%;
+  background: #F7F6F2;
+  color: #0d0d0d;
+  overflow: hidden;
+  padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 5.5vw, 6rem) clamp(3rem, 8vh, 5rem);
+}
+
+/* Giant faint ghost background word */
+.sk-bg-word {
+  position: absolute;
+  top: 50%;
+  right: -2vw;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(12rem, 36vw, 34rem);
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  color: #0d0d0d;
+  opacity: 0;
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+/* Main inner container */
+.sk-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 88rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vh, 5.5rem);
+}
+
+/* Header */
+.sk-header {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vh, 1.75rem);
+}
+
+.sk-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sk-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(13, 13, 13, 0.45);
+}
+
+.sk-slash {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-amber-glow);
+  opacity: 0.8;
+}
+
+.sk-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 9.5vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  color: #0d0d0d;
+  will-change: transform, opacity;
+}
+
+.sk-subhead {
+  max-width: 38ch;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  line-height: 1.6;
+  color: rgba(13, 13, 13, 0.52);
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
+}
+
+/* ── Primary tool rows ── */
+.sk-rows {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(13, 13, 13, 0.12);
+}
+
+.sk-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(2.4rem, 5vw, 4rem) 1fr auto;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 2rem);
+  padding: clamp(1.1rem, 2.6vh, 1.75rem) 0;
+  will-change: transform, opacity;
+  /* hairline rule lives as the sk-line pseudo element below */
+}
+
+/* Orange accent dot — right-column */
+.sk-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-amber-glow);
+  flex-shrink: 0;
+  grid-column: 3;
+}
+
+/* Thin extending bottom rule (GSAP scaleX: 0 → 1) */
+.sk-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(13, 13, 13, 0.12);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.sk-num {
+  font-family: var(--font-mono);
+  font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+  letter-spacing: 0.22em;
+  color: rgba(13, 13, 13, 0.32);
+  will-change: opacity;
+  /* keeps the grid column from collapsing before GSAP restores it */
+  min-width: clamp(2.4rem, 5vw, 4rem);
+}
+
+.sk-tool-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4.2vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: #0d0d0d;
+  text-transform: uppercase;
+}
+
+.sk-cat {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 0.78vw, 0.72rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(13, 13, 13, 0.38);
+  grid-column: 2;
+  grid-row: 2;
+  padding-top: 0.18rem;
+  will-change: opacity;
+}
+
+/* When cat sits in its own row, adjust grid */
+.sk-row {
+  grid-template-rows: auto auto;
+  grid-template-columns: clamp(2.4rem, 5vw, 4rem) 1fr auto;
+}
+
+.sk-num   { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+.sk-tool-name { grid-column: 2; grid-row: 1; }
+.sk-cat   { grid-column: 2; grid-row: 2; padding-top: 0.1rem; }
+.sk-dot   { grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+
+/* ── AI / Creative tools block ── */
+.sk-ai-block {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vh, 2rem);
+  padding-top: clamp(0.5rem, 1.5vh, 1rem);
+  border-top: 1px solid rgba(13, 13, 13, 0.12);
+}
+
+.sk-ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sk-ai-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-amber-glow);
+}
+
+.sk-ai-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.75rem, 2vw, 1.5rem) clamp(1.5rem, 4vw, 3rem);
+}
+
+.sk-ai-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  will-change: transform, opacity;
+}
+
+.sk-ai-line {
+  display: inline-block;
+  width: clamp(16px, 2.5vw, 28px);
+  height: 1px;
+  background: var(--color-amber-glow);
+  flex-shrink: 0;
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.sk-ai-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.6vw, 1.5rem);
+  letter-spacing: -0.02em;
+  color: #0d0d0d;
+  text-transform: uppercase;
+}
+
+/* ── Footer metadata ── */
+.sk-footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  padding-top: clamp(1rem, 2.5vh, 1.75rem);
+  border-top: 1px solid rgba(13, 13, 13, 0.1);
+}
+
+.sk-meta-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(13, 13, 13, 0.35);
+}
+
+.sk-meta-accent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-amber-glow);
+}
+
+.sk-accent-dash {
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+}
+
+/* ── Mobile responsive ── */
+@media (max-width: 768px) {
+  .skills-section {
+    padding: clamp(3rem, 8vh, 5rem) clamp(1.25rem, 5vw, 2rem) clamp(2.5rem, 7vh, 4rem);
+  }
+
+  .sk-bg-word {
+    font-size: clamp(8rem, 45vw, 14rem);
+    top: 10%;
+    right: -4vw;
+    transform: none;
+  }
+
+  .sk-tool-name {
+    font-size: clamp(1.5rem, 7vw, 2.6rem);
+  }
+
+  .sk-ai-grid {
+    gap: 0.65rem 1.25rem;
+  }
+
+  .sk-ai-name {
+    font-size: clamp(0.9rem, 4.5vw, 1.25rem);
+  }
+
+  .sk-footer-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sk-heading {
+    font-size: clamp(2.4rem, 12.5vw, 3.8rem);
+  }
+}
+
+/* Reduced motion — Skills stacks naturally */
+@media (prefers-reduced-motion: reduce) {
+  .sk-bg-word,
+  .sk-heading,
+  .sk-row,
+  .sk-line,
+  .sk-num,
+  .sk-cat,
+  .sk-ai-item,
+  .sk-ai-line {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+}
+
 .showcase-panel {
   position: absolute;
   inset: 0;
@@ -317,34 +652,98 @@ html.lenis body {
   object-fit: cover;
 }
 
-/* Captions: orange script title + small uppercase label */
+/* ── Editorial project info block ──────────────────────────────────── */
+/* Layout: title+tags left, arrow right, aligned to the image's grid   */
 .rp-caption {
   position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 1.2rem;
-  padding: 0 0.4rem;
+  gap: 1rem;
+  padding: 0.25rem 0.25rem 0;
 }
 
+/* Left column: title stacked above tags */
+.rp-caption-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Project title — editorial, normal style, project-identity font applied inline */
 .rp-title {
-  font-family: "Caveat", "Brush Script MT", cursive;
-  font-style: italic;
-  color: var(--color-amber-glow);
+  font-style: normal;
+  color: #0a0a0a;
   font-weight: 700;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  line-height: 1;
-  margin-top: -0.6rem;
+  font-size: clamp(1.45rem, 2.4vw, 2.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
-.rp-meta {
+/* Tags row */
+.rp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+/* Single pill tag — outlined, editorial, no fill */
+.rp-tag {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.52);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  line-height: 1;
   white-space: nowrap;
-  padding-bottom: 0.4rem;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.rp-card-link:hover .rp-tag,
+.rp-card-link:focus-visible .rp-tag {
+  border-color: rgba(0, 0, 0, 0.35);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+/* Arrow button — circular, outlined, transparent */
+.rp-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  background: transparent;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 1rem;
+  line-height: 1;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  align-self: flex-end;
+  margin-bottom: 0.15rem;
+}
+
+.rp-card-link:hover .rp-arrow,
+.rp-card-link:focus-visible .rp-arrow {
+  border-color: rgba(0, 0, 0, 0.5);
+  color: #0a0a0a;
+  transform: translateX(4px) scale(1.03);
 }
 
 /* Single-column mobile layout, preserving visual hierarchy */
@@ -555,11 +954,46 @@ html.lenis body {
   color: #050505;
 }
 
-@media (max-width: 1024px) {
+/* ------------------------------------------------------------------ */
+/* Services — DESKTOP (>1024px): reduce card height so cards feel      */
+/* like intentional editorial cards, not full-viewport panels.          */
+/* Animation, colors, and structure are completely unchanged.           */
+/* ------------------------------------------------------------------ */
+@media (min-width: 1025px) {
+  .services-shell {
+    /* Vertically center the card group within the pinned viewport */
+    justify-content: center;
+    padding-top: clamp(2rem, 4vh, 3rem);
+    padding-bottom: clamp(2rem, 4vh, 3rem);
+  }
 
-  /* On tablet + mobile, the services section flows naturally as a clean,
-     polished vertical service list — no pinning, no stacked deck.
-     The desktop (>1024px) pinned reveal remains untouched. */
+  .services-stage {
+    /* Concrete height gives the card group a controlled, medium size.
+       flex:0 0 auto prevents it from stretching to fill the full shell. */
+    flex: 0 0 auto;
+    height: 78vh;
+    max-height: 78vh;
+  }
+
+  .services-grid {
+    /* Fill the stage — desktop card height is driven by the stage value above */
+    height: 100%;
+    max-height: none;
+  }
+
+  .service-unit {
+    /* Slightly smaller number-card fraction for balanced desktop proportions */
+    grid-template-rows: 38% 1fr;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Services — TABLET (769px–1024px): normal vertical service list       */
+/* Desktop (>1024px) pinned reveal is completely untouched.             */
+/* ------------------------------------------------------------------ */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  /* Tablet: flows naturally as a clean vertical service list.         */
   .services-section {
     height: auto;
     min-height: auto;
@@ -568,8 +1002,6 @@ html.lenis body {
 
   .services-shell {
     height: auto;
-    /* Tighten bottom padding on mobile/tablet so the service cards flow
-       directly into the Marquee outro with minimal, intentional space */
     padding: clamp(3.5rem, 8vh, 5rem) clamp(1.25rem, 4.5vw, 3rem) clamp(1rem, 2.5vh, 2rem);
   }
 
@@ -586,8 +1018,6 @@ html.lenis body {
     letter-spacing: -0.04em;
   }
 
-  /* Centered container with clean, consistent horizontal margins —
-     responsive width so the column feels balanced from 320px to 1024px. */
   .services-stage {
     width: 100%;
     max-width: clamp(20rem, 92%, 34rem);
@@ -595,7 +1025,6 @@ html.lenis body {
     height: auto;
   }
 
-  /* Clear vertical service list with clean spacing, no overlapping */
   .services-grid {
     position: relative;
     display: flex;
@@ -605,7 +1034,6 @@ html.lenis body {
     width: 100%;
   }
 
-  /* Each service card: clean internal hierarchy (number on top, title + desc below) */
   .service-unit {
     position: relative;
     top: auto !important;
@@ -658,6 +1086,166 @@ html.lenis body {
     line-height: 1.5;
     max-width: 100%;
     opacity: 0.8;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Services — MOBILE (≤768px): pinned stacked-card sequence            */
+/* Same architectural concept as desktop; only dimensions are adapted. */
+/* ------------------------------------------------------------------ */
+@media (max-width: 768px) {
+
+  /* Section stays viewport-height so GSAP can pin it exactly as
+     it does on desktop. overflow:hidden clips cards sliding in from below. */
+  .services-section {
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  /* Shell fills the pinned viewport, vertical flex just like desktop.
+     Reduced top padding since the "What we do" heading is currently hidden — 
+     cards naturally move up into the reclaimed space. */
+  .services-shell {
+    height: 100%;
+    padding: clamp(1rem, 2.5vh, 1.75rem) clamp(1rem, 4vw, 1.5rem) 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* Header: kept in CSS but hidden via JS comment — styles preserved so
+     re-enabling the header in TSX automatically re-applies correct styling. */
+  .services-header {
+    flex: 0 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 0.85rem;
+    margin-bottom: clamp(0.6rem, 1.8vh, 1.1rem);
+  }
+
+  .services-header h2 {
+    font-size: clamp(2rem, 7.5vw, 2.85rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  /* Stage holds the compact card stack centered within the viewport.
+     Reduced bottom to eliminate excess space below the final card. */
+  .services-stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  /* Grid becomes the shared visual stage with controlled compact height.
+     Slightly larger than before — cards feel comfortable, not cramped. */
+  .services-grid {
+    position: relative;
+    width: 100%;
+    height: clamp(340px, 58vh, 460px);
+    max-width: 100%;
+    display: block;
+    gap: 0;
+  }
+
+  /* Base mobile card: full grid width, centered horizontally.
+     NO left/right offset — all cards share the same X axis.
+     Only a small vertical top offset separates them (see unit rules below). */
+  .service-unit {
+    position: absolute;
+    /* Horizontally centered: equal margin on both sides */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    height: calc(100% - 24px);
+    display: grid;
+    grid-template-rows: clamp(90px, 20vh, 125px) 1fr;
+    gap: 0.4rem;
+    will-change: transform;
+    border-radius: clamp(0.9rem, 3vw, 1.25rem);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Vertical-only stack offset — NO left/right displacement.
+     Card 1 is at the top of the pile (top:0, lowest z-index).
+     Each successive card sits 8px lower and has a higher z-index,
+     so it covers the card beneath but leaves its top strip visible.
+     Result: when card 2 arrives it sits 8px lower than card 1,
+     revealing card 1's top edge — the visible offset is ABOVE. */
+  .service-unit-1 {
+    top: 0px;
+    /* left handled by the shared left:50% + translateX(-50%) above */
+    z-index: 1;
+  }
+
+  .service-unit-2 {
+    top: 8px;
+    z-index: 2;
+  }
+
+  .service-unit-3 {
+    top: 16px;
+    z-index: 3;
+  }
+
+  .service-unit-4 {
+    top: 24px;
+    z-index: 4;
+  }
+
+  /* Initial off-screen state before GSAP activates.
+     translateX(-50%) must be composed WITH the Y offset so cards
+     slide in from below while remaining horizontally centered. */
+  .service-unit:not(:first-child) {
+    transform: translateX(-50%) translateY(115vh);
+  }
+
+  /* Number card: balanced height and confident display type */
+  .service-number-card {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: clamp(1.25rem, 5vw, 1.75rem);
+    border-radius: clamp(0.9rem, 3vw, 1.25rem);
+  }
+
+  .service-number-card span {
+    font-size: clamp(3.2rem, 13vw, 4.8rem);
+    line-height: 0.85;
+    letter-spacing: -0.07em;
+  }
+
+  /* Content card: title and description closely composed without excessive gaps */
+  .service-content-card {
+    height: 100%;
+    padding: clamp(1.15rem, 4.5vw, 1.5rem);
+    border-radius: clamp(0.9rem, 3vw, 1.25rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: clamp(0.6rem, 1.8vh, 0.95rem);
+  }
+
+  .service-content-card h3 {
+    font-size: clamp(1.4rem, 5.8vw, 1.95rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    max-width: 100%;
+  }
+
+  .service-content-card p {
+    font-size: clamp(0.78rem, 3vw, 0.88rem);
+    line-height: 1.48;
+    max-width: 32ch;
+    opacity: 0.78;
   }
 }
 
@@ -1273,6 +1861,16 @@ html.lenis body {
   display: inline-block;
   max-width: none;
   will-change: transform;
+}
+
+/* Seamless marquee loop keyframe.
+   The track holds TWO identical copies of the text side-by-side.
+   Translating by exactly -50% moves the track left by one full copy
+   width, at which point the second copy is in exactly the same pixel
+   position that the first copy started — so the jump is invisible. */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 .marquee-link {

@@ -10,10 +10,11 @@ import HeroSection from "@/components/HeroSection";
 import StatementSection from "@/components/StatementSection";
 import Nav from "@/components/Nav";
 import HorizontalSection from "@/components/HorizontalSection";
-import WorkInMotion from "@/components/WorkInMotion";
+// import WorkInMotion from "@/components/WorkInMotion"; // temporarily hidden
 import ProjectDetailPage from "@/components/ProjectDetailPage";
 import RecentProjects from "@/components/RecentProjects";
 import ServicesSection from "@/components/ServicesSection";
+import SkillsSection from "@/components/SkillsSection";
 import ContactPage from "@/pages/ContactPage";
 import LoadingScreen from "@/components/loadingScreen";
 
@@ -58,31 +59,37 @@ function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const aboutPanelRef = useRef<HTMLDivElement>(null);
+  const skillsPanelRef = useRef<HTMLDivElement>(null);
+  const skillsInnerRef = useRef<HTMLDivElement>(null);
   const horizontalRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
     const container = containerRef.current;
     const stage = stageRef.current;
     const aboutPanel = aboutPanelRef.current;
+    const skillsPanel = skillsPanelRef.current;
+    const skillsInner = skillsInnerRef.current;
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     );
 
-    if (!container || !stage || !aboutPanel) return;
+    if (!container || !stage || !aboutPanel || !skillsPanel || !skillsInner) return;
 
     if (reduceMotion.matches) {
       const staticContext = gsap.context(() => {
         gsap.set(".about-word", { color: "#ffffff" });
-        // Stack Hero → About statically, no pinned overlay.
-        // ParallaxProject + Horizontal flow naturally below.
+        // Stack Hero → About → Skills statically, no pinned overlay.
         gsap.set(stage, { height: "auto", overflow: "visible" });
         gsap.set(".hero-pinned-wrapper", {
           position: "relative",
           height: "100svh",
         });
-        gsap.set(aboutPanel, { position: "relative", height: "auto" });
+        gsap.set(aboutPanel, { position: "relative", height: "auto", transform: "none" });
+        gsap.set(skillsPanel, { position: "relative", height: "auto", transform: "none" });
+        gsap.set(skillsInner, { transform: "none" });
         gsap.set(".about-inner", { height: "auto" });
         gsap.set(".about-section", { height: "100svh" });
+        gsap.set(".skills-section", { height: "auto" });
 
         // Keep the existing native horizontal-scroll fallback.
         const horiz = horizontalRef.current;
@@ -129,13 +136,22 @@ function HomePage() {
         const targetScroll = trigger ? trigger.start : aboutPanel;
         lenis.scrollTo(targetScroll, { duration: 1.1, easing: easeOut });
       } else if (
+        href === "#skills" ||
+        target.textContent?.toLowerCase().includes("skills") ||
+        target.textContent?.toLowerCase().includes("toolkit")
+      ) {
+        e.preventDefault();
+        const trigger = ScrollTrigger.getById("showcase-transition");
+        const targetScroll = trigger
+          ? trigger.start + (trigger.end - trigger.start) * 0.9
+          : skillsPanel;
+        lenis.scrollTo(targetScroll, { duration: 1.1, easing: easeOut });
+      } else if (
         href === "#projects" ||
         target.textContent?.toLowerCase().includes("project") ||
         href === "#showcase"
       ) {
         e.preventDefault();
-        // Projects now lives in the ParallaxProject section (normal flow,
-        // directly after the About pin). Scroll to it naturally.
         const projectsEl = document.getElementById("projects");
         lenis.scrollTo(projectsEl ?? aboutPanel, {
           duration: 1.2,
@@ -170,12 +186,19 @@ function HomePage() {
         aboutPanel.querySelector<HTMLElement>(".about-statement");
       const words = aboutPanel.querySelectorAll<HTMLElement>(".about-word");
 
-      // About-only timeline. The old Showcase/parallax sequence was replaced
-      // by ParallaxProject (ZoomParallax, normal flow) directly after this pin.
-      const ABOUT_ENTRY = 0.42;
+      // ── Timing configuration ──
+      const ABOUT_ENTRY = 0.42;        // 1. Hero pinned; About slides UP from bottom
+      const ABOUT_WORD_REVEAL = 0.82;  // 2. Words brighten one-by-one to 100% white
+      const ABOUT_WORD_DURATION = 0.08;
+      const SKILLS_ENTRY = 1.15;       // 3. Skills rises smoothly over About (dedicated 150vh–200vh range)
+      const SKILLS_HOLD = 0.28;        // 4. Arrival moment: Skills holds fully visible before moving to next section
 
-      // About waits just below the viewport, on top of the pinned Hero.
+      // About waits just below viewport
       gsap.set(aboutPanel, { yPercent: 100 });
+      // Skills waits just below viewport
+      gsap.set(skillsPanel, { yPercent: 100 });
+      gsap.set(skillsInner, { clearProps: "transform" });
+
       if (statement) {
         gsap.set(statement, { autoAlpha: 1, y: 0 });
       }
@@ -188,8 +211,7 @@ function HomePage() {
         paused: true,
       });
 
-      // 0. Hero stays put; About slides UP from the bottom over it.
-      //    power3.in = starts slow, then accelerates into place.
+      // 1. Hero stays put; About slides UP from bottom over it.
       masterTimeline.fromTo(
         aboutPanel,
         { yPercent: 100 },
@@ -197,12 +219,8 @@ function HomePage() {
         0
       );
 
-      // 1. Once About has landed, the word-by-word reveal gets its own
-      // expanded timeline window so every transition has room to breathe.
+      // 2. Word-by-word reveal once About has landed.
       if (words.length > 0) {
-        const ABOUT_WORD_REVEAL = 0.82;
-        const ABOUT_WORD_DURATION = 0.08;
-
         masterTimeline.fromTo(
           words,
           { color: "rgba(255, 255, 255, 0.18)" },
@@ -218,12 +236,26 @@ function HomePage() {
 
       masterTimeline.addLabel("about-complete", masterTimeline.duration());
 
-      // About-only scroll budget. Preserves the exact per-phase scroll speed
-      // the About entrance + word reveal previously had (1.55 / 0.65 viewports
-      // per timeline second), so the About feel is unchanged. Pin and animation
-      // share the same range: when the words finish, the pin releases and the
-      // stage scrolls out naturally over 1 viewport into ParallaxProject —
-      // no dead range, no black gap.
+      // 3. Once word reveal is 100% complete: Skills rises steadily over About (100% → 0%)
+      masterTimeline.fromTo(
+        skillsPanel,
+        { yPercent: 100 },
+        { yPercent: 0, duration: SKILLS_ENTRY, ease: "none" },
+        "about-complete"
+      );
+
+      masterTimeline.addLabel("skills-arrived", "about-complete+=" + SKILLS_ENTRY);
+
+      // 4. Arrival hold: Skills remains fully visible so the user experiences the section
+      masterTimeline.to(
+        {},
+        { duration: SKILLS_HOLD },
+        "skills-arrived"
+      );
+
+      masterTimeline.addLabel("skills-complete", masterTimeline.duration());
+
+      // Scroll budget matching the exact per-phase scroll speed
       const getCinematicDistance = () =>
         masterTimeline.duration() *
         stage.clientHeight *
@@ -255,32 +287,11 @@ function HomePage() {
           horiz.querySelector<HTMLElement>(".horizontal-progress");
 
         if (track) {
-          // Cache the scroll amount so the initial tween target is computed
-          // synchronously during setup — not lazily on the first scroll frame.
-          // invalidateOnRefresh re-measures on every ScrollTrigger.refresh().
           let cachedScrollAmount = Math.max(
             0,
             track.scrollWidth - window.innerWidth
           );
           const getScrollAmount = () => cachedScrollAmount;
-
-          // The tween itself still travels exactly getScrollAmount() px —
-          // the cards' actual horizontal distance is untouched.
-          //
-          // What was wrong: `end` was set to that *same* getScrollAmount(),
-          // giving a strict 1:1 vertical-scroll-px → horizontal-track-px
-          // mapping. That's why it felt fast — a wide gallery (7 cards +
-          // intro/outro) only got as much vertical scroll room as its own
-          // pixel width, so a normal wheel/trackpad gesture (amplified by
-          // Lenis momentum) burned through most of the section in one go.
-          //
-          // Fix: stretch the pinned scroll distance to a multiple of the
-          // horizontal distance. The cards still end up translated by the
-          // exact same -getScrollAmount() by the time the pin releases —
-          // it just now takes more vertical scrolling to get there, so the
-          // gallery reads at a deliberate, "one card at a time" pace instead
-          // of flying by. 1.6–1.8 reads well for a gallery this wide; raise
-          // it further if it still feels quick, lower it if it now feels slow.
           const HORIZONTAL_SCROLL_MULTIPLIER = 1.7;
 
           const horizontalTween = gsap.to(track, {
@@ -295,15 +306,10 @@ function HomePage() {
             end: () =>
               `+=${getScrollAmount() * HORIZONTAL_SCROLL_MULTIPLIER}`,
             pin: true,
-            // scrub: true = 1:1 instant sync with scroll position.
-            // scrub: 1 was causing a 1-second catch-up animation on the very
-            // first interaction — the tween starts at x:0 and GSAP takes 1s
-            // to reach the correct x, producing a visible abrupt jump.
             scrub: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
             onRefresh: () => {
-              // Re-measure after any layout change (fonts, images, resize).
               cachedScrollAmount = Math.max(
                 0,
                 track.scrollWidth - window.innerWidth
@@ -324,39 +330,25 @@ function HomePage() {
 
     let disposed = false;
 
-    // Guard: only trigger a refresh if the user hasn't yet reached or passed
-    // the horizontal section's scroll trigger. Refreshing while the user is
-    // already inside a pinned section causes a visible mid-animation jump.
     const refreshLayout = () => {
       if (disposed) return;
       const horizTrigger = ScrollTrigger.getById("horizontal-work");
       const wimTrigger = ScrollTrigger.getById("work-in-motion-zoom");
-      // Skip if we're already inside WorkInMotion or HorizontalSection.
       if (wimTrigger && wimTrigger.progress > 0) return;
       if (horizTrigger && horizTrigger.progress > 0) return;
       ScrollTrigger.refresh();
     };
 
-    // Only listen for load events on images *inside* the horizontal section.
-    // Images elsewhere on the page (hero portrait, about, etc.) loading after
-    // init should not trigger a full refresh that repositions the horizontal
-    // track mid-scroll. The horizontal section's own images are the only ones
-    // that can change track.scrollWidth after initialization.
     const horizImages = horizontalRef.current
       ? Array.from(horizontalRef.current.querySelectorAll("img"))
       : [];
 
-    // Only register load listeners for images not yet decoded.
-    // Already-cached images won't fire 'load' again, so no refresh needed.
     const pendingHorizImages = horizImages.filter((img) => !img.complete);
     pendingHorizImages.forEach((image) => {
       image.addEventListener("load", refreshLayout, { once: true });
       image.addEventListener("error", refreshLayout, { once: true });
     });
 
-    // fonts.ready is the authoritative single refresh point for the whole page.
-    // WorkInMotion no longer calls its own fonts.ready refresh, so this is
-    // the only place that handles font-swap layout recalculation.
     void document.fonts.ready.then(refreshLayout);
     ScrollTrigger.refresh();
 
@@ -380,21 +372,29 @@ function HomePage() {
 
       {/* Main page content — scrolls up over the fixed Footer */}
       <div ref={containerRef} className="home-page-content">
-        {/* Pinned stage: the Hero stays put while About slides up over it */}
+        {/* Pinned stage: Hero → About → Skills, each layer sliding up over the one below */}
         <div className="cinematic-stage" ref={stageRef}>
           <div className="hero-pinned-wrapper">
             <HeroSection />
           </div>
 
+          {/* About covers Hero */}
           <div className="about-panel" ref={aboutPanelRef} id="about">
             <div className="about-inner">
               <AboutSection />
             </div>
           </div>
+
+          {/* Skills covers About with 30° tilt straightening on arrival */}
+          <div className="skills-panel" ref={skillsPanelRef} id="skills-panel">
+            <div className="skills-inner-wrap" ref={skillsInnerRef}>
+              <SkillsSection />
+            </div>
+          </div>
         </div>
 
-        {/* Work In Motion — 100vw x 100vh pixel-matched editorial grid with center zoom */}
-        <WorkInMotion />
+        {/* Work In Motion — temporarily hidden; file preserved for future use */}
+        {/* <WorkInMotion /> */}
 
         <HorizontalSection sectionRef={horizontalRef} />
 

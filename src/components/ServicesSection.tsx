@@ -43,9 +43,14 @@ export default function ServicesSection() {
     if (!section) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    // Tablet + phone get normal vertical scrolling; only desktop (>1024px)
-    // keeps the pinned sequential deck. The CSS breakpoint matches this.
-    const isCompact = window.matchMedia("(max-width: 1024px)");
+    // Tablet (769–1024px) keeps the normal vertical list — no pinning.
+    // Desktop (>1024px) and mobile (≤768px) both run the stacked-card animation.
+    const isTablet = window.matchMedia(
+      "(min-width: 769px) and (max-width: 1024px)"
+    );
+    // Mobile breakpoint: ≤768px gets the same pinned stacking as desktop,
+    // but with viewport-appropriate card dimensions set in CSS.
+    const isMobile = window.matchMedia("(max-width: 768px)");
 
     let context: gsap.Context | null = null;
 
@@ -54,45 +59,90 @@ export default function ServicesSection() {
       context = gsap.context(() => {
         const cards = gsap.utils.toArray<HTMLElement>(".service-unit", section);
 
-        // Tablet / mobile (or reduced motion): normal document scrolling.
-        // No pinning, no card-over-card stacking, no scroll-jacking.
-        if (reduceMotion.matches || isCompact.matches) {
+        // Reduced motion or tablet: revert transforms, no pinning.
+        if (reduceMotion.matches || isTablet.matches) {
           gsap.set(cards, { clearProps: "transform" });
           return;
         }
 
-        // Desktop (>1024px): the exact existing pinned sequential reveal.
-        gsap.set(cards[0], { y: 0 });
-        gsap.set(cards.slice(1), {
-          y: () => window.innerHeight * 1.15,
-        });
+        if (isMobile.matches) {
+          // ── Mobile: pinned sequential card reveal ───────────────────
+          // Cards use CSS left:50% for horizontal centering. GSAP must
+          // preserve that centering while animating Y.
+          // Use xPercent:-50 (equivalent to translateX(-50%)) so GSAP
+          // owns the full transform and centering is never lost.
 
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            id: "services-reveal",
-            trigger: section,
-            start: "top top",
-            end: () => `+=${window.innerHeight * 4.2}`,
-            pin: true,
-            scrub: 0.8,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
+          // Card 1 is already visible at its CSS top offset position
+          gsap.set(cards[0], { xPercent: -50, y: 0 });
+          // Cards 2-4 start off-screen below, still horizontally centered
+          gsap.set(cards.slice(1), {
+            xPercent: -50,
+            y: () => window.innerHeight * 1.15,
+          });
 
-        cards.slice(1).forEach((card, index) => {
-          timeline.fromTo(
-            card,
-            { y: () => window.innerHeight * 1.15 },
-            {
-              y: 0,
-              duration: 1,
-              ease: "none",
-              immediateRender: false,
+          const timeline = gsap.timeline({
+            scrollTrigger: {
+              id: "services-reveal",
+              trigger: section,
+              start: "top top",
+              end: () => `+=${window.innerHeight * 4.2}`,
+              pin: true,
+              scrub: 0.8,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
             },
-            index * 1.25
-          );
-        });
+          });
+
+          cards.slice(1).forEach((card, index) => {
+            timeline.fromTo(
+              card,
+              { xPercent: -50, y: () => window.innerHeight * 1.15 },
+              {
+                xPercent: -50,
+                y: 0,
+                duration: 1,
+                ease: "none",
+                immediateRender: false,
+              },
+              index * 1.25
+            );
+          });
+        } else {
+          // ── Desktop: pinned sequential card reveal ──────────────────
+          // Cards span the full grid column; no centering transform needed.
+
+          gsap.set(cards[0], { y: 0 });
+          gsap.set(cards.slice(1), {
+            y: () => window.innerHeight * 1.15,
+          });
+
+          const timeline = gsap.timeline({
+            scrollTrigger: {
+              id: "services-reveal",
+              trigger: section,
+              start: "top top",
+              end: () => `+=${window.innerHeight * 4.2}`,
+              pin: true,
+              scrub: 0.8,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          cards.slice(1).forEach((card, index) => {
+            timeline.fromTo(
+              card,
+              { y: () => window.innerHeight * 1.15 },
+              {
+                y: 0,
+                duration: 1,
+                ease: "none",
+                immediateRender: false,
+              },
+              index * 1.25
+            );
+          });
+        }
       }, section);
       // Note: do NOT call ScrollTrigger.refresh() here.
       // App.tsx calls it once after all layout effects have run (including
@@ -103,17 +153,20 @@ export default function ServicesSection() {
 
     setup();
 
-    // If the viewport crosses the breakpoint (e.g. rotating a tablet or
-    // resizing a window), tear down and rebuild so the desktop animation
-    // can never bleed into the compact layout, and vice versa.
+    // Rebuild when either breakpoint boundary is crossed (e.g. rotating
+    // a device or resizing a browser window) so the correct animation
+    // branch is always active.
     const onBreakpointChange = () => setup();
-    isCompact.addEventListener("change", onBreakpointChange);
+    isTablet.addEventListener("change", onBreakpointChange);
+    isMobile.addEventListener("change", onBreakpointChange);
 
     return () => {
-      isCompact.removeEventListener("change", onBreakpointChange);
+      isTablet.removeEventListener("change", onBreakpointChange);
+      isMobile.removeEventListener("change", onBreakpointChange);
       context?.revert();
     };
   }, []);
+
 
   return (
     // WHAT WE DO = pinned services stage + the reusable Marquee as its
@@ -127,11 +180,13 @@ export default function ServicesSection() {
         aria-label="Services"
       >
         <div className="services-shell">
+          {/* HEADING TEMPORARILY HIDDEN — uncomment to restore
           <header className="services-header">
             <h2>
               What we <span className="script-accent">do.</span>
             </h2>
           </header>
+          */}
 
           <div className="services-stage">
             <div className="services-grid">

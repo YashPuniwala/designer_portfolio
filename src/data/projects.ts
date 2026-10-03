@@ -185,7 +185,7 @@ export const PROJECTS: ProjectData[] = [
     services: ["Brand Identity", "Logo Design", "Visual Identity"],
     description:
       "A complete brand identity system built from the ground up — from first mark exploration through to a refined, ownable logo and a full visual language that scales across every touchpoint.",
-    mainImage: "/images/breww/17.png", // TODO: replace with actual NILY hero image
+    mainImage: "/images/nily/hero.png",
     type: "nily",
     logoStages: [
       {
@@ -303,16 +303,16 @@ export const PROJECTS: ProjectData[] = [
   },
   // -- Brand Identity ----------------------------------------------------------
   {
-    slug: "after",
+    slug: "breww",
     id: "01",
-    title: "After",
-    client: "Private Client",
+    title: "Breww",
+    client: "Breww Cafe",
     year: 2024,
-    services: ["Brand Identity", "Motion Design", "Web Experience"],
+    services: ["Brand Identity", "Visual Identity", "Packaging Design"],
     description:
-      "A complete visual reworking for a long-standing client entering a new chapter. The project paired a refined identity system with a cinematic website and a short brand film.",
+      "A complete brand identity system for Breww Cafe — from mark explorations through a fully resolved logo, typeface selection, colour palette and packaging suite.",
     mainImage: A.r1,
-    projectUrl: "https://example.com/after",
+    projectUrl: "https://example.com/breww",
     type: "brand-identity",
     logos: [
       { src: A.about, alt: "After � primary logo" },
@@ -635,7 +635,9 @@ export const PROJECTS: ProjectData[] = [
 // --- Public lookup API (signatures unchanged) ---------------------------------
 
 export function getProjectBySlug(slug: string): ProjectData | undefined {
-  return PROJECTS.find((p) => p.slug === slug);
+  return PROJECTS.find(
+    (p) => p.slug === slug || (slug === "after" && p.slug === "breww")
+  );
 }
 
 export function getAllProjectSlugs(): string[] {
@@ -643,7 +645,8 @@ export function getAllProjectSlugs(): string[] {
 }
 
 export function getNextProject(slug: string): ProjectData {
-  const idx = PROJECTS.findIndex((p) => p.slug === slug);
+  const normalized = slug === "after" ? "breww" : slug;
+  const idx = PROJECTS.findIndex((p) => p.slug === normalized);
   return PROJECTS[(idx + 1) % PROJECTS.length];
 }
 

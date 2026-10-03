@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 type InfiniteTextMarqueeProps = {
@@ -63,7 +62,12 @@ export const InfiniteTextMarquee: React.FC<InfiniteTextMarqueeProps> = ({
   const tipX = Math.min(Math.max(cursorPosition.x, half), Math.max(half, vw - half));
   const tipY = Math.min(Math.max(cursorPosition.y, 150), Math.max(150, vh - 40));
 
-  const repeatedText = Array(10).fill(text).join(" - ") + " -";
+  // Two identical copies side-by-side. The CSS animation translates the
+  // track by exactly -50% (= the width of one copy), then snaps back to 0.
+  // Because the two copies are identical the snap is invisible — perfectly
+  // seamless regardless of viewport size or font rendering.
+  const singleCopy = Array(6).fill(text).join(" - ") + " - ";
+  const repeatedText = singleCopy + singleCopy;
 
   return (
     <>
@@ -87,18 +91,16 @@ export const InfiniteTextMarquee: React.FC<InfiniteTextMarqueeProps> = ({
         </div>
       )}
 
-      <main className="marquee-viewport relative w-full overflow-hidden">
-        <motion.div
-          className="marquee-track whitespace-nowrap will-change-transform"
+      <main
+          className="marquee-viewport relative w-full overflow-hidden"
           onMouseEnter={() => !isTouch && setIsHovered(true)}
           onMouseLeave={() => !isTouch && setIsHovered(false)}
-          animate={{
-            x: [0, -1000],
-            transition: {
-              repeat: Infinity,
-              duration: speed,
-              ease: "linear",
-            },
+        >
+        <div
+          className="marquee-track whitespace-nowrap will-change-transform"
+          style={{
+            display: "inline-block",
+            animation: `marquee-scroll ${speed}s linear infinite`,
           }}
         >
           {/* `next/link` is unavailable in this Vite app — swapped for an
@@ -128,7 +130,7 @@ export const InfiniteTextMarquee: React.FC<InfiniteTextMarqueeProps> = ({
               </span>
             </span>
           </a>
-        </motion.div>
+        </div>
       </main>
     </>
   );
