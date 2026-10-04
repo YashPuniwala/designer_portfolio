@@ -15,13 +15,13 @@ const PALETTE = {
 
 /* ───────────── Data (edit freely) ───────────── */
 const MAIN_TOOLS = [
-  { name: "Figma", tag: "DAILY DRIVER", level: 96, color: "#2b50e6" },
-  { name: "InDesign", tag: "PUBLICATION", level: 92, color: "#f2401e" },
-  { name: "Illustrator", tag: "MARKS & TYPE", level: 88, color: "#ff6a3a" },
-  { name: "Photoshop", tag: "RETOUCH", level: 84, color: "#ffc400" },
+  { name: "Illustrator", tag: "MARKS & TYPE", level: 96, color: "#ff6a3a" },
+  { name: "Photoshop", tag: "RETOUCH", level: 92, color: "#ffc400" },
+  { name: "Canva", tag: "QUICK DESIGN", level: 88, color: "#00c4cc" },
+  { name: "CapCut", tag: "VIDEO EDIT", level: 84, color: "#000000" },
 ] as const;
 
-const ALSO = ["After Effects", "Blender", "CapCut", "Canva"] as const;
+const ALSO = ["Framer", "Figma"] as const;
 
 // listed column by column on desktop (4 left, 3 right)
 const AI_TOOLS = [
@@ -29,8 +29,6 @@ const AI_TOOLS = [
   { name: "Midjourney", tag: "IMAGE GEN" },
   { name: "Relume", tag: "WIREFRAMING" },
   { name: "ChatGPT", tag: "CONTENT & IMAGE" },
-  { name: "Claude Design", tag: "UI" },
-  { name: "Runway", tag: "VIDEO GEN" },
   { name: "Google Stitch", tag: "UI HELP" },
 ] as const;
 
@@ -77,14 +75,25 @@ export default function ToolkitSection() {
     };
   }, []);
 
-  /* Guarantee the whole section fits in one screen on desktop:
-     if the content is taller than the window, scale it down just enough. */
+  /* Guarantee the whole section fits in one screen (desktop AND mobile):
+     if the content is taller than the visible height, scale it down just
+     enough. Same design, same content, no scrolling. */
   useEffect(() => {
     const el = contentRef.current;
     if (!el) return;
     const measure = () => {
-      if (window.innerWidth < 768) return setFit(1); // mobile keeps natural height
-      setFit(Math.min(1, window.innerHeight / el.offsetHeight));
+      let avail = window.innerHeight;
+      if (window.innerWidth < 768) {
+        // mobile: use the small-viewport height (what the Skills panel really
+        // gets while the browser toolbar is showing)
+        const probe = document.createElement("div");
+        probe.style.cssText =
+          "position:fixed;left:0;top:0;width:0;height:100svh;visibility:hidden;pointer-events:none";
+        document.body.appendChild(probe);
+        avail = probe.offsetHeight || avail;
+        probe.remove();
+      }
+      setFit(Math.min(1, avail / el.offsetHeight));
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -125,7 +134,7 @@ export default function ToolkitSection() {
       id="skills"
       aria-label="Toolkit"
       style={vars}
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden bg-[color:var(--paper)] text-[color:var(--ink)] md:h-[100svh]"
+      className="relative flex h-[100svh] flex-col justify-center overflow-hidden bg-[color:var(--paper)] text-[color:var(--ink)]"
     >
       {/* ghost word */}
       <div

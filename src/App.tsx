@@ -6,7 +6,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AboutSection } from "@/components/AboutSection";
 import ApproachSection from "@/components/ApproachSection";
 import Footer from "@/components/Footer";
-import HeroSection from "@/components/HeroSection";
+// import HeroSection from "@/components/HeroSection"; // commented out — replaced by HeroSection2
+import HeroSection2 from "@/components/HeroSection2";
 import StatementSection from "@/components/StatementSection";
 import Nav from "@/components/Nav";
 import HorizontalSection from "@/components/HorizontalSection";
@@ -17,6 +18,7 @@ import ServicesSection from "@/components/ServicesSection";
 import SkillsSection from "@/components/SkillsSection";
 import ContactPage from "@/pages/ContactPage";
 import LoadingScreen from "@/components/loadingScreen";
+import HeroSection from "./components/HeroSection";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -376,6 +378,7 @@ function HomePage() {
         <div className="cinematic-stage" ref={stageRef}>
           <div className="hero-pinned-wrapper">
             <HeroSection />
+            {/* <HeroSection2 /> */}
           </div>
 
           {/* About covers Hero */}
