@@ -1,290 +1,369 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
-/* ═════════════════════════════════════════════════════════════
-   YOUR PALETTE: change colours here, nothing else needs touching
-═════════════════════════════════════════════════════════════ */
-const PALETTE = {
-  paper: "#ffffff",              // section background
-  ink: "#141414",              // main text
-  muted: "#7d786b",              // small labels / blurb
-  line: "rgba(20,20,20,0.12)",  // dividers, pill borders
-  track: "rgba(20,20,20,0.10)",  // empty part of the bars
-  ghost: "rgba(20,20,20,0.04)",  // big "KIT" word
-  accent: "#ff6b35",              // label, handwriting, hovers
-};
+/* ─────────────────────────────────────────────────────────────
+   Main 6 Tools Data (Exact Order: Row 1 & Row 2)
+   ───────────────────────────────────────────────────────────── */
+interface ToolItem {
+  id: string;
+  name: string;
+  description: string;
+  icon: () => ReactNode;
+}
 
-/* ───────────── Data (edit freely) ───────────── */
-const MAIN_TOOLS = [
-  { name: "Illustrator", tag: "MARKS & TYPE", level: 96, color: "#ff6a3a" },
-  { name: "Photoshop", tag: "RETOUCH", level: 92, color: "#ffc400" },
-  { name: "Canva", tag: "QUICK DESIGN", level: 88, color: "#00c4cc" },
-  { name: "CapCut", tag: "VIDEO EDIT", level: 84, color: "#000000" },
-] as const;
+const MAIN_TOOLS: ToolItem[] = [
+  // Row 1
+  {
+    id: "illustrator",
+    name: "Illustrator",
+    description: "Branding, design systems, marks & type.",
+    icon: () => (
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[#261300] border border-[#ff9a00]/70 shadow-sm select-none">
+        <span className="font-sans text-[21px] font-bold tracking-tight text-[#ff9a00] leading-none">
+          Ai
+        </span>
+      </div>
+    ),
+  },
+  {
+    id: "photoshop",
+    name: "Photoshop",
+    description: "Photo editing, retouch & compositing.",
+    icon: () => (
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[#001e36] border border-[#31a8ff]/70 shadow-sm select-none">
+        <span className="font-sans text-[21px] font-bold tracking-tight text-[#31a8ff] leading-none">
+          Ps
+        </span>
+      </div>
+    ),
+  },
+  {
+    id: "canva",
+    name: "Canva",
+    description: "Quick designs, presentations & social media.",
+    icon: () => (
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white border border-black/[0.08] shadow-sm p-1.5">
+        <svg viewBox="0 0 100 42" className="h-6 w-auto" fill="none">
+          <defs>
+            <linearGradient id="canva-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#00c4cc" />
+              <stop offset="60%" stopColor="#7d2ae8" />
+              <stop offset="100%" stopColor="#ff3366" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M17.5 26.2c-3.6 0-6.8-2.1-6.8-6.9 0-6.2 5.6-12.4 13.1-12.4 4.8 0 7.8 2.5 7.8 6 0 1.8-.8 3.5-2.5 5.2l-2.8 2.9c-1 1-1.8 1.8-1.8 2.5 0 .8.7 1.2 1.9 1.2 2 0 4.3-1.3 6.3-3.6l1.8 1.6c-2.7 3.1-6.2 4.8-9.4 4.8-3.5 0-5.5-1.9-5.5-4.7 0-1.3.6-2.6 1.6-3.7l2.7-2.9c1.2-1.1 1.7-2.1 1.7-3 0-1.9-1.8-3.3-4.6-3.3-5.3 0-9.4 5.1-9.4 10 0 2.9 1.9 4.2 4.1 4.2 2.5 0 4.8-1.3 6.7-3.4l1.6 1.6c-2.6 2.9-5.9 4.5-9.3 4.5zm22.5-.2l-2.6-8.8c-.6-1.9-1.1-3.8-1.4-5.5h-.3c-.4 1.8-.8 3.7-1.4 5.5l-2.6 8.8h-3l5.5-16.6h3.9l5.5 16.6h-3.2zm-7.3-6.3h5.6l-2.8-9.1-2.8 9.1zm13.3 6.3v-11.2c0-1.9-.4-3.6-.8-5.4h3l.4 2.8h.2c1.4-2 3.5-3.2 5.7-3.2 3.4 0 5 2.3 5 6v11h-3.3v-10.3c0-2.3-1-3.7-2.9-3.7-1.8 0-3.3 1.4-4 3.2v10.8h-3.3zm19.3 0l-4.4-11.4c-.6-1.5-1-3.3-1.5-5.1h3.3l2.7 7.9c.5 1.4.8 2.8 1.2 4.1h.2c.4-1.3.7-2.7 1.2-4.1l2.7-7.9h3.3l-4.5 11.4c-1 2.3-2.3 5.1-5.3 5.1h-1.5v-2.7h.9c1.2 0 1.8-.9 2.3-2z"
+            fill="url(#canva-grad)"
+          />
+        </svg>
+      </div>
+    ),
+  },
+  // Row 2
+  {
+    id: "capcut",
+    name: "CapCut",
+    description: "Video editing & short form content.",
+    icon: () => (
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white border border-black/[0.08] shadow-sm p-2">
+        <svg viewBox="0 0 24 24" className="h-6 w-6 text-black" fill="currentColor">
+          {/* CapCut dual-blade / hourglass geometric logo */}
+          <path d="M3.5 5.5A1.5 1.5 0 0 1 5 4h11.2a1.5 1.5 0 0 1 1.22 2.37L13.1 12l4.32 5.63A1.5 1.5 0 0 1 16.2 20H5a1.5 1.5 0 0 1-1.5-1.5v-1.12a1.5 1.5 0 0 1 .6-1.2L9.2 12 4.1 7.82A1.5 1.5 0 0 1 3.5 6.62V5.5z" />
+          <path d="M10.8 12l-4.3-5.6A1.5 1.5 0 0 1 7.7 4H19a1.5 1.5 0 0 1 1.5 1.5v1.12a1.5 1.5 0 0 1-.6 1.2L14.8 12l5.1 4.18a1.5 1.5 0 0 1 .6 1.2V18.5A1.5 1.5 0 0 1 19 20H7.7a1.5 1.5 0 0 1-1.2-2.4L10.8 12z" />
+        </svg>
+      </div>
+    ),
+  },
+  {
+    id: "figma",
+    name: "Figma",
+    description: "UI/UX design & prototyping.",
+    icon: () => (
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[#0d0d0d] border border-black/[0.08] shadow-sm p-2">
+        <svg viewBox="0 0 38 57" className="h-6 w-auto" fill="none">
+          <path
+            d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z"
+            fill="#1ABCFE"
+          />
+          <path
+            d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z"
+            fill="#0ACF83"
+          />
+          <path
+            d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z"
+            fill="#FF7262"
+          />
+          <path
+            d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z"
+            fill="#F24E1E"
+          />
+          <path
+            d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z"
+            fill="#A259FF"
+          />
+        </svg>
+      </div>
+    ),
+  },
+  {
+    id: "framer",
+    name: "Framer",
+    description: "Interactive websites & prototyping.",
+    icon: () => (
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white border border-black/[0.08] shadow-sm p-2">
+        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none">
+          <path d="M4 2h16v7h-8z M4 9h8l8 7H4z M4 16h8v7z" fill="#0055FF" />
+        </svg>
+      </div>
+    ),
+  },
+];
 
-const ALSO = ["Framer", "Figma"] as const;
+/* ─────────────────────────────────────────────────────────────
+   AI & Extra Tools Data (Exact Order: 1 to 5)
+   ───────────────────────────────────────────────────────────── */
+interface AiToolItem {
+  name: string;
+  icon: () => ReactNode;
+}
 
-// listed column by column on desktop (4 left, 3 right)
-const AI_TOOLS = [
-  { name: "Claude", tag: "IDEATION" },
-  { name: "Midjourney", tag: "IMAGE GEN" },
-  { name: "Relume", tag: "WIREFRAMING" },
-  { name: "ChatGPT", tag: "CONTENT & IMAGE" },
-  { name: "Google Stitch", tag: "UI HELP" },
-] as const;
+const AI_TOOLS: AiToolItem[] = [
+  {
+    name: "Claude",
+    icon: () => (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-4 w-4 flex-shrink-0 text-[#D97757]"
+        fill="currentColor"
+      >
+        {/* Claude asterism / starburst */}
+        <path d="M12 2a1.5 1.5 0 0 1 1.5 1.5v2.8a1.5 1.5 0 0 1-3 0V3.5A1.5 1.5 0 0 1 12 2zm7.07 2.93a1.5 1.5 0 0 1 0 2.12l-1.98 1.98a1.5 1.5 0 0 1-2.12-2.12l1.98-1.98a1.5 1.5 0 0 1 2.12 0zM22 12a1.5 1.5 0 0 1-1.5 1.5h-2.8a1.5 1.5 0 0 1 0-3h2.8A1.5 1.5 0 0 1 22 12zm-2.93 7.07a1.5 1.5 0 0 1-2.12 0l-1.98-1.98a1.5 1.5 0 0 1 2.12-2.12l1.98 1.98a1.5 1.5 0 0 1 0 2.12zM12 22a1.5 1.5 0 0 1-1.5-1.5v-2.8a1.5 1.5 0 0 1 3 0v2.8A1.5 1.5 0 0 1 12 22zm-7.07-2.93a1.5 1.5 0 0 1 0-2.12l1.98-1.98a1.5 1.5 0 0 1 2.12 2.12l-1.98 1.98a1.5 1.5 0 0 1-2.12 0zM2 12a1.5 1.5 0 0 1 1.5-1.5h2.8a1.5 1.5 0 0 1 0 3H3.5A1.5 1.5 0 0 1 2 12zm2.93-7.07a1.5 1.5 0 0 1 2.12 0l1.98 1.98a1.5 1.5 0 0 1-2.12 2.12L4.93 7.05a1.5 1.5 0 0 1 0-2.12z" />
+      </svg>
+    ),
+  },
+  {
+    name: "Midjourney",
+    icon: () => (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-4 w-4 flex-shrink-0 text-[#141414]"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {/* Midjourney line sailboat */}
+        <path d="M4 17c3.5 1.5 7 1.5 10.5 0 2.5-.8 5 .5 5.5 1" />
+        <path d="M12 4v11" />
+        <path d="M12 4c3.5 3 5.5 6.5 5.5 10.5H12" />
+        <path d="M6 14.5c.5-4 2.5-7.5 6-9.5" />
+      </svg>
+    ),
+  },
+  {
+    name: "Relume",
+    icon: () => (
+      <svg viewBox="0 0 24 24" className="h-4 w-4 flex-shrink-0" fill="none">
+        {/* Relume faceted isometric cube */}
+        <path d="M12 2.5L20 7v9l-8 4.5L4 16V7l8-4.5z" fill="#0D0D0D" />
+        <path d="M12 2.5L20 7l-8 4.5L4 7l8-4.5z" fill="#E23A22" />
+        <path d="M12 11.5V20.5L20 16V7l-8 4.5z" fill="#991B1B" />
+      </svg>
+    ),
+  },
+  {
+    name: "ChatGPT",
+    icon: () => (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-4 w-4 flex-shrink-0 text-[#141414]"
+        fill="currentColor"
+      >
+        {/* OpenAI rosette icon */}
+        <path d="M20.5 9.8a5.1 5.1 0 0 0-.4-3.8 5.2 5.2 0 0 0-4.6-2.6 5.3 5.3 0 0 0-1.6.3 5.1 5.1 0 0 0-4.1-1.7 5.2 5.2 0 0 0-4.9 3.5 5.1 5.1 0 0 0-3.3 2.4 5.2 5.2 0 0 0 .6 5.8 5.1 5.1 0 0 0 .4 3.8 5.2 5.2 0 0 0 4.6 2.6c.5 0 1.1-.1 1.6-.3a5.1 5.1 0 0 0 4.1 1.7 5.2 5.2 0 0 0 4.9-3.5 5.1 5.1 0 0 0 3.3-2.4 5.2 5.2 0 0 0-.6-5.8zm-7.6 11.1a3.8 3.8 0 0 1-2.5-.9l1.4-1.4 3.9 2.3c-.9.5-1.9.7-2.8.7v-.7zm-6.4-2.8a3.7 3.7 0 0 1-1.3-2.3l1.9-.3 2.3 3.9c-1-.3-2-.8-2.9-1.3zm-1.8-6.1a3.8 3.8 0 0 1 1.2-2.3v2l4.2 1.4-1.4 3.9c-.8-.7-1.5-1.7-1.7-2.8l-2.3-2.2zm10.7-3.6l-3.9-2.3c.9-.5 1.9-.7 2.8-.7a3.8 3.8 0 0 1 2.5.9l-1.4 1.4v.7zm3.6 4.8c0 .8-.2 1.6-.6 2.3l-1.9.3-2.3-3.9c1 .3 2 .8 2.9 1.3.8.8 1.4 1.7 1.9 0zm-5.7 3.3l-1.7-1 1.7-1 1.7 1-1.7 1z" />
+      </svg>
+    ),
+  },
+  {
+    name: "Google Stitch",
+    icon: () => (
+      <svg viewBox="0 0 24 24" className="h-4 w-4 flex-shrink-0" fill="none">
+        {/* Google Stitch multi-colored rings */}
+        <circle cx="8" cy="8" r="4.5" stroke="#4285F4" strokeWidth="2.4" />
+        <circle cx="16" cy="8" r="4.5" stroke="#EA4335" strokeWidth="2.4" />
+        <circle cx="8" cy="16" r="4.5" stroke="#34A853" strokeWidth="2.4" />
+        <circle cx="16" cy="16" r="4.5" stroke="#FBBC05" strokeWidth="2.4" />
+      </svg>
+    ),
+  },
+];
 
-/* ───────────── Shared class strings ───────────── */
-const MONO = "font-mono text-[10px] font-medium uppercase tracking-[0.18em]";
-const DISPLAY = "[font-family:var(--font-display,Impact,sans-serif)]";
-const HAND = "[font-family:var(--font-hand,'Segoe_Script','Bradley_Hand',cursive)]";
-const FADE = "transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none";
-const rise = (on: boolean) => (on ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0");
-
-export default function ToolkitSection() {
+export default function SkillsSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [fit, setFit] = useState(1);
-
   const [inView, setInView] = useState(false);
-  const [settled, setSettled] = useState(false); // drops stagger delays after the intro
-  const [hovered, setHovered] = useState<number | null>(null);
+  const [settled, setSettled] = useState(false);
 
-  /* Content animates in as the curtain rises */
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+
+    // Respect user's reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setInView(true);
       setSettled(true);
       return;
     }
+
+    // Check if already in viewport (e.g. on direct jump or refresh)
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+      setInView(true);
+      const timer = window.setTimeout(() => setSettled(true), 1400);
+      return () => window.clearTimeout(timer);
+    }
+
     let t = 0;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
           setInView(true);
-          t = window.setTimeout(() => setSettled(true), 2200);
-          io.disconnect();
+          t = window.setTimeout(() => setSettled(true), 1500);
+          observer.disconnect();
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.15 }
     );
-    io.observe(el);
+
+    observer.observe(el);
+
     return () => {
-      io.disconnect();
+      observer.disconnect();
       window.clearTimeout(t);
     };
   }, []);
 
-  /* Guarantee the whole section fits in one screen (desktop AND mobile):
-     if the content is taller than the visible height, scale it down just
-     enough. Same design, same content, no scrolling. */
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-    const measure = () => {
-      let avail = window.innerHeight;
-      if (window.innerWidth < 768) {
-        // mobile: use the small-viewport height (what the Skills panel really
-        // gets while the browser toolbar is showing)
-        const probe = document.createElement("div");
-        probe.style.cssText =
-          "position:fixed;left:0;top:0;width:0;height:100svh;visibility:hidden;pointer-events:none";
-        document.body.appendChild(probe);
-        avail = probe.offsetHeight || avail;
-        probe.remove();
-      }
-      setFit(Math.min(1, avail / el.offsetHeight));
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    window.addEventListener("resize", measure);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-    };
-  }, []);
-
-  const delay = (ms: number): CSSProperties => ({
-    transitionDelay: settled ? "0ms" : `${ms}ms`,
+  const getTransitionStyle = (delayMs: number): CSSProperties => ({
+    transitionDelay: settled ? "0ms" : `${delayMs}ms`,
   });
-
-  /* Dot rides along the bar under the cursor */
-  const moveDot = (e: React.PointerEvent<HTMLDivElement>) => {
-    const dot = e.currentTarget.querySelector<HTMLElement>("[data-dot]");
-    const track = dot?.parentElement;
-    if (!dot || !track) return;
-    const r = track.getBoundingClientRect();
-    dot.style.left = `${Math.min(Math.max(e.clientX - r.left, 0), r.width)}px`;
-  };
-
-  const vars = {
-    "--paper": PALETTE.paper,
-    "--ink": PALETTE.ink,
-    "--muted": PALETTE.muted,
-    "--line": PALETTE.line,
-    "--track": PALETTE.track,
-    "--ghost": PALETTE.ghost,
-    "--accent": PALETTE.accent,
-  } as CSSProperties;
 
   return (
     <section
       ref={sectionRef}
       id="skills"
-      aria-label="Toolkit"
-      style={vars}
-      className="relative flex h-[100svh] flex-col justify-center overflow-hidden bg-[color:var(--paper)] text-[color:var(--ink)]"
+      aria-label="Tools & Skills"
+      className="relative flex min-h-[100svh] w-full flex-col justify-center bg-white py-12 sm:py-16 lg:py-20 text-[#141414] overflow-hidden"
     >
-      {/* ghost word */}
-      <div
-        aria-hidden="true"
-        className={`pointer-events-none absolute -top-6 right-[-4%] select-none text-[34vw] font-black leading-none text-[color:var(--ghost)] md:text-[min(22rem,48vh)] ${DISPLAY}`}
-      >
-        KIT
-      </div>
-
-      <div
-        ref={contentRef}
-        style={{ transform: `scale(${fit})` }}
-        className="relative mx-auto w-full max-w-[1100px] origin-center px-6 py-12 md:px-14 md:py-[4vh]"
-      >
-        {/* label row */}
-        <div className="flex items-center gap-4">
-          <span className={`${MONO} text-[color:var(--accent)]`}>Toolkit</span>
-          <span
-            className={`h-px flex-1 origin-left bg-[color:var(--line)] transition-transform duration-[1200ms] ease-out motion-reduce:transition-none ${inView ? "scale-x-100" : "scale-x-0"
-              }`}
-          />
-          <span
-            className={`group/hand -rotate-2 cursor-default whitespace-nowrap text-xl text-[color:var(--accent)] ${HAND} ${FADE} ${rise(inView)}`}
-            style={delay(500)}
-          >
-            a sharp little kit{" "}
-            <span className="inline-block transition-transform duration-300 group-hover/hand:rotate-[24deg] group-hover/hand:scale-125">
-              ✏️
-            </span>
-          </span>
-        </div>
-
-        {/* heading + blurb */}
-        <div className="mt-[3vh] grid items-end gap-5 md:grid-cols-2 md:gap-10">
-          <h2
-            className={`m-0 text-[clamp(2.4rem,min(6.2vw,9vh),4.6rem)] font-black uppercase leading-[0.92] tracking-wide ${DISPLAY}`}
-          >
-            {["The tools on", "my bench."].map((line, i) => (
-              <span key={line} className="block overflow-hidden pb-[0.08em]">
-                <span
-                  className={`block transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${inView ? "translate-y-0" : "translate-y-[110%]"
-                    }`}
-                  style={delay(150 + i * 120)}
-                >
-                  {line}
-                </span>
-              </span>
-            ))}
-          </h2>
-          <p
-            className={`m-0 max-w-[340px] text-sm leading-relaxed text-[color:var(--muted)] md:mb-1 md:justify-self-end ${FADE} ${rise(inView)}`}
-            style={delay(450)}
-          >
-            AI stays in the loop, never at the wheel, it speeds the thinking, the calls stay mine.
-          </p>
-        </div>
-
-        {/* main tools: bars */}
-        <div className="mt-[4vh] grid gap-x-14 gap-y-[2.6vh] md:grid-cols-2">
-          {MAIN_TOOLS.map((t, i) => {
-            const dim = hovered !== null && hovered !== i;
-            return (
-              <div
-                key={t.name}
-                onPointerEnter={() => setHovered(i)}
-                onPointerLeave={() => setHovered(null)}
-                onPointerMove={moveDot}
-                style={delay(600 + i * 110)}
-                className={`group/row cursor-default ${FADE} ${!inView ? "translate-y-6 opacity-0" : dim ? "translate-y-0 opacity-35" : "translate-y-0 opacity-100"
-                  }`}
-              >
-                <div className="flex items-baseline justify-between">
-                  <span className="text-[17px] font-semibold transition-transform duration-300 group-hover/row:translate-x-1">
-                    {t.name}
-                  </span>
-                  <span className={`${MONO} text-[color:var(--muted)] transition-colors duration-300 group-hover/row:text-[color:var(--ink)]`}>
-                    {t.tag}
-                  </span>
-                </div>
-
-                <div className="relative mt-2">
-                  <div className="h-1.5 w-full rounded-full bg-[color:var(--track)] transition-[height] duration-300 group-hover/row:h-2.5">
-                    <div
-                      className="h-full rounded-full transition-[width,box-shadow] duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/row:shadow-[0_0_16px_var(--c)] motion-reduce:transition-none"
-                      style={
-                        {
-                          "--c": t.color,
-                          backgroundColor: t.color,
-                          width: inView ? `${t.level}%` : "0%",
-                          transitionDelay: settled ? "0ms" : `${800 + i * 130}ms`,
-                        } as CSSProperties
-                      }
-                    />
-                  </div>
-                  <span
-                    data-dot
-                    aria-hidden="true"
-                    className="pointer-events-none absolute left-0 top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[color:var(--paper)] bg-[color:var(--ink)] opacity-0 shadow transition-[left,opacity] duration-150 ease-out group-hover/row:opacity-100"
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* also */}
-        <div className="mt-[3vh] flex flex-wrap items-center gap-2">
-          <span className={`${MONO} mr-2 text-[color:var(--muted)]`}>Also</span>
-          {ALSO.map((name, i) => (
-            <span
-              key={name}
-              style={delay(1100 + i * 80)}
-              className={`cursor-default rounded-full border border-[color:var(--line)] px-3.5 py-1.5 text-[11px] font-semibold transition-[opacity,transform,background-color,color,border-color] duration-500 hover:-translate-y-0.5 hover:-rotate-3 hover:border-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] motion-reduce:transition-none ${inView ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                }`}
-            >
-              {name}
-            </span>
-          ))}
-        </div>
-
-        {/* AI */}
-        <div className="mt-[3.5vh] border-t border-[color:var(--line)] pt-[2.6vh]">
+      <div className="mx-auto w-full max-w-[1240px] px-6 sm:px-8 lg:px-12 flex flex-col justify-center">
+        {/* Top Area: Left column (Heading & blurb) + Right area (6 Tool Cards) */}
+        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-10 lg:gap-12 xl:gap-16">
+          {/* ─────────────────────────────────────────────────────────────
+              1. Left Column: Label, Heading & Description
+              ───────────────────────────────────────────────────────────── */}
           <div
-            className={`flex items-center gap-2.5 ${MONO} text-[color:var(--accent)] ${FADE} ${rise(inView)}`}
-            style={delay(1200)}
+            style={getTransitionStyle(100)}
+            className={`w-full lg:w-[32%] xl:w-[30%] flex-shrink-0 flex flex-col transition-all duration-700 ease-out motion-reduce:transition-none ${
+              inView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+            }`}
           >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--accent)] opacity-70 motion-reduce:animate-none" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />
-            </span>
-            AI kept in the loop
+            {/* Small uppercase section label with terracotta line */}
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[11px] sm:text-xs font-semibold tracking-[0.22em] text-[#ff8a3c] uppercase select-none">
+                TOOLS & SKILLS
+              </span>
+              <span className="h-[1.5px] w-9 bg-[#ff8a3c] rounded-full" />
+            </div>
+
+            {/* Main Heading: large, bold, left aligned with terracotta dot */}
+            <h2 className="mt-5 sm:mt-7 font-display text-4xl sm:text-5xl lg:text-[52px] xl:text-[58px] font-bold leading-[1.08] tracking-tight text-[#141414]">
+              Tools
+              <br />
+              I work with
+              <span className="text-[#ff8a3c]">.</span>
+            </h2>
+
+            {/* Short Description */}
+            <p className="mt-4 sm:mt-6 max-w-sm font-body text-sm sm:text-[15px] leading-relaxed text-[#737373]">
+              A curated set of tools that help me design, create, edit and bring ideas
+              to life — from concept to final output.
+            </p>
           </div>
 
-          <ul className="m-0 mt-2 grid list-none gap-x-14 p-0 md:grid-flow-col md:grid-cols-2 md:grid-rows-4">
-            {AI_TOOLS.map((t, i) => (
-              <li
-                key={t.name}
-                style={delay(1300 + i * 90)}
-                className={`group/ai relative flex items-center justify-between border-b border-[color:var(--line)] py-[clamp(6px,1.1vh,12px)] ${FADE} ${rise(inView)}`}
+          {/* ─────────────────────────────────────────────────────────────
+              2. Right Area: Six Tool Cards (3 cols x 2 rows on desktop)
+              ───────────────────────────────────────────────────────────── */}
+          <div className="w-full lg:w-[68%] xl:w-[70%]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-4.5 xl:gap-5">
+              {MAIN_TOOLS.map((tool, idx) => {
+                // Stagger cards smoothly after left column appears
+                const delayMs = 180 + idx * 80;
+
+                return (
+                  <div
+                    key={tool.id}
+                    style={getTransitionStyle(delayMs)}
+                    className={`group relative flex flex-col justify-between rounded-2xl border border-black/[0.08] bg-white p-5 sm:p-6 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-500 ease-out hover:border-black/20 hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:transform-none ${
+                      inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                    }`}
+                  >
+                    <div>
+                      {/* Tool icon inside subtle rounded square */}
+                      <tool.icon />
+
+                      {/* Tool Name */}
+                      <h3 className="mt-4 sm:mt-5 font-display text-base sm:text-lg font-bold text-[#141414] tracking-tight">
+                        {tool.name}
+                      </h3>
+
+                      {/* Tool Description */}
+                      <p className="mt-1 font-body text-xs sm:text-[13px] leading-relaxed text-[#737373]">
+                        {tool.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            3. Horizontal Divider
+            ───────────────────────────────────────────────────────────── */}
+        <div
+          style={getTransitionStyle(680)}
+          className={`mt-10 sm:mt-12 lg:mt-14 h-px w-full bg-black/[0.08] transition-all duration-700 ease-out motion-reduce:transition-none ${
+            inView ? "scale-x-100 opacity-100 origin-left" : "scale-x-0 opacity-0"
+          }`}
+        />
+
+        {/* ─────────────────────────────────────────────────────────────
+            4. AI & Extra Tools Row
+            ───────────────────────────────────────────────────────────── */}
+        <div
+          style={getTransitionStyle(760)}
+          className={`mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 transition-all duration-700 ease-out motion-reduce:transition-none ${
+            inView ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
+          }`}
+        >
+          {/* Uppercase Section Label on the left */}
+          <span className="font-mono text-[11px] font-semibold tracking-[0.22em] text-[#737373] uppercase select-none whitespace-nowrap">
+            AI & EXTRA TOOLS
+          </span>
+
+          {/* Five pill-shaped items on the right */}
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            {AI_TOOLS.map((ai) => (
+              <div
+                key={ai.name}
+                className="inline-flex items-center gap-2.5 rounded-full border border-black/[0.08] bg-white px-4 py-2 sm:px-4.5 sm:py-2.5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] transition-all duration-200 hover:border-black/25 hover:bg-neutral-50/80 cursor-default select-none"
               >
-                <span className="text-[17px] font-semibold transition-[transform,color] duration-300 group-hover/ai:translate-x-1.5 group-hover/ai:text-[color:var(--accent)]">
-                  {t.name}
+                <ai.icon />
+                <span className="font-body text-xs sm:text-[13px] font-medium text-[#141414]">
+                  {ai.name}
                 </span>
-                <span className={`${MONO} text-[color:var(--muted)] transition-colors duration-300 group-hover/ai:text-[color:var(--accent)]`}>
-                  {t.tag}
-                </span>
-                <span className="pointer-events-none absolute -bottom-px left-0 h-px w-0 bg-[color:var(--accent)] transition-[width] duration-500 ease-out group-hover/ai:w-full" />
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </section>

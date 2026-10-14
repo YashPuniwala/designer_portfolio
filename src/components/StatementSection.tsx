@@ -205,7 +205,7 @@ export default function StatementSection() {
           <span className="statement-word statement-word-polite">POLITE</span>
           <div ref={frameRef} className="statement-image-frame">
             <div ref={innerRef} className="statement-image-inner">
-              <img src="/about-section-image.png" alt="Featured work" />
+              <img src="/box_head.png" alt="Featured work" />
             </div>
           </div>
           <span className="statement-word">DESIGN.</span>
