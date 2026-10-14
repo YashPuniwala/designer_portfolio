@@ -3,7 +3,7 @@ import { ZoomParallax } from "@/components/ui/zoom-parallax";
 const PROJECT_IMAGES = [
   {
     src: "/about-section-image.png",
-    alt: "Operator.X — Featured brand installation",
+    alt: "Yash Puniwala — Featured brand installation",
   },
   {
     src: "/images/hero.jpg",

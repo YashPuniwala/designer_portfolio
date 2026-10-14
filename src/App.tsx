@@ -1,13 +1,11 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { AboutSection } from "@/components/AboutSection";
 import ApproachSection from "@/components/ApproachSection";
 import Footer from "@/components/Footer";
-// import HeroSection from "@/components/HeroSection"; // commented out — replaced by HeroSection2
-import HeroSection2 from "@/components/HeroSection2";
 import StatementSection from "@/components/StatementSection";
 import Nav from "@/components/Nav";
 import HorizontalSection from "@/components/HorizontalSection";
@@ -19,51 +17,28 @@ import SkillsSection from "@/components/SkillsSection";
 import ContactPage from "@/pages/ContactPage";
 import LoadingScreen from "@/components/loadingScreen";
 import HeroSection from "./components/HeroSection";
+import { useRoute } from "@/utils/router";
+import { updateSEO } from "@/utils/seo";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type Route =
-  | { name: "home" }
-  | { name: "contact" }
-  | { name: "project"; slug: string };
-
-function parseRoute(): Route {
-  const hash = window.location.hash || "";
-  if (hash === "#/contact" || hash === "#contact") {
-    return { name: "contact" };
-  }
-  const m = hash.match(/^#\/projects\/([\w-]+)/);
-  if (m) return { name: "project", slug: decodeURIComponent(m[1]) };
-  return { name: "home" };
-}
-
-function useHashRoute(): Route {
-  const [route, setRoute] = useState<Route>(() =>
-    typeof window === "undefined" ? { name: "home" } : parseRoute()
-  );
-  useEffect(() => {
-    const onChange = () => {
-      // Tear down homepage pins before swapping views.
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-      setRoute(parseRoute());
-      requestAnimationFrame(() => {
-        window.scrollTo(0, 0);
-        ScrollTrigger.refresh();
-      });
-    };
-    window.addEventListener("hashchange", onChange);
-    return () => window.removeEventListener("hashchange", onChange);
-  }, []);
-  return route;
-}
-
-function HomePage() {
+function HomePage({ isLoaded = true }: { isLoaded?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const aboutPanelRef = useRef<HTMLDivElement>(null);
   const skillsPanelRef = useRef<HTMLDivElement>(null);
   const skillsInnerRef = useRef<HTMLDivElement>(null);
   const horizontalRef = useRef<HTMLElement>(null);
+  const lenisRef = useRef<Lenis | null>(null);
+
+  useLayoutEffect(() => {
+    updateSEO({
+      title: "Yash Puniwala | Graphic Designer & Brand Identity",
+      description:
+        "Portfolio of Yash Puniwala, a graphic designer specializing in bold brand identities, visual systems, and creative campaigns.",
+      url: "/",
+    });
+  }, []);
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -112,6 +87,11 @@ function HomePage() {
       smoothWheel: true,
       syncTouch: true,
     });
+    lenisRef.current = lenis;
+    if (!isLoaded) {
+      lenis.stop();
+    }
+
     const updateScrollTrigger = () => ScrollTrigger.update();
     const animateLenis = (time: number) => lenis.raf(time * 1000);
 
@@ -122,15 +102,26 @@ function HomePage() {
     const handleNavClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement).closest("a");
       if (!target) return;
-      // Project cards navigate via hash routing — let them through.
+      // Project cards and contact page navigate via clean routing — let them through.
       const rpLink = (e.target as HTMLElement).closest("[data-project-link]");
       if (rpLink) return;
       const href = target.getAttribute("href");
+      if (!href) return;
+
+      if (href.startsWith("/projects/")) {
+        return; // Project detail pages handled by router navigate
+      }
+      // /contact typed directly (not from navbar) — let it through
+      if (href === "/contact" && !target.textContent?.trim().toLowerCase().includes("contact us")) {
+        return;
+      }
+
       const easeOut = (t: number) =>
         Math.min(1, 1.001 - Math.pow(2, -10 * t));
 
       if (
         href === "#about" ||
+        href === "/#about" ||
         target.textContent?.toLowerCase().includes("about")
       ) {
         e.preventDefault();
@@ -139,6 +130,7 @@ function HomePage() {
         lenis.scrollTo(targetScroll, { duration: 1.1, easing: easeOut });
       } else if (
         href === "#skills" ||
+        href === "/#skills" ||
         target.textContent?.toLowerCase().includes("skills") ||
         target.textContent?.toLowerCase().includes("toolkit")
       ) {
@@ -149,35 +141,47 @@ function HomePage() {
           : skillsPanel;
         lenis.scrollTo(targetScroll, { duration: 1.1, easing: easeOut });
       } else if (
-        href === "#projects" ||
-        target.textContent?.toLowerCase().includes("project") ||
-        href === "#showcase"
-      ) {
-        e.preventDefault();
-        const projectsEl = document.getElementById("projects");
-        lenis.scrollTo(projectsEl ?? aboutPanel, {
-          duration: 1.2,
-          easing: easeOut,
-        });
-      } else if (
         href === "#home" ||
+        href === "/" ||
+        href === "/#home" ||
         target.textContent?.toLowerCase().includes("home")
       ) {
         e.preventDefault();
         lenis.scrollTo(0, { duration: 1.1, easing: easeOut });
       } else if (
         href === "#work" ||
-        target.textContent?.toLowerCase().includes("work")
+        href === "/#work" ||
+        href === "#recent-projects" ||
+        href === "/#recent-projects" ||
+        href === "#projects" ||
+        href === "/#projects" ||
+        target.textContent?.trim().toLowerCase() === "work" ||
+        target.textContent?.trim().toLowerCase() === "works"
       ) {
         e.preventDefault();
-        const horiz = horizontalRef.current;
-        if (horiz) {
-          const trigger = ScrollTrigger.getById("horizontal-work");
-          lenis.scrollTo(trigger ? trigger.start : horiz, {
-            duration: 1.3,
+        const projectsEl =
+          document.getElementById("recent-projects") ||
+          document.getElementById("projects");
+        if (projectsEl) {
+          const nav = document.querySelector<HTMLElement>("nav");
+          const navOffset = nav ? -(nav.offsetHeight + 24) : -80;
+          lenis.scrollTo(projectsEl, {
+            duration: 1.2,
             easing: easeOut,
+            offset: navOffset,
           });
+          window.history.pushState(null, "", "/#recent-projects");
         }
+      } else if (
+        href === "#contact-cta" ||
+        href === "/#contact-cta" ||
+        target.textContent?.trim().toLowerCase() === "contact us"
+      ) {
+        e.preventDefault();
+        // The footer is position:fixed — scroll to the very end of the page to reveal it.
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        lenis.scrollTo(maxScroll, { duration: 1.4, easing: easeOut });
+        window.history.pushState(null, "", "/#contact-cta");
       }
     };
 
@@ -356,6 +360,7 @@ function HomePage() {
 
     return () => {
       disposed = true;
+      lenisRef.current = null;
       horizImages.forEach((image) => {
         image.removeEventListener("load", refreshLayout);
         image.removeEventListener("error", refreshLayout);
@@ -368,6 +373,84 @@ function HomePage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isLoaded) {
+      lenisRef.current?.start();
+
+      const scrollToRecentProjects = () => {
+        const el =
+          document.getElementById("recent-projects") ||
+          document.getElementById("projects");
+        if (el && lenisRef.current) {
+          const nav = document.querySelector<HTMLElement>("nav");
+          const navOffset = nav ? -(nav.offsetHeight + 24) : -80;
+          lenisRef.current.scrollTo(el, { duration: 1.2, offset: navOffset });
+        }
+      };
+
+      const scrollToFooter = () => {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(maxScroll, { duration: 1.4 });
+        }
+      };
+
+      const hash = window.location.hash;
+      if (
+        hash === "#recent-projects" ||
+        hash === "#projects" ||
+        hash.includes("projects") ||
+        hash === "#work"
+      ) {
+        requestAnimationFrame(() => {
+          setTimeout(scrollToRecentProjects, 200);
+        });
+      } else if (hash === "#about" || hash.includes("about")) {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const trigger = ScrollTrigger.getById("showcase-transition");
+            const targetScroll = trigger ? trigger.start : aboutPanelRef.current;
+            if (targetScroll && lenisRef.current) {
+              lenisRef.current.scrollTo(targetScroll, { duration: 1.1 });
+            }
+          }, 200);
+        });
+      } else if (hash === "#contact-cta") {
+        requestAnimationFrame(() => {
+          setTimeout(scrollToFooter, 200);
+        });
+      } else {
+        window.scrollTo(0, 0);
+      }
+
+      const onHashChange = () => {
+        const currentHash = window.location.hash;
+        if (
+          currentHash === "#recent-projects" ||
+          currentHash === "#projects" ||
+          currentHash.includes("projects") ||
+          currentHash === "#work"
+        ) {
+          scrollToRecentProjects();
+        } else if (currentHash === "#contact-cta") {
+          scrollToFooter();
+        }
+      };
+
+      window.addEventListener("hashchange", onHashChange);
+
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+
+      return () => {
+        window.removeEventListener("hashchange", onHashChange);
+      };
+    } else {
+      lenisRef.current?.stop();
+    }
+  }, [isLoaded]);
+
   return (
     <>
       <Nav />
@@ -377,8 +460,8 @@ function HomePage() {
         {/* Pinned stage: Hero → About → Skills, each layer sliding up over the one below */}
         <div className="cinematic-stage" ref={stageRef}>
           <div className="hero-pinned-wrapper">
-            <HeroSection />
-            {/* <HeroSection2 /> */}
+            <HeroSection isLoaded={isLoaded} />
+            {/* <HeroSection2 isLoaded={isLoaded} /> */}
           </div>
 
           {/* About covers Hero */}
@@ -420,12 +503,16 @@ function HomePage() {
 }
 
 export default function App() {
-  const route = useHashRoute();
+  const route = useRoute();
   const [loading, setLoading] = useState(true);
+
+  const handleLoadingComplete = useCallback(() => {
+    setLoading(false);
+  }, []);
 
   return (
     <>
-      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+      {loading && <LoadingScreen onComplete={handleLoadingComplete} />}
 
       {route.name === "contact" && <ContactPage />}
 
@@ -436,7 +523,7 @@ export default function App() {
         </>
       )}
 
-      {route.name === "home" && <HomePage />}
+      {route.name === "home" && <HomePage isLoaded={!loading} />}
     </>
   );
 }

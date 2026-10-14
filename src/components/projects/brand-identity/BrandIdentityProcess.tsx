@@ -28,16 +28,16 @@ export function BrandIdentityProcess() {
         <div className="cs-process-block">
           <span className="cs-process-block-label">Direction</span>
           <p className="cs-process-block-copy">
-            We started by understanding the brand's core — its audience,
+            I started by understanding the brand's core — its audience,
             its tone, and the space it needed to own. Every decision
-            traces back to a clear, agreed-upon direction.
+            traces back to a clear creative direction.
           </p>
         </div>
         <div className="cs-process-block">
           <span className="cs-process-block-label">Exploration</span>
           <p className="cs-process-block-copy">
             Ideas were explored across mark-making, typeface pairings,
-            and color language. We tested contrast, scale, and context
+            and color language. I tested contrast, scale, and context
             until a visual language started to feel inevitable.
           </p>
         </div>

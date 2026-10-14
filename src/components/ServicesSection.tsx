@@ -11,25 +11,25 @@ const SERVICES = [
     number: "01",
     title: "Brand Identity",
     description:
-      "Create distinctive visual identities that give brands a clear voice, personality, and recognizable presence across every touchpoint.",
+      "I develop cohesive visual identity systems, defining core logotypes, color palettes, typographic hierarchies, and brand guidelines that give brands an enduring presence.",
   },
   {
     number: "02",
-    title: "Graphic Design",
+    title: "Logo Design",
     description:
-      "From campaigns and social visuals to print and digital communication, we create graphic systems that communicate with clarity and impact.",
+      "I craft purposeful marks, monograms, and custom logotypes through disciplined geometric grid construction, stroke weight balancing, and optical refinement.",
   },
   {
     number: "03",
-    title: "Web Design",
+    title: "Social Media Design",
     description:
-      "We design immersive, responsive websites that combine strong visual direction, intuitive experiences, and thoughtful interaction.",
+      "I build structured campaign creatives and social media visuals tailored to distinct brand voices, prioritizing visual hierarchy and high audience engagement.",
   },
   {
     number: "04",
-    title: "Digital Experiences",
+    title: "Packaging & Print",
     description:
-      "Interactive digital experiences that bring brand, motion, storytelling, and technology together into something memorable.",
+      "I design tactile physical packaging, takeaway merchandise, and print collateral with meticulous attention to typography, layout structure, and production finish.",
   },
 ];
 
@@ -177,13 +177,13 @@ export default function ServicesSection() {
         ref={sectionRef}
         id="services"
         className="services-section"
-        aria-label="Services"
+        aria-label="My Expertise"
       >
         <div className="services-shell">
           {/* HEADING TEMPORARILY HIDDEN — uncomment to restore
           <header className="services-header">
             <h2>
-              What we <span className="script-accent">do.</span>
+              What I <span className="script-accent">do.</span>
             </h2>
           </header>
           */}

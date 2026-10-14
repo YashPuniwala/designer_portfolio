@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const STATEMENT =
-  "I’m a graphic & brand designer who turns ideas into identities people remember, from bold visual systems and logos to campaigns, digital experiences, and the details that make a brand feel like a brand. I care about the big idea, obsess over the little details, and design with one goal: making good work impossible to scroll past.";
+  "I’m a graphic & brand designer who turns ideas into identities people remember, from bold visual systems and logos to campaigns, packaging, and the details that make a brand feel cohesive. I focus on deliberate design decisions, obsess over typography and grid structure, and design with one goal: creating work that communicates with clarity and purpose.";
 
 export function AboutSection() {
   const words = STATEMENT.split(" ");
@@ -75,7 +75,7 @@ export function AboutSection() {
   return (
     <section
       className="about-section relative flex w-full items-center justify-center bg-ink px-6 md:px-12"
-      aria-label="About Operator.X"
+      aria-label="About Yash Puniwala"
     >
       {/* Statement — the only content, centered; words brighten one-by-one */}
       <p

@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { navigate } from "@/utils/router";
 
 /**
  * aspectRatio: width ÷ height of the source artwork.
@@ -199,7 +200,11 @@ export default function HorizontalSection({
             to ignore.
           </h2>
           <a
-            href="#home"
+            href="/contact"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/contact");
+            }}
             className="mt-10 inline-flex items-center gap-3 border border-white/25 px-7 py-4 font-mono text-[11px] uppercase tracking-[0.3em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
           >
             Start a project <span aria-hidden>→</span>

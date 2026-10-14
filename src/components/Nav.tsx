@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { navigate } from "@/utils/router";
 
 const LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Work", href: "#work" },
-  { label: "Contact", href: "#/contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/#about" },
+  { label: "Works", href: "/#recent-projects" },
+  { label: "Contact Us", href: "/#contact-cta" },
 ];
 
 export default function Nav() {
@@ -28,7 +28,6 @@ export default function Nav() {
       //    #home is intentionally NOT here — it is light now.
       for (const sel of [
         "#about",
-        "#projects",
         "#work",
         "#services",
         "#marquee",
@@ -44,7 +43,7 @@ export default function Nav() {
 
       // 2) Named anchors + class-based LIGHT sections.
       //    #home (the light Hero) and .recent-projects both live here.
-      for (const sel of ["#home", ".recent-projects"]) {
+      for (const sel of ["#home", ".recent-projects", "#recent-projects"]) {
         const el = document.querySelector<HTMLElement>(sel);
         if (!el) continue;
         const r = el.getBoundingClientRect();
@@ -123,9 +122,19 @@ export default function Nav() {
   // Close the mobile menu whenever the route/anchor changes.
   useEffect(() => {
     const close = () => setMenuOpen(false);
+    window.addEventListener("popstate", close);
     window.addEventListener("hashchange", close);
-    return () => window.removeEventListener("hashchange", close);
+    return () => {
+      window.removeEventListener("popstate", close);
+      window.removeEventListener("hashchange", close);
+    };
   }, []);
+
+  const handleLinkClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    navigate(href);
+  };
 
   // While the menu is open the bar must stay on screen and stay legible
   // over the dark overlay regardless of the section behind it.
@@ -144,11 +153,11 @@ export default function Nav() {
         className={`fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-5 py-4 transition-transform duration-500 ease-out will-change-transform md:px-12 md:py-6 ${barHidden ? "-translate-y-full" : "translate-y-0"}`}
       >
         <a
-          href="#home"
-          onClick={() => setMenuOpen(false)}
+          href="/"
+          onClick={(e) => handleLinkClick(e, "/")}
           className={`font-display text-sm font-bold uppercase tracking-[0.3em] transition-colors duration-500 md:text-base md:tracking-[0.4em] ${textColor}`}
         >
-          Operator.X
+          YASH PUNIWALA
         </a>
 
         {/* Desktop links — unchanged layout, hidden on small screens */}
@@ -157,6 +166,7 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
+              onClick={(e) => handleLinkClick(e, link.href)}
               className={`group relative py-1 ${linkColor} transition-colors duration-500 ${linkHover}`}
             >
               {link.label}
@@ -199,7 +209,7 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => handleLinkClick(e, link.href)}
               className={`py-3 font-display text-3xl font-bold uppercase tracking-tight text-white/85 transition-all duration-300 hover:text-white ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}
               style={{ transitionDelay: menuOpen ? `${80 + i * 45}ms` : "0ms" }}
             >
@@ -210,7 +220,7 @@ export default function Nav() {
 
         <div className="mt-10 border-t border-white/10 pt-6">
           <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
-            Operator.X — Creative Portfolio
+            Yash Puniwala, Graphic Design Portfolio
           </span>
         </div>
       </div>

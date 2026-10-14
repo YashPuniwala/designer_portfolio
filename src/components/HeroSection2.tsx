@@ -13,14 +13,14 @@
  *    hero-pinned-wrapper (App.tsx) which already renders <Nav /> above it.
  */
 
-export default function HeroSection2() {
+export default function HeroSection2({ isLoaded = true }: { isLoaded?: boolean }) {
   /* ── Typography tokens ──────────────────────────────────────────── */
   const DISPLAY = '"Space Grotesk", ui-sans-serif, system-ui, sans-serif';
 
   return (
     <section
       id="home"
-      className="relative flex min-h-screen w-full flex-col items-center overflow-hidden bg-[#fafafa] text-neutral-900"
+      className={`relative flex min-h-screen w-full flex-col items-center overflow-hidden bg-[#fafafa] text-neutral-900 ${isLoaded ? "h2-ready" : ""}`}
     >
       {/* ── KEYFRAME ANIMATIONS ────────────────────────────────────── */}
       <style>{`
@@ -33,17 +33,31 @@ export default function HeroSection2() {
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .h2-anim     { opacity: 0; animation: h2FadeUp    0.85s cubic-bezier(0.22,1,0.36,1) forwards; }
-        .h2-img-anim { opacity: 0; animation: h2ImgReveal 1s   cubic-bezier(0.22,1,0.36,1) forwards; }
+        .h2-anim {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        .h2-img-anim {
+          opacity: 0;
+          transform: translateY(32px) scale(0.97);
+        }
 
-        .h2-d1 { animation-delay: 0.08s; }
-        .h2-d2 { animation-delay: 0.55s; }
-        .h2-d3 { animation-delay: 0.85s; }
-        .h2-d4 { animation-delay: 1.1s;  }
-        .h2-d5 { animation-delay: 1.35s; }
+        .h2-ready .h2-anim {
+          animation: h2FadeUp 0.85s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        .h2-ready .h2-img-anim {
+          animation: h2ImgReveal 1s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+
+        .h2-ready .h2-d1 { animation-delay: 0.08s; }
+        .h2-ready .h2-d2 { animation-delay: 0.55s; }
+        .h2-ready .h2-d3 { animation-delay: 0.85s; }
+        .h2-ready .h2-d4 { animation-delay: 1.1s;  }
+        .h2-ready .h2-d5 { animation-delay: 1.35s; }
 
         @media (prefers-reduced-motion: reduce) {
-          .h2-anim, .h2-img-anim {
+          .h2-anim, .h2-img-anim,
+          .h2-ready .h2-anim, .h2-ready .h2-img-anim {
             animation: none !important;
             opacity: 1 !important;
             transform: none !important;
@@ -164,8 +178,8 @@ export default function HeroSection2() {
             className="font-bold leading-[1.1] tracking-[-0.025em] text-neutral-800"
             style={{ fontSize: "clamp(1.2rem, 1.85vw, 1.9rem)" }}
           >
-            We craft bold brand identities and digital experiences that finally
-            make your work impossible to ignore.
+            I craft bold brand identities and visual experiences that make
+            ambitious work impossible to ignore.
           </p>
         </div>
       </div>
@@ -245,8 +259,8 @@ export default function HeroSection2() {
             className="font-bold leading-[1.15] tracking-[-0.02em] text-neutral-800"
             style={{ fontSize: "clamp(1rem, 4.2vw, 1.45rem)" }}
           >
-            We craft bold brand identities and digital experiences that finally
-            make your work impossible to ignore.
+            I craft bold brand identities and visual experiences that make
+            ambitious work impossible to ignore.
           </p>
         </div>
       </div>

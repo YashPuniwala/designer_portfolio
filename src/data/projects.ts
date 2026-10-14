@@ -100,6 +100,12 @@ export interface ComfortoProject extends ProjectBase {
   type: "comforto";
 }
 
+// --- BREWLY project (logo design case study) -----------------------------------
+
+export interface BrewlyProject extends ProjectBase {
+  type: "brewly";
+}
+
 // --- Social Media project -----------------------------------------------------
 
 export interface SocialMediaProject extends ProjectBase {
@@ -137,6 +143,7 @@ export type ProjectData =
   | SocialMediaProject
   | NilyProject
   | ComfortoProject
+  | BrewlyProject
   | SocialCampaignsProject;
 
 // --- Legacy alias -------------------------------------------------------------
@@ -146,7 +153,7 @@ export type ProjectType = "brand-identity" | "social-media" | "social-campaigns"
 
 // --- Image asset map ---------------------------------------------------------
 
-const A = {
+const _A = {
   r1: "/images/breww/17.png",
   r2: "/images/recent-02.jpg",
   r3: "/images/recent-03.jpg",
@@ -158,6 +165,8 @@ const A = {
   c3: "https://cdn.21st.dev/assets/mirror/04/04691b2e29925f30eac3817ea8f65d973484b711822252a13c15248859e464da.jpg",
   c4: "https://cdn.21st.dev/assets/mirror/71/711f1a9ccb3786dcc00e8031191dc4d58c9377cefb54bf927806921a4a05a818.jpg",
 };
+// Kept for the commented-out Aura project below. Referenced when re-enabled.
+void _A;
 
 // --- Project data -------------------------------------------------------------
 
@@ -169,11 +178,24 @@ export const PROJECTS: ProjectData[] = [
     title: "COMFORTO",
     client: "COMFORTO Brand",
     year: 2024,
-    services: ["Brand Identity", "Logo Design", "Visual Identity"],
+    services: ["Brand Identity", "Logo Design", "Visual Identity", "Typography & Color", "Brand Applications"],
     description:
-      "A complete brand identity system for COMFORTO — from the first mark explorations through a fully resolved logo, typeface selection, colour palette and a cohesive visual language across every touchpoint.",
+      "A comprehensive brand identity system for COMFORTO, an architectural furniture brand. The case study documents the progression from typographic exploration to a precision geometric monogram, supported by typeface guidelines, vector construction, and physical-to-digital brand applications.",
     mainImage: "/images/comforto/image.png",
     type: "comforto",
+  },
+  // -- BREWLY (Logo design case study) -----------------------------------------
+  {
+    slug: "brewly",
+    id: "brewly-00",
+    title: "BREWLY",
+    client: "Brewly Cafe",
+    year: 2024,
+    services: ["Logo Design", "Brand Identity", "Typography", "Packaging Design", "Signage & Print"],
+    description:
+      "A complete visual identity and packaging system for Brewly Cafe. The design was developed through iterative typographic explorations from a clean sans baseline to a distinctive complete typeface, complemented by coffee packaging, takeaway cups, and retail signage.",
+    mainImage: "/images/brewly/cups.png",
+    type: "brewly",
   },
   // -- NILY (Dedicated branding case study) ------------------------------------
   {
@@ -182,38 +204,38 @@ export const PROJECTS: ProjectData[] = [
     title: "NILY",
     client: "NILY Brand",
     year: 2024,
-    services: ["Brand Identity", "Logo Design", "Visual Identity"],
+    services: ["Brand Identity", "Logo Design", "Visual Identity", "Typography & Color", "Brand Applications"],
     description:
-      "A complete brand identity system built from the ground up — from first mark exploration through to a refined, ownable logo and a full visual language that scales across every touchpoint.",
+      "A cohesive brand identity system for NILY, an urban apparel brand. The design process focused on distilling a geometric monogram from raw concept sketches into a versatile core mark, paired with a disciplined typographic hierarchy and editorial lookbook collateral.",
     mainImage: "/images/nily/hero.png",
     type: "nily",
     logoStages: [
       {
         num: "01",
-        heading: "Initial Concept",
+        heading: "Initial Monogram Concept",
         description:
-          "The first round of explorations focused on finding the right mark — testing wordmarks, symbols and letterform-based directions. Each sketch pushed toward something unique and ownable.",
+          "I began with geometric explorations of the letter 'N', testing interconnected lines and continuous stroke paths to construct an iconic monogram that anchors the apparel identity.",
         // TODO: replace with actual NILY logo concept image
         imageSrc: "/images/breww/27.png",
-        imageAlt: "NILY — Initial logo concept exploration",
+        imageAlt: "NILY, Initial logo concept exploration",
       },
       {
         num: "02",
-        heading: "Brand Simplification",
+        heading: "Negative Space & Stroke Reduction",
         description:
-          "From the strongest directions, we stripped away complexity. The focus shifted to clarity — a mark that would read instantly at any size and carry the brand's character without noise.",
+          "In the second stage, I stripped away non-essential internal geometry and balanced line weights to ensure the monogram stays crisp when embroidered, tagged, or scaled down.",
         // TODO: replace with actual NILY simplified logo image
         imageSrc: "/images/breww/25.png",
-        imageAlt: "NILY — Simplified brand direction",
+        imageAlt: "NILY, Simplified brand direction",
       },
       {
         num: "03",
-        heading: "Refined Core Mark",
+        heading: "Final Resolved Symbol",
         description:
-          "The final mark — refined, resolved and ready. Every curve, weight and proportion considered. A logo that is quiet enough to be versatile and strong enough to be remembered.",
+          "The final mark locks optical weights and corner radii into a solid, versatile monogram that functions effortlessly as a standalone badge or locked with typography.",
         // TODO: replace with actual NILY final logo image
         imageSrc: "/images/breww/5.png",
-        imageAlt: "NILY — Refined final core mark",
+        imageAlt: "NILY, Refined final core mark",
       },
     ],
     typography: [
@@ -240,19 +262,19 @@ export const PROJECTS: ProjectData[] = [
       {
         // TODO: replace with actual NILY logo variation image
         src: "/images/breww/18.png",
-        alt: "NILY — Primary logo mark",
+        alt: "NILY, Primary logo mark",
         label: "Primary Mark",
       },
       {
         // TODO: replace with actual NILY monogram/icon image
         src: "/images/breww/21.png",
-        alt: "NILY — Monogram / icon",
+        alt: "NILY, Monogram / icon",
         label: "Monogram",
       },
       {
         // TODO: replace with actual NILY wordmark image
         src: "/images/breww/19.png",
-        alt: "NILY — Wordmark horizontal",
+        alt: "NILY, Wordmark horizontal",
         label: "Wordmark",
       },
     ],
@@ -261,217 +283,217 @@ export const PROJECTS: ProjectData[] = [
         num: "01",
         // TODO: replace with actual NILY business card mockup
         src: "/images/breww/18.png",
-        alt: "NILY — Business card",
+        alt: "NILY, Business card",
         label: "Business Card",
       },
       {
         num: "02",
         // TODO: replace with actual NILY packaging mockup
         src: "/images/breww/21.png",
-        alt: "NILY — Packaging",
+        alt: "NILY, Packaging",
         label: "Packaging",
       },
       {
         num: "03",
         // TODO: replace with actual NILY stationery mockup
         src: "/images/breww/5.png",
-        alt: "NILY — Stationery",
+        alt: "NILY, Stationery",
         label: "Stationery",
       },
       {
         num: "04",
         // TODO: replace with actual NILY brand collateral mockup
         src: "/images/breww/9.png",
-        alt: "NILY — Brand collateral",
+        alt: "NILY, Brand collateral",
         label: "Brand Collateral",
       },
       {
         num: "05",
         // TODO: replace with actual NILY signage mockup
         src: "/images/breww/10.png",
-        alt: "NILY — Signage",
+        alt: "NILY, Signage",
         label: "Signage",
       },
       {
         num: "06",
         // TODO: replace with actual NILY social/digital mockup
         src: "/images/breww/15.png",
-        alt: "NILY — Social media / digital",
+        alt: "NILY, Social media / digital",
         label: "Digital",
       },
     ],
   },
   // -- Brand Identity ----------------------------------------------------------
-  {
-    slug: "breww",
-    id: "01",
-    title: "Breww",
-    client: "Breww Cafe",
-    year: 2024,
-    services: ["Brand Identity", "Visual Identity", "Packaging Design"],
-    description:
-      "A complete brand identity system for Breww Cafe — from mark explorations through a fully resolved logo, typeface selection, colour palette and packaging suite.",
-    mainImage: A.r1,
-    projectUrl: "https://example.com/breww",
-    type: "brand-identity",
-    logos: [
-      { src: A.about, alt: "After � primary logo" },
-      { src: A.hero, alt: "After � monogram" },
-      { src: A.r3, alt: "After � wordmark variation" },
-    ],
-    typography: [
-      { name: "Space Grotesk", role: "Display", specimen: "Aa", weight: "Bold" },
-      { name: "Inter", role: "Body", specimen: "Aa", weight: "Regular" },
-    ],
-    colors: [
-      { name: "Ink", hex: "#050505" },
-      { name: "Bone", hex: "#F2EFE9" },
-      { name: "Amber", hex: "#FF8A3C" },
-      { name: "Slate", hex: "#2A2A2A" },
-    ],
-    brainstorming: {
-      phrase: "Explore. Question. Refine.",
-      images: [
-        { src: A.r2, alt: "After � research board" },
-        { src: A.c1, alt: "After � sketch sheet" },
-        { src: A.c3, alt: "After � moodboard" },
-      ],
-    },
-    concept: {
-      phrase: "Finding the right direction.",
-      images: [
-        { src: A.r4, alt: "After � concept A" },
-        { src: A.c2, alt: "After � concept B" },
-        { src: A.c4, alt: "After � direction lock" },
-      ],
-    },
-    mockups: [
-      { src: A.r1, alt: "After � mockup 01" },
-      { src: A.r2, alt: "After � mockup 02" },
-      { src: A.r3, alt: "After � mockup 03" },
-      { src: A.r4, alt: "After � mockup 04" },
-      { src: A.hero, alt: "After � mockup 05" },
-      { src: A.about, alt: "After � mockup 06" },
-      { src: A.c1, alt: "After � mockup 07" },
-      { src: A.c2, alt: "After � mockup 08" },
-      { src: A.c3, alt: "After � mockup 09" },
-      { src: A.c4, alt: "After � mockup 10" },
-      { src: A.r1, alt: "After � mockup 11" },
-      { src: A.r3, alt: "After � mockup 12" },
-    ],
-  },
-  {
-    slug: "vogue",
-    id: "02",
-    title: "Vogue",
-    client: "Editorial Client",
-    year: 2024,
-    services: ["Art Direction", "Web Design", "Digital Experience"],
-    description:
-      "An editorial digital experience built around a tight visual language and a strong sense of rhythm � more film than website.",
-    mainImage: A.r2,
-    type: "brand-identity",
-    logos: [
-      { src: A.r2, alt: "Vogue � primary logo" },
-      { src: A.about, alt: "Vogue � monogram" },
-      { src: A.hero, alt: "Vogue � lockup" },
-    ],
-    typography: [
-      { name: "Space Grotesk", role: "Display", specimen: "Aa", weight: "Medium" },
-      { name: "JetBrains Mono", role: "Meta", specimen: "Aa", weight: "Regular" },
-    ],
-    colors: [
-      { name: "Noir", hex: "#0A0A0A" },
-      { name: "Cream", hex: "#EDE8E0" },
-      { name: "Rose", hex: "#C45C5C" },
-      { name: "Graphite", hex: "#3A3A3A" },
-    ],
-    brainstorming: {
-      phrase: "Explore. Question. Refine.",
-      images: [
-        { src: A.r1, alt: "Vogue � research" },
-        { src: A.c2, alt: "Vogue � references" },
-        { src: A.c4, alt: "Vogue � notes" },
-      ],
-    },
-    concept: {
-      phrase: "Finding the right direction.",
-      images: [
-        { src: A.r3, alt: "Vogue � concept 1" },
-        { src: A.c1, alt: "Vogue � concept 2" },
-        { src: A.c3, alt: "Vogue � final direction" },
-      ],
-    },
-    mockups: [
-      { src: A.r2, alt: "Vogue � mockup 01" },
-      { src: A.r4, alt: "Vogue � mockup 02" },
-      { src: A.c4, alt: "Vogue � mockup 03" },
-      { src: A.r3, alt: "Vogue � mockup 04" },
-      { src: A.hero, alt: "Vogue � mockup 05" },
-      { src: A.c2, alt: "Vogue � mockup 06" },
-      { src: A.about, alt: "Vogue � mockup 07" },
-      { src: A.c1, alt: "Vogue � mockup 08" },
-      { src: A.r1, alt: "Vogue � mockup 09" },
-      { src: A.c3, alt: "Vogue � mockup 10" },
-    ],
-  },
-  {
-    slug: "pulse",
-    id: "03",
-    title: "Pulse",
-    client: "Technology Partner",
-    year: 2023,
-    services: ["GSAP Animation", "Brand System", "Product Launch"],
-    description:
-      "A launch experience built around motion � turning a technical product into something energetic and easy to feel.",
-    mainImage: A.r4,
-    projectUrl: "https://example.com/pulse",
-    type: "brand-identity",
-    logos: [
-      { src: A.r4, alt: "Pulse � primary logo" },
-      { src: A.hero, alt: "Pulse � monogram" },
-      { src: A.about, alt: "Pulse � lockup" },
-    ],
-    typography: [
-      { name: "Space Grotesk", role: "Display", specimen: "Aa", weight: "Bold" },
-      { name: "Inter", role: "UI", specimen: "Aa", weight: "Medium" },
-    ],
-    colors: [
-      { name: "Void", hex: "#050505" },
-      { name: "Signal", hex: "#1D3A8A" },
-      { name: "Charge", hex: "#FF8A3C" },
-      { name: "Spark", hex: "#D9E86B" },
-    ],
-    brainstorming: {
-      phrase: "Explore. Question. Refine.",
-      images: [
-        { src: A.r1, alt: "Pulse � workshops" },
-        { src: A.r2, alt: "Pulse � motion tests" },
-        { src: A.c1, alt: "Pulse � systems" },
-      ],
-    },
-    concept: {
-      phrase: "Finding the right direction.",
-      images: [
-        { src: A.r3, alt: "Pulse � direction A" },
-        { src: A.c4, alt: "Pulse � direction B" },
-        { src: A.c2, alt: "Pulse � lock" },
-      ],
-    },
-    mockups: [
-      { src: A.r4, alt: "Pulse � mockup 01" },
-      { src: A.r1, alt: "Pulse � mockup 02" },
-      { src: A.r2, alt: "Pulse � mockup 03" },
-      { src: A.r3, alt: "Pulse � mockup 04" },
-      { src: A.c4, alt: "Pulse � mockup 05" },
-      { src: A.c3, alt: "Pulse � mockup 06" },
-      { src: A.hero, alt: "Pulse � mockup 07" },
-      { src: A.about, alt: "Pulse � mockup 08" },
-      { src: A.c1, alt: "Pulse � mockup 09" },
-      { src: A.c2, alt: "Pulse � mockup 10" },
-      { src: A.r4, alt: "Pulse � mockup 11" },
-    ],
-  },
+  // {
+  //   slug: "breww",
+  //   id: "01",
+  //   title: "Breww",
+  //   client: "Breww Cafe",
+  //   year: 2024,
+  //   services: ["Brand Identity", "Visual Identity", "Packaging Design"],
+  //   description:
+  //     "A complete brand identity system for Breww Cafe from mark explorations through a fully resolved logo, typeface selection, colour palette and packaging suite.",
+  //   mainImage: A.r1,
+  //   projectUrl: "https://example.com/breww",
+  //   type: "brand-identity",
+  //   logos: [
+  //     { src: A.about, alt: "After � primary logo" },
+  //     { src: A.hero, alt: "After � monogram" },
+  //     { src: A.r3, alt: "After � wordmark variation" },
+  //   ],
+  //   typography: [
+  //     { name: "Space Grotesk", role: "Display", specimen: "Aa", weight: "Bold" },
+  //     { name: "Inter", role: "Body", specimen: "Aa", weight: "Regular" },
+  //   ],
+  //   colors: [
+  //     { name: "Ink", hex: "#050505" },
+  //     { name: "Bone", hex: "#F2EFE9" },
+  //     { name: "Amber", hex: "#FF8A3C" },
+  //     { name: "Slate", hex: "#2A2A2A" },
+  //   ],
+  //   brainstorming: {
+  //     phrase: "Explore. Question. Refine.",
+  //     images: [
+  //       { src: A.r2, alt: "After � research board" },
+  //       { src: A.c1, alt: "After � sketch sheet" },
+  //       { src: A.c3, alt: "After � moodboard" },
+  //     ],
+  //   },
+  //   concept: {
+  //     phrase: "Finding the right direction.",
+  //     images: [
+  //       { src: A.r4, alt: "After � concept A" },
+  //       { src: A.c2, alt: "After � concept B" },
+  //       { src: A.c4, alt: "After � direction lock" },
+  //     ],
+  //   },
+  //   mockups: [
+  //     { src: A.r1, alt: "After � mockup 01" },
+  //     { src: A.r2, alt: "After � mockup 02" },
+  //     { src: A.r3, alt: "After � mockup 03" },
+  //     { src: A.r4, alt: "After � mockup 04" },
+  //     { src: A.hero, alt: "After � mockup 05" },
+  //     { src: A.about, alt: "After � mockup 06" },
+  //     { src: A.c1, alt: "After � mockup 07" },
+  //     { src: A.c2, alt: "After � mockup 08" },
+  //     { src: A.c3, alt: "After � mockup 09" },
+  //     { src: A.c4, alt: "After � mockup 10" },
+  //     { src: A.r1, alt: "After � mockup 11" },
+  //     { src: A.r3, alt: "After � mockup 12" },
+  //   ],
+  // },
+  // {
+  //   slug: "vogue",
+  //   id: "02",
+  //   title: "Vogue",
+  //   client: "Editorial Client",
+  //   year: 2024,
+  //   services: ["Art Direction", "Web Design", "Digital Experience"],
+  //   description:
+  //     "An editorial digital experience built around a tight visual language and a strong sense of rhythm � more film than website.",
+  //   mainImage: A.r2,
+  //   type: "brand-identity",
+  //   logos: [
+  //     { src: A.r2, alt: "Vogue � primary logo" },
+  //     { src: A.about, alt: "Vogue � monogram" },
+  //     { src: A.hero, alt: "Vogue � lockup" },
+  //   ],
+  //   typography: [
+  //     { name: "Space Grotesk", role: "Display", specimen: "Aa", weight: "Medium" },
+  //     { name: "JetBrains Mono", role: "Meta", specimen: "Aa", weight: "Regular" },
+  //   ],
+  //   colors: [
+  //     { name: "Noir", hex: "#0A0A0A" },
+  //     { name: "Cream", hex: "#EDE8E0" },
+  //     { name: "Rose", hex: "#C45C5C" },
+  //     { name: "Graphite", hex: "#3A3A3A" },
+  //   ],
+  //   brainstorming: {
+  //     phrase: "Explore. Question. Refine.",
+  //     images: [
+  //       { src: A.r1, alt: "Vogue � research" },
+  //       { src: A.c2, alt: "Vogue � references" },
+  //       { src: A.c4, alt: "Vogue � notes" },
+  //     ],
+  //   },
+  //   concept: {
+  //     phrase: "Finding the right direction.",
+  //     images: [
+  //       { src: A.r3, alt: "Vogue � concept 1" },
+  //       { src: A.c1, alt: "Vogue � concept 2" },
+  //       { src: A.c3, alt: "Vogue � final direction" },
+  //     ],
+  //   },
+  //   mockups: [
+  //     { src: A.r2, alt: "Vogue � mockup 01" },
+  //     { src: A.r4, alt: "Vogue � mockup 02" },
+  //     { src: A.c4, alt: "Vogue � mockup 03" },
+  //     { src: A.r3, alt: "Vogue � mockup 04" },
+  //     { src: A.hero, alt: "Vogue � mockup 05" },
+  //     { src: A.c2, alt: "Vogue � mockup 06" },
+  //     { src: A.about, alt: "Vogue � mockup 07" },
+  //     { src: A.c1, alt: "Vogue � mockup 08" },
+  //     { src: A.r1, alt: "Vogue � mockup 09" },
+  //     { src: A.c3, alt: "Vogue � mockup 10" },
+  //   ],
+  // },
+  // {
+  //   slug: "pulse",
+  //   id: "03",
+  //   title: "Pulse",
+  //   client: "Technology Partner",
+  //   year: 2023,
+  //   services: ["GSAP Animation", "Brand System", "Product Launch"],
+  //   description:
+  //     "A launch experience built around motion � turning a technical product into something energetic and easy to feel.",
+  //   mainImage: A.r4,
+  //   projectUrl: "https://example.com/pulse",
+  //   type: "brand-identity",
+  //   logos: [
+  //     { src: A.r4, alt: "Pulse � primary logo" },
+  //     { src: A.hero, alt: "Pulse � monogram" },
+  //     { src: A.about, alt: "Pulse � lockup" },
+  //   ],
+  //   typography: [
+  //     { name: "Space Grotesk", role: "Display", specimen: "Aa", weight: "Bold" },
+  //     { name: "Inter", role: "UI", specimen: "Aa", weight: "Medium" },
+  //   ],
+  //   colors: [
+  //     { name: "Void", hex: "#050505" },
+  //     { name: "Signal", hex: "#1D3A8A" },
+  //     { name: "Charge", hex: "#FF8A3C" },
+  //     { name: "Spark", hex: "#D9E86B" },
+  //   ],
+  //   brainstorming: {
+  //     phrase: "Explore. Question. Refine.",
+  //     images: [
+  //       { src: A.r1, alt: "Pulse � workshops" },
+  //       { src: A.r2, alt: "Pulse � motion tests" },
+  //       { src: A.c1, alt: "Pulse � systems" },
+  //     ],
+  //   },
+  //   concept: {
+  //     phrase: "Finding the right direction.",
+  //     images: [
+  //       { src: A.r3, alt: "Pulse � direction A" },
+  //       { src: A.c4, alt: "Pulse � direction B" },
+  //       { src: A.c2, alt: "Pulse � lock" },
+  //     ],
+  //   },
+  //   mockups: [
+  //     { src: A.r4, alt: "Pulse � mockup 01" },
+  //     { src: A.r1, alt: "Pulse � mockup 02" },
+  //     { src: A.r2, alt: "Pulse � mockup 03" },
+  //     { src: A.r3, alt: "Pulse � mockup 04" },
+  //     { src: A.c4, alt: "Pulse � mockup 05" },
+  //     { src: A.c3, alt: "Pulse � mockup 06" },
+  //     { src: A.hero, alt: "Pulse � mockup 07" },
+  //     { src: A.about, alt: "Pulse � mockup 08" },
+  //     { src: A.c1, alt: "Pulse � mockup 09" },
+  //     { src: A.c2, alt: "Pulse � mockup 10" },
+  //     { src: A.r4, alt: "Pulse � mockup 11" },
+  //   ],
+  // },
   // -- Social Media Campaigns --------------------------------------------------
   {
     slug: "social-campaigns",
@@ -479,157 +501,157 @@ export const PROJECTS: ProjectData[] = [
     title: "Social Media Campaigns",
     client: "Multiple Brands",
     year: 2024,
-    services: ["Social Media Design", "Brand Campaigns", "Visual Identity"],
+    services: ["Social Media Design", "Campaign Creatives", "Visual Direction", "Layout & Typography"],
     description:
-      "A curated collection of social media campaigns created for different brands — each translated into a consistent, ownable Instagram visual system.",
-    mainImage: "/images/retro/1.png",
+      "A collection of social media campaign designs created for three distinct brands: RETRO footwear, COOK burgers, and the PODCAST audio series. Each campaign explores tailored layout systems, typography, and visual pacing designed for fast-scrolling feeds.",
+    mainImage: "/images/Social Media Campaigns Title Card.png",
     type: "social-campaigns" as const,
     introTagline:
-      "Visual campaigns designed to translate distinct brands into cohesive social identities.",
+      "Three distinct campaign collections developed for RETRO, COOK, and PODCAST, exploring tailored art direction, promotional hierarchy, and consistent feed systems.",
     brands: [
       {
         num: "01",
         name: "RETRO",
         category: "Contemporary Lifestyle Footwear",
         description:
-          "A bold, attitude-driven Instagram system for a contemporary sneaker brand — built around energy, culture and street-level authenticity.",
+          "A product-first social campaign designed around clean framing, subtle earth tones, and editorial typography. Each creative balances product hero shots with lifestyle context to drive engagement for seasonal drops.",
         posts: [
-          { src: "/images/retro/1.png", alt: "RETRO — Campaign post 01" },
-          { src: "/images/retro/2.png", alt: "RETRO — Campaign post 02" },
-          { src: "/images/retro/3.png", alt: "RETRO — Campaign post 03" },
-          { src: "/images/retro/4.png", alt: "RETRO — Campaign post 04" },
-          { src: "/images/retro/5.png", alt: "RETRO — Campaign post 05" },
-          { src: "/images/retro/6.png", alt: "RETRO — Campaign post 06" },
-          { src: "/images/retro/7.png", alt: "RETRO — Campaign post 07" },
-          { src: "/images/retro/8.png", alt: "RETRO — Campaign post 08" },
-          { src: "/images/retro/9.png", alt: "RETRO — Campaign post 09" },
-          { src: "/images/retro/10.png", alt: "RETRO — Campaign post 10" },
-          { src: "/images/retro/11.png", alt: "RETRO — Campaign post 11" },
-          { src: "/images/retro/12.png", alt: "RETRO — Campaign post 12" },
+          { src: "/images/retro/1.png", alt: "RETRO, Campaign post 01" },
+          { src: "/images/retro/2.png", alt: "RETRO, Campaign post 02" },
+          { src: "/images/retro/3.png", alt: "RETRO, Campaign post 03" },
+          { src: "/images/retro/4.png", alt: "RETRO, Campaign post 04" },
+          { src: "/images/retro/5.png", alt: "RETRO, Campaign post 05" },
+          { src: "/images/retro/6.png", alt: "RETRO, Campaign post 06" },
+          { src: "/images/retro/7.png", alt: "RETRO, Campaign post 07" },
+          { src: "/images/retro/8.png", alt: "RETRO, Campaign post 08" },
+          { src: "/images/retro/9.png", alt: "RETRO, Campaign post 09" },
+          { src: "/images/retro/10.png", alt: "RETRO, Campaign post 10" },
+          { src: "/images/retro/11.png", alt: "RETRO, Campaign post 11" },
+          { src: "/images/retro/12.png", alt: "RETRO, Campaign post 12" },
         ],
       },
       {
         num: "02",
-        name: "BITZ",
-        category: "Digital Lifestyle & Street Culture",
+        name: "COOK",
+        category: "Burger Brand and Street Culture",
         description:
-          "A high-energy Instagram system built for a digital-native brand — vivid visuals, bold type and a feed that demands a second look.",
+          "High-impact promotional creatives for COOK, a burger brand. The visual strategy uses a bold yellow and brown palette, heavy display typography, and playful badge layouts designed to catch attention in mobile feeds.",
         posts: [
-          { src: "/images/bitz/1.png",  alt: "BITZ — Campaign post 01" },
-          { src: "/images/bitz/2.png",  alt: "BITZ — Campaign post 02" },
-          { src: "/images/bitz/3.png",  alt: "BITZ — Campaign post 03" },
-          { src: "/images/bitz/4.png",  alt: "BITZ — Campaign post 04" },
-          { src: "/images/bitz/5.png",  alt: "BITZ — Campaign post 05" },
-          { src: "/images/bitz/6.png",  alt: "BITZ — Campaign post 06" },
-          { src: "/images/bitz/7.png",  alt: "BITZ — Campaign post 07" },
-          { src: "/images/bitz/8.png",  alt: "BITZ — Campaign post 08" },
-          { src: "/images/bitz/9.png",  alt: "BITZ — Campaign post 09" },
-          { src: "/images/bitz/10.png", alt: "BITZ — Campaign post 10" },
-          { src: "/images/bitz/11.png", alt: "BITZ — Campaign post 11" },
-          { src: "/images/bitz/12.png", alt: "BITZ — Campaign post 12" },
+          { src: "/images/bitz/1.png", alt: "COOK, Campaign post 01" },
+          { src: "/images/bitz/2.png", alt: "COOK, Campaign post 02" },
+          { src: "/images/bitz/3.png", alt: "COOK, Campaign post 03" },
+          { src: "/images/bitz/4.png", alt: "COOK, Campaign post 04" },
+          { src: "/images/bitz/5.png", alt: "COOK, Campaign post 05" },
+          { src: "/images/bitz/6.png", alt: "COOK, Campaign post 06" },
+          { src: "/images/bitz/7.png", alt: "COOK, Campaign post 07" },
+          { src: "/images/bitz/8.png", alt: "COOK, Campaign post 08" },
+          { src: "/images/bitz/9.png", alt: "COOK, Campaign post 09" },
+          { src: "/images/bitz/10.png", alt: "COOK, Campaign post 10" },
+          { src: "/images/bitz/11.png", alt: "COOK, Campaign post 11" },
+          { src: "/images/bitz/12.png", alt: "COOK, Campaign post 12" },
         ],
       },
       {
         num: "03",
         name: "PODCAST",
-        category: "Podcast / Audio Brand",
+        category: "Audio Series and Conversation Media",
         description:
-          "A distinct social media system built for a podcast brand — crafted to communicate personality, depth and editorial authority across every post.",
+          "Social promotional assets developed for an interview podcast series. The visual identity relies on a high-contrast black, red, and off-white color system, dedicated quote layouts, and clear episode hierarchy to drive episode listens.",
         posts: [
-          { src: "/images/podcast/1.png",  alt: "PODCAST — Campaign post 01" },
-          { src: "/images/podcast/2.png",  alt: "PODCAST — Campaign post 02" },
-          { src: "/images/podcast/3.png",  alt: "PODCAST — Campaign post 03" },
-          { src: "/images/podcast/4.png",  alt: "PODCAST — Campaign post 04" },
-          { src: "/images/podcast/5.png",  alt: "PODCAST — Campaign post 05" },
-          { src: "/images/podcast/6.png",  alt: "PODCAST — Campaign post 06" },
-          { src: "/images/podcast/7.png",  alt: "PODCAST — Campaign post 07" },
-          { src: "/images/podcast/8.png",  alt: "PODCAST — Campaign post 08" },
-          { src: "/images/podcast/9.png",  alt: "PODCAST — Campaign post 09" },
-          { src: "/images/podcast/10.png", alt: "PODCAST — Campaign post 10" },
-          { src: "/images/podcast/11.png", alt: "PODCAST — Campaign post 11" },
-          { src: "/images/podcast/12.png", alt: "PODCAST — Campaign post 12" },
+          { src: "/images/podcast/1.png", alt: "PODCAST, Campaign post 01" },
+          { src: "/images/podcast/2.png", alt: "PODCAST, Campaign post 02" },
+          { src: "/images/podcast/3.png", alt: "PODCAST, Campaign post 03" },
+          { src: "/images/podcast/4.png", alt: "PODCAST, Campaign post 04" },
+          { src: "/images/podcast/5.png", alt: "PODCAST, Campaign post 05" },
+          { src: "/images/podcast/6.png", alt: "PODCAST, Campaign post 06" },
+          { src: "/images/podcast/7.png", alt: "PODCAST, Campaign post 07" },
+          { src: "/images/podcast/8.png", alt: "PODCAST, Campaign post 08" },
+          { src: "/images/podcast/9.png", alt: "PODCAST, Campaign post 09" },
+          { src: "/images/podcast/10.png", alt: "PODCAST, Campaign post 10" },
+          { src: "/images/podcast/11.png", alt: "PODCAST, Campaign post 11" },
+          { src: "/images/podcast/12.png", alt: "PODCAST, Campaign post 12" },
         ],
       },
     ],
   },
   // -- Social Media ------------------------------------------------------------
-  {
-    slug: "nova",
-    id: "05",
-    title: "Nova",
-    client: "Creative Client",
-    year: 2022,
-    services: ["Social Media Posts", "Brand Identity", "Digital Experience"],
-    description:
-      "A full reworking for a client ready to move faster and look sharper � identity, website, and campaign as one system.",
-    mainImage: A.r2,
-    type: "social-media",
-    contentOverview: {
-      heading: "A cohesive feed for a mindful brand.",
-      intro: "One system across product, ritual and community.",
-      categories: ["PRODUCT", "SKINCARE", "LIFESTYLE", "COMMUNITY"],
-    },
-    socialPosts: [
-      { src: A.r2, alt: "Nova � post 01" },
-      { src: A.r4, alt: "Nova � post 02" },
-      { src: A.r1, alt: "Nova � post 03" },
-      { src: A.c4, alt: "Nova � post 04" },
-      { src: A.about, alt: "Nova � post 05" },
-      { src: A.hero, alt: "Nova � post 06" },
-      { src: A.c3, alt: "Nova � post 07" },
-      { src: A.r3, alt: "Nova � post 08" },
-      { src: A.c1, alt: "Nova � post 09" },
-      { src: A.c2, alt: "Nova � post 10" },
-      { src: A.r2, alt: "Nova � post 11" },
-      { src: A.r4, alt: "Nova � post 12" },
-    ],
-    storiesReels: [
-      { src: A.c3, alt: "Nova � story 01" },
-      { src: A.c1, alt: "Nova � story 02" },
-      { src: A.c4, alt: "Nova � reel 01", isVideo: true },
-      { src: A.c2, alt: "Nova � story 03" },
-      { src: A.hero, alt: "Nova � reel 02", isVideo: true },
-    ],
-  },
-  {
-    slug: "aura",
-    id: "06",
-    title: "Aura",
-    client: "Mindful Skincare",
-    year: 2024,
-    services: ["Social Media Design", "Art Direction", "Content System"],
-    description:
-      "A cohesive social system for a mindful skincare brand � product, ritual and community designed to read as one calm, continuous feed.",
-    mainImage: A.r2,
-    projectUrl: "https://example.com/aura",
-    type: "social-media",
-    contentOverview: {
-      heading: "A cohesive feed for a mindful brand.",
-      intro: "One system across product, ritual and community.",
-      categories: ["PRODUCT", "SKINCARE", "LIFESTYLE", "COMMUNITY"],
-    },
-    socialPosts: [
-      { src: A.r1, alt: "Aura � post 01" },
-      { src: A.r2, alt: "Aura � post 02" },
-      { src: A.r3, alt: "Aura � post 03" },
-      { src: A.r4, alt: "Aura � post 04" },
-      { src: A.c1, alt: "Aura � post 05" },
-      { src: A.c2, alt: "Aura � post 06" },
-      { src: A.c3, alt: "Aura � post 07" },
-      { src: A.c4, alt: "Aura � post 08" },
-      { src: A.hero, alt: "Aura � post 09" },
-      { src: A.about, alt: "Aura � post 10" },
-      { src: A.r1, alt: "Aura � post 11" },
-      { src: A.r3, alt: "Aura � post 12" },
-    ],
-    storiesReels: [
-      { src: A.c3, alt: "Aura � story 01" },
-      { src: A.c1, alt: "Aura � story 02" },
-      { src: A.c4, alt: "Aura � reel 01", isVideo: true },
-      { src: A.c2, alt: "Aura � story 03" },
-      { src: A.hero, alt: "Aura � reel 02", isVideo: true },
-    ],
-  },
+  // {
+  //   slug: "nova",
+  //   id: "05",
+  //   title: "Nova",
+  //   client: "Creative Client",
+  //   year: 2022,
+  //   services: ["Social Media Posts", "Brand Identity", "Digital Experience"],
+  //   description:
+  //     "A full reworking for a client ready to move faster and look sharper � identity, website, and campaign as one system.",
+  //   mainImage: A.r2,
+  //   type: "social-media",
+  //   contentOverview: {
+  //     heading: "A cohesive feed for a mindful brand.",
+  //     intro: "One system across product, ritual and community.",
+  //     categories: ["PRODUCT", "SKINCARE", "LIFESTYLE", "COMMUNITY"],
+  //   },
+  //   socialPosts: [
+  //     { src: A.r2, alt: "Nova � post 01" },
+  //     { src: A.r4, alt: "Nova � post 02" },
+  //     { src: A.r1, alt: "Nova � post 03" },
+  //     { src: A.c4, alt: "Nova � post 04" },
+  //     { src: A.about, alt: "Nova � post 05" },
+  //     { src: A.hero, alt: "Nova � post 06" },
+  //     { src: A.c3, alt: "Nova � post 07" },
+  //     { src: A.r3, alt: "Nova � post 08" },
+  //     { src: A.c1, alt: "Nova � post 09" },
+  //     { src: A.c2, alt: "Nova � post 10" },
+  //     { src: A.r2, alt: "Nova � post 11" },
+  //     { src: A.r4, alt: "Nova � post 12" },
+  //   ],
+  //   storiesReels: [
+  //     { src: A.c3, alt: "Nova � story 01" },
+  //     { src: A.c1, alt: "Nova � story 02" },
+  //     { src: A.c4, alt: "Nova � reel 01", isVideo: true },
+  //     { src: A.c2, alt: "Nova � story 03" },
+  //     { src: A.hero, alt: "Nova � reel 02", isVideo: true },
+  //   ],
+  // },
+  // {
+  //   slug: "aura",
+  //   id: "06",
+  //   title: "Aura",
+  //   client: "Mindful Skincare",
+  //   year: 2024,
+  //   services: ["Social Media Design", "Art Direction", "Content System"],
+  //   description:
+  //     "A cohesive social system for a mindful skincare brand � product, ritual and community designed to read as one calm, continuous feed.",
+  //   mainImage: A.r2,
+  //   projectUrl: "https://example.com/aura",
+  //   type: "social-media",
+  //   contentOverview: {
+  //     heading: "A cohesive feed for a mindful brand.",
+  //     intro: "One system across product, ritual and community.",
+  //     categories: ["PRODUCT", "SKINCARE", "LIFESTYLE", "COMMUNITY"],
+  //   },
+  //   socialPosts: [
+  //     { src: A.r1, alt: "Aura � post 01" },
+  //     { src: A.r2, alt: "Aura � post 02" },
+  //     { src: A.r3, alt: "Aura � post 03" },
+  //     { src: A.r4, alt: "Aura � post 04" },
+  //     { src: A.c1, alt: "Aura � post 05" },
+  //     { src: A.c2, alt: "Aura � post 06" },
+  //     { src: A.c3, alt: "Aura � post 07" },
+  //     { src: A.c4, alt: "Aura � post 08" },
+  //     { src: A.hero, alt: "Aura � post 09" },
+  //     { src: A.about, alt: "Aura � post 10" },
+  //     { src: A.r1, alt: "Aura � post 11" },
+  //     { src: A.r3, alt: "Aura � post 12" },
+  //   ],
+  //   storiesReels: [
+  //     { src: A.c3, alt: "Aura � story 01" },
+  //     { src: A.c1, alt: "Aura � story 02" },
+  //     { src: A.c4, alt: "Aura � reel 01", isVideo: true },
+  //     { src: A.c2, alt: "Aura � story 03" },
+  //     { src: A.hero, alt: "Aura � reel 02", isVideo: true },
+  //   ],
+  // },
 ];
 
 // --- Public lookup API (signatures unchanged) ---------------------------------
@@ -670,6 +692,11 @@ export function isComfortoProject(project: ProjectData): project is ComfortoProj
   return project.type === "comforto";
 }
 
+/** Type guard - true when project is the BREWLY logo design case study. */
+export function isBrewlyProject(project: ProjectData): project is BrewlyProject {
+  return project.type === "brewly";
+}
+
 /** Type guard — true when project is the Social Media Campaigns case study. */
 export function isSocialCampaignsProject(
   project: ProjectData
@@ -682,5 +709,6 @@ export function getProjectTypeLabel(project: ProjectData): string {
   if (project.type === "social-campaigns") return "Social Media / Brand Campaigns";
   if (project.type === "nily") return "Brand Identity / Logo Design";
   if (project.type === "comforto") return "Brand Identity / Logo Design";
+  if (project.type === "brewly") return "Logo Design / Brand Identity";
   return "Brand Identity";
 }

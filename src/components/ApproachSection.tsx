@@ -11,37 +11,37 @@ const STEPS: Step[] = [
   {
     number: "001",
     title: "Discover",
-    meta: "Observe",
+    meta: "Analyze",
     description:
-      "Start with the problem. Understand the context, audience, and what the work needs to achieve.",
+      "Unpack the core design challenge. Define brand context, audience expectations, and functional requirements before sketching.",
   },
   {
     number: "002",
     title: "Explore",
-    meta: "Explore",
+    meta: "Ideate",
     description:
-      "Research, experiment, sketch, and test different ideas and visual directions.",
+      "Test visual directions, typographic treatments, and rough symbol concepts through sketches and rapid iteration.",
   },
   {
     number: "003",
-    title: "Create",
-    meta: "Make",
+    title: "Construct",
+    meta: "Form",
     description:
-      "Turn the strongest direction into thoughtful, distinctive design.",
+      "Translate the strongest direction into precise vector geometry, establishing baseline grids and optical proportions.",
   },
   {
     number: "004",
     title: "Refine",
     meta: "Detail",
     description:
-      "Push the details, question decisions, and make the final work feel clear and complete.",
+      "Fine-tune stroke weights, negative space relationships, legibility tolerances, and responsive lockups.",
   },
   {
     number: "005",
     title: "Deliver",
-    meta: "Final",
+    meta: "System",
     description:
-      "Bring everything together into a finished piece that is ready to exist in the real world.",
+      "Assemble production-ready assets, comprehensive brand guidelines, and real-world mockups ready for deployment.",
   },
 ];
 
@@ -53,7 +53,7 @@ export default function ApproachSection() {
     <section
       id="approach"
       className="approach-section"
-      aria-label="Our Approach"
+      aria-label="Design Process and Approach"
     >
       <div className="approach-inner">
         <header className="approach-header">

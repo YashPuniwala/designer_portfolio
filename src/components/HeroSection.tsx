@@ -21,7 +21,7 @@ import { useLayoutEffect, useRef } from "react";
 const SERIF = '"Instrument Serif", "Times New Roman", Georgia, serif';
 const SANS = '"Inter", ui-sans-serif, system-ui, sans-serif';
 
-export default function HeroSection2() {
+export default function HeroSection2({ isLoaded = true }: { isLoaded?: boolean }) {
   const rootRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const innerRef = useRef<HTMLSpanElement>(null);
@@ -71,7 +71,7 @@ export default function HeroSection2() {
     <section
       ref={rootRef}
       id="home"
-      className="h2-root relative flex w-full flex-col items-center overflow-hidden text-neutral-900"
+      className={`h2-root relative flex w-full flex-col items-center overflow-hidden text-neutral-900 ${isLoaded ? "h2-ready" : ""}`}
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap');
@@ -85,14 +85,33 @@ export default function HeroSection2() {
           from { opacity: 0; transform: translateY(32px) scale(0.97); }
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .h2-anim     { opacity: 0; animation: h2FadeUp    0.85s cubic-bezier(0.22,1,0.36,1) forwards; }
-        .h2-img-anim { opacity: 0; animation: h2ImgReveal 1s   cubic-bezier(0.22,1,0.36,1) forwards; }
-        .h2-d1 { animation-delay: 0.08s; }
-        .h2-d2 { animation-delay: 0.55s; }
-        .h2-d3 { animation-delay: 0.85s; }
-        .h2-d5 { animation-delay: 1.35s; }
+        .h2-anim {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        .h2-img-anim {
+          opacity: 0;
+          transform: translateY(32px) scale(0.97);
+        }
+
+        .h2-ready .h2-anim {
+          animation: h2FadeUp 0.85s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        .h2-ready .h2-img-anim {
+          animation: h2ImgReveal 1s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        .h2-ready .h2-d1 { animation-delay: 0.08s; }
+        .h2-ready .h2-d2 { animation-delay: 0.55s; }
+        .h2-ready .h2-d3 { animation-delay: 0.85s; }
+        .h2-ready .h2-d5 { animation-delay: 1.35s; }
+
         @media (prefers-reduced-motion: reduce) {
-          .h2-anim, .h2-img-anim { animation: none !important; opacity: 1 !important; transform: none !important; }
+          .h2-anim, .h2-img-anim,
+          .h2-ready .h2-anim, .h2-ready .h2-img-anim {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
         }
 
         /* ── Base (mobile first) ───────────────────────────────── */
@@ -243,13 +262,13 @@ export default function HeroSection2() {
 
         <div className="h2-stage">
           <span className="h2-anim h2-d2 h2-meta h2-loc">Mumbai, India</span>
-          <span className="h2-anim h2-d2 h2-meta h2-role">Your Graphic Designer</span>
+          <span className="h2-anim h2-d2 h2-meta h2-role">Graphic Designer</span>
 
           <div className="h2-img-anim h2-d3 h2-portrait">
             <div className="h2-frame">
               <img
                 src="/hero-image5.png"
-                alt="Yash Puniwala — Graphic Designer"
+                alt="Yash Puniwala, Graphic Designer"
                 draggable={false}
               />
             </div>
@@ -257,8 +276,8 @@ export default function HeroSection2() {
         </div>
 
         <p className="h2-anim h2-d5 h2-statement">
-          We craft bold brand identities and digital experiences that finally
-          make your work impossible to ignore.
+          I craft bold brand identities and visual experiences that make
+          ambitious work impossible to ignore.
         </p>
       </div>
     </section>

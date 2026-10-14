@@ -7,7 +7,7 @@
   --color-ink: #050505;
   --color-amber-glow: #ff8a3c;
   /* Tokens consumed by the InfiniteTextMarquee tooltip (bg-primary /
-     text-primary-foreground), themed to the OPERATOR.X palette. */
+     text-primary-foreground), themed to the Yash Puniwala palette. */
   --color-primary: #ff8a3c;
   --color-primary-foreground: #050505;
 }
@@ -921,10 +921,10 @@ html.lenis body {
   opacity: 0.68;
 }
 
-/* Restrained accent pairs tuned for the Operator.X palette. */
+/* Restrained accent pairs tuned for the Yash Puniwala palette. */
 /* One unified solid color per service, top to bottom — number card and
    content card always share the same background. Built from the
-   OPERATOR.X palette: orange accent, off-white, Hero blue, warm lime. */
+   portfolio palette: orange accent, off-white, Hero blue, warm lime. */
 
 /* 01 — Orange (the site's amber accent) */
 .service-unit-1 .service-number-card,

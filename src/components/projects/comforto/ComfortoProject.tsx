@@ -38,35 +38,35 @@ type Stage = {
 const LOGO_STAGES: Stage[] = [
   {
     number: "01",
-    title: "Initial Concept",
+    title: "Typographic Foundation",
     description:
-      "Brainstorming a comprehensive emblem that captures the architectural nature of interior structures and the core COMFORTO identity. Early explorations tested wordmark proportions and spatial silhouettes to find a solid design foundation.",
+      "I began by exploring wide, structured typography for the COMFORTO wordmark. Early sketches evaluated letterform proportions, baseline balance, and kerning to establish an architectural, grounded presence before isolating a standalone icon.",
     image: "/images/comforto/logo_step1.png",
-    alt: "COMFORTO — Initial Concept",
+    alt: "COMFORTO, Typographic Foundation",
   },
   {
     number: "02",
-    title: "Refinement",
+    title: "Form Refinement",
     description:
-      "Stripping away extraneous layers to isolate a bold, high-impact wordmark built for maximum legibility at any scale. While the typography was strong, the standalone letters were tuned to uniquely communicate serene modern aesthetics.",
+      "In the second stage, I softened the initial rigidity by introducing optical curves and testing character ligatures. The goal was to communicate understated comfort without sacrificing the clean, contemporary aesthetic required by the brand.",
     image: "/images/comforto/logo_step2.png",
-    alt: "COMFORTO — Refinement",
+    alt: "COMFORTO, Form Refinement",
   },
   {
     number: "03",
-    title: "Structure",
+    title: "Geometric Grid Construction",
     description:
-      "Locking the construction grid and geometric curvature. The mark was engineered with exact mathematical proportions and spatial tolerances to ensure balance across large-scale physical signages and engraved textures.",
+      "The exploration shifted to isolating a distinctive monogram. Using a precise circular construction grid, I engineered consistent stroke weights and mathematical corner radii, guaranteeing that the geometry remains balanced across both physical signage and small-scale debossing.",
     image: "/images/comforto/logo_step3.png",
-    alt: "COMFORTO — Structure",
+    alt: "COMFORTO, Geometric Grid Construction",
   },
   {
     number: "04",
-    title: "Final Logo",
+    title: "Final Resolved Mark",
     description:
-      "Distilling the entire process into a refined, iconic velocity mark engineered to fit cleanly on luxury furniture tags, architectural specifications, and bespoke digital brand touchpoints.",
+      "The final logo resolves into an iconic, sculpted 'C' monogram. Its balanced curves and clean negative space create an ownable identity that scales effortlessly from luxury product tags and app icons to architectural showroom applications.",
     image: "/images/comforto/logo_mark(logo_step4).png",
-    alt: "COMFORTO — Final Logo Mark",
+    alt: "COMFORTO, Final Resolved Mark",
   },
 ];
 
@@ -120,19 +120,19 @@ function ComfortoCaseStudy() {
           1. LOGO DEVELOPMENT — straight center spine + branch stubs
           ════════════════════════════════════════════════════════════ */}
       <section
-        className="max-w-[80rem] mx-auto px-[clamp(1.25rem,4vw,3.5rem)] pt-[clamp(2.5rem,5vh,4rem)] pb-[clamp(2.5rem,5vh,4rem)]"
+        className="max-w-[80rem] mx-auto px-[clamp(1.25rem,4vw,3.5rem)] pt-[clamp(1.5rem,3vh,2.25rem)] pb-[clamp(2.5rem,5vh,4rem)]"
         aria-label="Logo Development"
       >
         {/* Section Heading & Intro */}
-        <div className="mb-[clamp(2rem,4vh,3.25rem)]">
+        <div className="mb-[clamp(1.75rem,3.25vh,2.5rem)]">
           <h2 className="font-display font-extrabold text-[clamp(1.75rem,2.8vw,2.4rem)] text-white tracking-tight uppercase mb-3">
-            Logo Design
+            Logo Design Process
           </h2>
           <p className="font-body text-[clamp(0.95rem,1.15vw,1.05rem)] font-medium text-white/90 leading-[1.6] max-w-[50rem] mb-2">
-            The mark needed to feel as timeless, structured, and calm as architectural space itself.
+            Developing a structured, architectural brandmark for contemporary furniture.
           </p>
           <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/55 max-w-[54rem]">
-            I explored compact forms, spatial proportions, and geometric reduction to create a mark with enough visual weight to stand out on physical architectural hardware and furniture tags, while staying pure enough to remain crystal clear at smaller digital sizes.
+            The design challenge for COMFORTO was to create an identity that balances architectural discipline with the warmth of modern living. I developed the identity through a four-stage process of typographic experimentation, geometric reduction, grid construction, and mark resolution, ensuring the mark holds visual weight on engraved furniture tags and remains razor-sharp in digital applications.
           </p>
         </div>
 
@@ -202,18 +202,18 @@ function ComfortoCaseStudy() {
         aria-label="Visual Identity and Mockups"
       >
         <p className="font-mono text-[9px] tracking-[0.42em] uppercase text-white/[0.32] mb-[0.9rem] block">
-          Visual Identity &amp; Mockups
+          Visual Identity &amp; Brand Applications
         </p>
         <p className="font-display text-[clamp(0.82rem,1.1vw,0.96rem)] leading-[1.65] text-white/[0.48] max-w-[44rem] mb-[clamp(1.5rem,4vh,3rem)]">
-          A complete visual language — typeface, colour system and brand
-          application across every surface.
+          A cohesive visual language connecting typography, a warm architectural color palette,
+          vector construction grids, and real-world touchpoints from furniture hardware tags to digital interfaces.
         </p>
 
         {/* 02. TYPEFACE — full-width */}
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
           <img
             src="/images/comforto/typeface.png"
-            alt="COMFORTO — Typeface"
+            alt="COMFORTO, Typeface"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -224,7 +224,7 @@ function ComfortoCaseStudy() {
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
           <img
             src="/images/comforto/color_pallete.png"
-            alt="COMFORTO — Colour palette"
+            alt="COMFORTO, Colour palette"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -235,21 +235,21 @@ function ComfortoCaseStudy() {
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden grid grid-cols-3 gap-0 max-[600px]:grid-cols-1">
           <img
             src="/images/comforto/logo.png"
-            alt="COMFORTO — Primary logo"
+            alt="COMFORTO, Primary logo"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
           />
           <img
             src="/images/comforto/logo2.png"
-            alt="COMFORTO — Logo mark"
+            alt="COMFORTO, Logo mark"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
           />
           <img
             src="/images/comforto/logo3.png"
-            alt="COMFORTO — Submark logo"
+            alt="COMFORTO, Submark logo"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -260,7 +260,7 @@ function ComfortoCaseStudy() {
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
           <img
             src="/images/comforto/illustrator.png"
-            alt="COMFORTO — Illustrator / logo construction"
+            alt="COMFORTO, Illustrator / logo construction"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -272,7 +272,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 aspect-[4/5] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/comforto/chair_logo.png"
-              alt="COMFORTO — Chair with logo application"
+              alt="COMFORTO, Chair with logo application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -281,7 +281,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 aspect-[4/5] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/comforto/app_icon.png"
-              alt="COMFORTO — App icon"
+              alt="COMFORTO, App icon"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -290,7 +290,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 aspect-[4/5] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/comforto/color_illus.png"
-              alt="COMFORTO — Colour illustration"
+              alt="COMFORTO, Colour illustration"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -299,7 +299,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 aspect-[4/5] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/comforto/app_icon2.png"
-              alt="COMFORTO — App icon variant"
+              alt="COMFORTO, App icon variant"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -311,7 +311,7 @@ function ComfortoCaseStudy() {
         <div className="w-full mt-[8px] rounded-[10px] overflow-hidden">
           <img
             src="/images/comforto/poster2.png"
-            alt="COMFORTO — Brand poster"
+            alt="COMFORTO, Brand poster"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -323,7 +323,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/cap.png"
-              alt="COMFORTO — Cap brand application"
+              alt="COMFORTO, Cap brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -332,7 +332,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/sofa3.png"
-              alt="COMFORTO — Sofa brand application"
+              alt="COMFORTO, Sofa brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -344,7 +344,7 @@ function ComfortoCaseStudy() {
         <div className="w-full mt-[8px] rounded-[10px] overflow-hidden">
           <img
             src="/images/comforto/busineiss_card.png"
-            alt="COMFORTO — Business card"
+            alt="COMFORTO, Business card"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -355,7 +355,7 @@ function ComfortoCaseStudy() {
         <div className="w-full mt-[8px] rounded-[10px] overflow-hidden">
           <img
             src="/images/comforto/store_banner.jpg"
-            alt="COMFORTO — Store banner"
+            alt="COMFORTO, Store banner"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -367,7 +367,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/insta.png"
-              alt="COMFORTO — Instagram brand application"
+              alt="COMFORTO, Instagram brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -376,7 +376,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/sofa.png"
-              alt="COMFORTO — Sofa brand application"
+              alt="COMFORTO, Sofa brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -388,7 +388,7 @@ function ComfortoCaseStudy() {
         <div className="w-full mt-[8px] rounded-[10px] overflow-hidden">
           <img
             src="/images/comforto/book.png"
-            alt="COMFORTO — Brand book"
+            alt="COMFORTO, Brand book"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -400,7 +400,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/letter.png"
-              alt="COMFORTO — Letter brand application"
+              alt="COMFORTO, Letter brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -409,7 +409,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/website.png"
-              alt="COMFORTO — Website brand application"
+              alt="COMFORTO, Website brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -421,7 +421,7 @@ function ComfortoCaseStudy() {
         <div className="w-full mt-[8px] rounded-[10px] overflow-hidden">
           <img
             src="/images/comforto/price.png"
-            alt="COMFORTO — Price presentation"
+            alt="COMFORTO, Price presentation"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -433,7 +433,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/text.png"
-              alt="COMFORTO — Text brand application"
+              alt="COMFORTO, Text brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -442,7 +442,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/sofa4.png"
-              alt="COMFORTO — Sofa brand application"
+              alt="COMFORTO, Sofa brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -455,7 +455,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/sofa.png"
-              alt="COMFORTO — Sofa brand application"
+              alt="COMFORTO, Sofa brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -464,7 +464,7 @@ function ComfortoCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden">
             <img
               src="/images/comforto/sofa6.png"
-              alt="COMFORTO — Sofa brand application variant"
+              alt="COMFORTO, Sofa brand application variant"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -476,7 +476,7 @@ function ComfortoCaseStudy() {
         <div className="w-full mt-[8px] rounded-[10px] overflow-hidden">
           <img
             src="/images/comforto/thankyou.png"
-            alt="COMFORTO — Thank you"
+            alt="COMFORTO, Thank you"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"

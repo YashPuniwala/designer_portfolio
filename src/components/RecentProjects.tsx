@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef } from "react";
+import { navigate } from "@/utils/router";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,28 +18,34 @@ type Project = {
   titleCase?: "uppercase" | "none";
 };
 
-// Each project gets its own typographic identity for the title.
-// Space Grotesk (--font-display) is the portfolio's primary display font.
-// Inter (--font-body) is used for the more editorial / multi-word title.
+// Each project uses the portfolio's primary display font (Space Grotesk)
+// for its title in the card — consistent typography across all four cards.
 const DISPLAY = "var(--font-display)";
-const BODY    = "var(--font-body)";
 
 const PROJECTS: Project[] = [
   {
-    slug: "breww",
-    title: "Breww",
-    tags: ["Brand Identity", "Packaging Design"],
-    src: "/images/breww/17.png",
-    // Breww uses a bold grotesk — Space Grotesk
+    slug: "nily",
+    title: "NILY",
+    tags: ["Brand Identity", "Logo Design", "Visual Identity"],
+    src: "/images/nily/hero.png",
     titleFont: DISPLAY,
-    titleTracking: "-0.03em",
+    titleTracking: "0.06em",
+    titleCase: "uppercase",
+  },
+  {
+    slug: "brewly",
+    title: "BREWLY",
+    tags: ["Logo Design", "Brand Identity", "Packaging Design"],
+    src: "/images/brewly/cups.png",
+    titleFont: DISPLAY,
+    titleTracking: "0.04em",
+    titleCase: "uppercase",
   },
   {
     slug: "comforto",
     title: "COMFORTO",
-    tags: ["Brand Identity", "Visual Identity"],
+    tags: ["Brand Identity", "Logo Design", "Visual Identity"],
     src: "/images/comforto/image.png",
-    // COMFORTO case study uses bold uppercase display
     titleFont: DISPLAY,
     titleTracking: "0.04em",
     titleCase: "uppercase",
@@ -46,26 +53,15 @@ const PROJECTS: Project[] = [
   {
     slug: "social-campaigns",
     title: "Social Media Campaigns",
-    tags: ["Social Media", "Brand Campaigns"],
-    src: "/images/retro/1.png",
-    // Multi-word editorial title — Inter body font, normal weight
-    titleFont: BODY,
+    tags: ["Social Media Design", "Campaign Creatives", "Visual Direction"],
+    src: "/images/Social Media Campaigns Title Card.png",
+    titleFont: DISPLAY,
     titleTracking: "-0.01em",
   },
-  {
-    slug: "nily",
-    title: "NILY",
-    tags: ["Brand Identity", "Logo Design"],
-    src: "/images/nily/hero.png",
-    // NILY uses bold uppercase display — Space Grotesk
-    titleFont: DISPLAY,
-    titleTracking: "0.06em",
-    titleCase: "uppercase",
-  },
 ];
-
+ 
 function openProject(slug: string) {
-  window.location.hash = `#/projects/${slug}`;
+  navigate(`/projects/${slug}`);
 }
 
 export default function RecentProjects() {
@@ -254,13 +250,13 @@ export default function RecentProjects() {
     <section
       ref={sectionRef}
       id="recent-projects"
-      className="recent-projects relative bg-white px-[5vw] py-[10vh] pb-[14vh] text-[#0a0a0a]"
+      className="recent-projects relative bg-white px-[5vw] py-[10vh] pb-[14vh] text-[#0a0a0a] scroll-mt-24 md:scroll-mt-28"
       aria-label="Recent Projects"
     >
       {/* Header */}
       <header className="rp-header pb-[7vh] pt-[2vh] text-center">
         <h2 className="font-display font-bold leading-[0.96] tracking-[-0.02em] text-[#0a0a0a] text-[clamp(2.4rem,6.2vw,5.6rem)]">
-          We let the{" "}
+          I let the{" "}
           <span
             className="italic font-bold text-[#ff8a3c]"
             style={{ fontFamily: '"Caveat", "Brush Script MT", cursive' }}
@@ -268,7 +264,7 @@ export default function RecentProjects() {
             Projects
           </span>
           <br />
-          speak for itself.
+          speak for themselves.
         </h2>
       </header>
 

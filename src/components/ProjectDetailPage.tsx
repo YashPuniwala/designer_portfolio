@@ -7,20 +7,35 @@ import { BrandIdentityProject } from "./projects/brand-identity";
 import { SocialMediaProject } from "./projects/social-media";
 import { NilyProject } from "./projects/nily";
 import { ComfortoProject } from "./projects/comforto";
+import { BrewlyProject } from "./projects/brewly";
 import { SocialCampaignsProject } from "./projects/social-campaigns";
 import {
+  type ProjectData,
   getNextProject,
   getProjectBySlug,
   isNilyProject,
   isComfortoProject,
+  isBrewlyProject,
   isSocialMediaProject,
   isSocialCampaignsProject,
 } from "@/data/projects";
 
+import { navigate } from "@/utils/router";
+import { updateSEO } from "@/utils/seo";
+
 gsap.registerPlugin(ScrollTrigger);
 
-function goHome() {
-  window.location.hash = "#home";
+function goBackToProjects(e?: React.MouseEvent) {
+  e?.preventDefault();
+  navigate("/#projects");
+}
+
+function getProjectCategory(project: ProjectData): string {
+  if (project.slug === "social-campaigns") return "Multiple Brands";
+  if (project.slug === "comforto") return "Architectural Furniture";
+  if (project.slug === "brewly") return "Café Brand Identity";
+  if (project.slug === "nily") return "Urban Apparel";
+  return project.client || "Brand Identity";
 }
 
 export default function ProjectDetailPage({ slug }: { slug: string }) {
@@ -29,7 +44,20 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
   const next = project ? getNextProject(project.slug) : null;
 
   useLayoutEffect(() => {
-    document.title = project ? `${project.title} — OPERATOR.X` : "Project — OPERATOR.X";
+    if (project) {
+      updateSEO({
+        title: `${project.title} | Yash Puniwala`,
+        description: project.description,
+        url: `/projects/${project.slug}`,
+        image: project.mainImage,
+        type: "article",
+      });
+    } else {
+      updateSEO({
+        title: "Project Not Found | Yash Puniwala",
+        description: "Portfolio project case study by Yash Puniwala.",
+      });
+    }
     window.scrollTo(0, 0);
   }, [project, slug]);
 
@@ -88,8 +116,8 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
       <div className="pd-root">
         <div className="pd-missing">
           <h1 className="font-display text-5xl font-bold uppercase">Project not found</h1>
-          <button onClick={goHome} className="pd-back-btn">
-            ← Back to home
+          <button onClick={goBackToProjects} className="pd-back-btn">
+            ← Back to Projects
           </button>
         </div>
       </div>
@@ -102,9 +130,8 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
           and slides off the bottom to reveal it. */}
       <div className="pd-page-content">
         {/* ============================================================
-          STICKY INTRO — the ← BACK link lives INSIDE the black title
-          layer, so back + project name travel as one layer during the
-          existing intro animation and leave the viewport with it.
+          STICKY INTRO — Back to Projects link + title + metadata
+          travel as one layer during the intro animation.
           ============================================================ */}
         <section className="pd-intro" aria-label={`${project.title} intro`}>
           <div className="pd-stage">
@@ -112,26 +139,23 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
 
             <div className="pd-title-layer">
               <div className="pd-title-inner">
-                <button
-                  type="button"
-                  onClick={goHome}
-                  className="pd-back-link"
-                  aria-label="Back to all work"
-                >
-                  <span className="pd-back-arrow" aria-hidden="true">
-                    ←
-                  </span>
-                  Back
-                </button>
-                <p className="pd-eyebrow">Featured Case Study</p>
                 <h1 className="pd-title">{project.title}</h1>
-                <p className="pd-title-sub">
-                  {project.year} — {project.client}
-                </p>
-              </div>
-              <div className="pd-scroll-hint">
-                <span>Scroll</span>
-                <span className="pd-scroll-line" />
+                <div className="pd-title-meta">
+                  <p className="pd-title-sub">
+                    {project.year}, {getProjectCategory(project)}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={goBackToProjects}
+                    className="pd-back-link"
+                    aria-label="Back to Projects"
+                  >
+                    <span className="pd-back-arrow" aria-hidden="true">
+                      ←
+                    </span>
+                    Back to Projects
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -186,6 +210,8 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
           <NilyProject project={project} />
         ) : isComfortoProject(project) ? (
           <ComfortoProject project={project} />
+        ) : isBrewlyProject(project) ? (
+          <BrewlyProject project={project} />
         ) : (
           <BrandIdentityProject project={project} />
         )}

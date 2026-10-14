@@ -5,20 +5,30 @@ interface LoadingScreenProps {
 }
 
 export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
-    const [play, setPlay] = useState(false);
     const [hidden, setHidden] = useState(false);
 
     useEffect(() => {
-        const start = requestAnimationFrame(() => setPlay(true));
+        const origOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        window.scrollTo(0, 0);
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            document.body.style.overflow = origOverflow;
+            setHidden(true);
+            onComplete();
+            return;
+        }
 
         // total sequence length: tear delay (3.1s) + tear duration (0.8s)
         const done = window.setTimeout(() => {
+            document.body.style.overflow = origOverflow;
+            window.scrollTo(0, 0);
             setHidden(true);
             onComplete();
         }, 3900);
 
         return () => {
-            cancelAnimationFrame(start);
+            document.body.style.overflow = origOverflow;
             window.clearTimeout(done);
         };
     }, [onComplete]);
@@ -45,6 +55,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           flex-direction: column;
           align-items: center;
           gap: 0.05em;
+          opacity: 0;
         }
 
         .flip-line {
@@ -127,7 +138,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       `}</style>
 
             <div
-                className={`loader-layer top-layer ${play ? "anim-in anim-tear" : ""}`}
+                className="loader-layer top-layer anim-in anim-tear"
             >
                 <div className="word-group">
                     <div className="flip-line line-1">
@@ -142,7 +153,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             </div>
 
             <div
-                className={`loader-layer bottom-layer ${play ? "anim-in anim-tear" : ""}`}
+                className="loader-layer bottom-layer anim-in anim-tear"
             >
                 <div className="word-group">
                     <div className="flip-line line-1">

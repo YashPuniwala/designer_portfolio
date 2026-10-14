@@ -27,22 +27,19 @@ function NilyCaseStudy() {
              Structure copied from Comforto; ALL NILY content preserved.
           ════════════════════════════════════════════════════════════ */}
       <section
-        className="max-w-[80rem] mx-auto px-[clamp(1.25rem,4vw,3.5rem)] pt-[clamp(2.5rem,5vh,4rem)] pb-[clamp(2.5rem,5vh,4rem)]"
+        className="max-w-[80rem] mx-auto px-[clamp(1.25rem,4vw,3.5rem)] pt-[clamp(1.5rem,3vh,2.25rem)] pb-[clamp(2.5rem,5vh,4rem)]"
         aria-label="Logo Design"
       >
         {/* Section heading & intro — NILY copy, Comforto heading style */}
-        <div className="mb-[clamp(2rem,4vh,3.25rem)]">
+        <div className="mb-[clamp(1.75rem,3.25vh,2.5rem)]">
           <h2 className="font-display font-extrabold text-[clamp(1.75rem,2.8vw,2.4rem)] text-white tracking-tight uppercase mb-3">
-            Logo Design
+            Logo Design Process
           </h2>
           <p className="font-body text-[clamp(0.95rem,1.15vw,1.05rem)] font-medium text-white/90 leading-[1.6] max-w-[50rem] mb-2">
-            The logo was developed through a disciplined process of exploration,
-            refinement and simplification.
+            Developing a disciplined, scalable monogram for an urban apparel brand.
           </p>
           <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/55 max-w-[54rem]">
-            Moving from raw ideas toward a mark that is quiet, precise and entirely
-            ownable — every curve, weight and proportion considered until the mark
-            could stand alone at any scale.
+            For NILY, the objective was to design a clean, memorable mark capable of living on fabric labels, embroidered apparel, metal hardware, and digital platforms. The monogram developed through three stages of geometric exploration, stroke weight refinement, and optical reduction, arriving at a mark that feels quiet, precise, and instantly ownable.
           </p>
         </div>
 
@@ -97,11 +94,10 @@ function NilyCaseStudy() {
                   01
                 </span>
                 <h3 className="font-display font-bold text-[clamp(1rem,1.3vw,1.25rem)] text-white tracking-wide uppercase mb-2">
-                  Initial Concept
+                  Initial Monogram Concept
                 </h3>
                 <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/60 max-w-[28rem]">
-                  The first round of explorations — testing wordmarks, symbols and
-                  letterform-based directions toward something unique and ownable.
+                  I began with geometric explorations of the letter 'N', testing interconnected lines and continuous stroke paths. The goal was to construct a balanced letterform that felt structured yet dynamic, establishing the visual groundwork for an apparel identity.
                 </p>
               </div>
               {/* Image column */}
@@ -109,7 +105,7 @@ function NilyCaseStudy() {
                 <div className="w-[172px] h-[172px] sm:w-[196px] sm:h-[196px] md:w-[212px] md:h-[212px] lg:w-[228px] lg:h-[228px] flex items-center justify-center group">
                   <img
                     src="/images/nily 2/logo_step1.png"
-                    alt="NILY — Initial logo concept exploration"
+                    alt="NILY, Initial Monogram Concept"
                     loading="lazy"
                     decoding="async"
                     className="max-w-full max-h-full object-contain block transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
@@ -125,7 +121,7 @@ function NilyCaseStudy() {
                 <div className="w-[172px] h-[172px] sm:w-[196px] sm:h-[196px] md:w-[212px] md:h-[212px] lg:w-[228px] lg:h-[228px] flex items-center justify-center group">
                   <img
                     src="/images/nily 2/logo_step2.png"
-                    alt="NILY — Simplified brand direction"
+                    alt="NILY, Negative Space & Stroke Reduction"
                     loading="lazy"
                     decoding="async"
                     className="max-w-full max-h-full object-contain block transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
@@ -138,11 +134,10 @@ function NilyCaseStudy() {
                   02
                 </span>
                 <h3 className="font-display font-bold text-[clamp(1rem,1.3vw,1.25rem)] text-white tracking-wide uppercase mb-2">
-                  Brand Simplification
+                  Negative Space &amp; Stroke Reduction
                 </h3>
                 <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/60 max-w-[28rem]">
-                  Stripping away complexity — a mark that reads instantly at any
-                  size and carries the brand character without noise.
+                  In the second stage, I stripped away non-essential internal geometry. I adjusted diagonal angles and thickened key strokes to ensure the monogram retained optical legibility when rendered at tiny dimensions on garment tags and embroidery.
                 </p>
               </div>
             </div>
@@ -155,11 +150,10 @@ function NilyCaseStudy() {
                   03
                 </span>
                 <h3 className="font-display font-bold text-[clamp(1rem,1.3vw,1.25rem)] text-white tracking-wide uppercase mb-2">
-                  Refined Core Mark
+                  Final Resolved Symbol
                 </h3>
                 <p className="font-body text-[clamp(0.85rem,1.02vw,0.95rem)] leading-[1.7] text-white/60 max-w-[28rem]">
-                  The final mark — refined, resolved and ready. Every curve, weight
-                  and proportion considered until the mark could stand alone.
+                  The final mark resolves optical weights, corner radii, and line endings into a solid, versatile monogram. It stands firmly on its own as a garment badge and locks cleanly with the Space Grotesk wordmark across brand collateral.
                 </p>
               </div>
               {/* Image column */}
@@ -167,7 +161,7 @@ function NilyCaseStudy() {
                 <div className="w-[172px] h-[172px] sm:w-[196px] sm:h-[196px] md:w-[212px] md:h-[212px] lg:w-[228px] lg:h-[228px] flex items-center justify-center group">
                   <img
                     src="/images/nily 2/logo_step3.png"
-                    alt="NILY — Refined final core mark"
+                    alt="NILY, Final Resolved Symbol"
                     loading="lazy"
                     decoding="async"
                     className="max-w-full max-h-full object-contain block transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
@@ -185,26 +179,26 @@ function NilyCaseStudy() {
           ════════════════════════════════════════════════════════════ */}
       <section className="max-w-[80rem] mx-auto px-[clamp(1.25rem,4vw,3.5rem)] pt-[clamp(1.5rem,3vh,2.5rem)] pb-[clamp(3rem,6vh,5rem)]" aria-label="Visual Identity and Mockups">
         <p className="font-mono text-[9px] tracking-[0.42em] uppercase text-white/[0.32] mb-[0.9rem] block">
-          Visual Identity &amp; Mockups
+          Visual Identity &amp; Brand Applications
         </p>
         <p className="font-display text-[clamp(0.82rem,1.1vw,0.96rem)] leading-[1.65] text-white/[0.48] max-w-[44rem] mb-[clamp(1.5rem,4vh,3rem)]">
-          A complete visual language — typeface, construction and brand
-          application across every surface.
+          A unified visual language connecting custom typography guidelines, vector construction grids,
+          and real-world apparel applications across physical garment tagging, packaging, and digital lookbooks.
         </p>
 
         {/* ── TYPEFACE — full-width ────────────────────────────────── */}
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
-          <img src="/images/nily 2/typeface.png" alt="NILY — Typeface" loading="lazy" decoding="async" className="w-full h-auto block" />
+          <img src="/images/nily 2/typeface.png" alt="NILY, Typeface" loading="lazy" decoding="async" className="w-full h-auto block" />
         </div>
 
         {/* ── ILLUSTRATOR — full-width ─────────────────────────────── */}
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
-          <img src="/images/nily 2/illustrator.png" alt="NILY — Illustrator / logo construction" loading="lazy" decoding="async" className="w-full h-auto block" />
+          <img src="/images/nily 2/illustrator.png" alt="NILY, Illustrator / logo construction" loading="lazy" decoding="async" className="w-full h-auto block" />
         </div>
 
         {/* ── SKETCH — full-width ───────────────────────────────────── */}
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
-          <img src="/images/nily 2/sketch.png" alt="NILY — Sketch" loading="lazy" decoding="async" className="w-full h-auto block" />
+          <img src="/images/nily 2/sketch.png" alt="NILY, Sketch" loading="lazy" decoding="async" className="w-full h-auto block" />
         </div>
 
         {/* ══════════════════════════════════════════════════════════
@@ -218,7 +212,7 @@ function NilyCaseStudy() {
           <div className="row-span-2 min-w-0 min-h-0 rounded-[10px] overflow-hidden bg-[#0d0d0d] border border-white/[0.04] max-[900px]:row-span-2 max-[600px]:row-span-1">
             <img
               src="/images/nily 2/logo_step3.png"
-              alt="NILY — Logo variation"
+              alt="NILY, Logo variation"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -230,7 +224,7 @@ function NilyCaseStudy() {
             <div className="min-h-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
               <img
                 src="/images/nily 2/20.png"
-                alt="NILY — Identity application"
+                alt="NILY, Identity application"
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover block"
@@ -240,7 +234,7 @@ function NilyCaseStudy() {
             <div className="min-h-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
               <img
                 src="/images/nily 2/21.png"
-                alt="NILY — Identity application"
+                alt="NILY, Identity application"
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover block"
@@ -253,7 +247,7 @@ function NilyCaseStudy() {
             <div className="min-h-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
               <img
                 src="/images/nily 2/2.png"
-                alt="NILY — Business card / identity application"
+                alt="NILY, Business card / identity application"
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover block"
@@ -263,7 +257,7 @@ function NilyCaseStudy() {
             <div className="min-h-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
               <img
                 src="/images/nily 2/logo_step4.png"
-                alt="NILY — Logo variation"
+                alt="NILY, Logo variation"
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover block"
@@ -283,7 +277,7 @@ function NilyCaseStudy() {
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
           <img
             src="/images/nily 2/23.png"
-            alt="NILY — brand application"
+            alt="NILY, brand application"
             loading="lazy"
             decoding="async"
             className="w-full h-auto block"
@@ -296,7 +290,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 aspect-square rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/10.png"
-              alt="NILY — brand application"
+              alt="NILY, brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -306,7 +300,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 aspect-square rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/24.png"
-              alt="NILY — brand application"
+              alt="NILY, brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -316,7 +310,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 aspect-square rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/26.png"
-              alt="NILY — brand application"
+              alt="NILY, brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -327,7 +321,7 @@ function NilyCaseStudy() {
 
         {/* ── BANNER / POSTER — the one horizontal this step needs ─── */}
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
-          <img src="/images/nily 2/dasmpda.png" alt="NILY — Banner / poster" loading="lazy" decoding="async" className="w-full h-auto block" />
+          <img src="/images/nily 2/dasmpda.png" alt="NILY, Banner / poster" loading="lazy" decoding="async" className="w-full h-auto block" />
         </div>
 
         {/* ══════════════════════════════════════════════════════════
@@ -337,19 +331,19 @@ function NilyCaseStudy() {
             ══════════════════════════════════════════════════════════ */}
         <div className="grid grid-cols-3 gap-[8px] items-start mb-[8px] max-[700px]:grid-cols-2 max-[480px]:grid-cols-1">
           <div className="min-w-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
-            <img src="/images/nily 2/8.png" alt="NILY — apparel, mustard hoodie" loading="lazy" decoding="async" className="w-full h-auto block" />
+            <img src="/images/nily 2/8.png" alt="NILY, apparel, mustard hoodie" loading="lazy" decoding="async" className="w-full h-auto block" />
           </div>
           <div className="min-w-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
-            <img src="/images/nily 2/7.png" alt="NILY — apparel, green hoodie" loading="lazy" decoding="async" className="w-full h-auto block" />
+            <img src="/images/nily 2/7.png" alt="NILY, apparel, green hoodie" loading="lazy" decoding="async" className="w-full h-auto block" />
           </div>
           <div className="min-w-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
-            <img src="/images/nily 2/9.png" alt="NILY — apparel, folded hoodie" loading="lazy" decoding="async" className="w-full h-auto block" />
+            <img src="/images/nily 2/9.png" alt="NILY, apparel, folded hoodie" loading="lazy" decoding="async" className="w-full h-auto block" />
           </div>
         </div>
 
         {/* ── HORIZONTAL BRAND IMAGE — the second needed horizontal ── */}
         <div className="w-full mb-[8px] rounded-[10px] overflow-hidden bg-[#0d0d0d]">
-          <img src="/images/nily 2/11.png" alt="NILY — Brand presentation" loading="lazy" decoding="async" className="w-full h-auto block" />
+          <img src="/images/nily 2/11.png" alt="NILY, Brand presentation" loading="lazy" decoding="async" className="w-full h-auto block" />
         </div>
 
         {/* ══════════════════════════════════════════════════════════
@@ -363,7 +357,7 @@ function NilyCaseStudy() {
           <div className="row-span-2 min-w-0 min-h-0 rounded-[10px] overflow-hidden bg-[#0d0d0d] max-[900px]:row-span-1">
             <img
               src="/images/nily 2/15(2).png"
-              alt="NILY — application"
+              alt="NILY, application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -374,7 +368,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 min-h-0 aspect-square rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/12.png"
-              alt="NILY — brand application"
+              alt="NILY, brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -385,7 +379,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 min-h-0 aspect-square rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/13.png"
-              alt="NILY — brand application"
+              alt="NILY, brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -396,7 +390,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 min-h-0 aspect-square rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/4(2).png"
-              alt="NILY — brand application"
+              alt="NILY, brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -407,7 +401,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 min-h-0 aspect-square rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/5(2).png"
-              alt="NILY — brand application"
+              alt="NILY, brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover block"
@@ -427,7 +421,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/17.png"
-              alt="NILY — label and hang tag"
+              alt="NILY, label and hang tag"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"
@@ -438,7 +432,7 @@ function NilyCaseStudy() {
           <div className="min-w-0 rounded-[10px] overflow-hidden bg-[#0d0d0d]">
             <img
               src="/images/nily 2/22.png"
-              alt="NILY — horizontal brand application"
+              alt="NILY, horizontal brand application"
               loading="lazy"
               decoding="async"
               className="w-full h-auto block"

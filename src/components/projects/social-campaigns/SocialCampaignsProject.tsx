@@ -25,7 +25,7 @@ function BrandSection({ brand, isFirst }: { brand: CampaignBrand; isFirst: boole
   const hasPosts = brand.posts.length > 0;
 
   return (
-    <section className="sc-brand-section cs-section" aria-label={`Campaign — ${brand.name}`}>
+    <section className="sc-brand-section cs-section" aria-label={`Campaign: ${brand.name}`}>
       {/* Brand header */}
       <Reveal className="sc-brand-header">
         <p className="cs-label">{brand.num}</p>
@@ -78,11 +78,13 @@ export function SocialCampaignsProject({ project }: Props) {
       {/* ── Project introduction ─────────────────────────────────────── */}
       <section className="sc-intro-section cs-section" aria-label="Project introduction">
         <Reveal>
-          <p className="cs-label">Social Media / Brand Campaigns</p>
+          <p className="cs-label">Social Media Campaigns</p>
           <h2 className="sc-intro-title">
             Social Media<br />Campaigns
           </h2>
-          <p className="sc-intro-tagline">{project.introTagline}</p>
+          <p className="sc-intro-tagline">
+            <em>{project.introTagline}</em>
+          </p>
         </Reveal>
 
         {/* Campaign index */}
@@ -96,9 +98,6 @@ export function SocialCampaignsProject({ project }: Props) {
           ))}
         </Reveal>
       </section>
-
-      {/* Thin divider */}
-      <div className="sc-divider" />
 
       {/* ── Brand campaigns ──────────────────────────────────────────── */}
       {project.brands.map((brand, i) => (

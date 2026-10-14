@@ -1,4 +1,5 @@
 import type { ProjectData } from "@/data/projects";
+import { navigate } from "@/utils/router";
 
 type ProjectFooterProps = {
   next: ProjectData;
@@ -14,14 +15,14 @@ type ProjectFooterProps = {
 export default function ProjectFooter({ next }: ProjectFooterProps) {
   const goNext = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
-    window.location.hash = `#/projects/${next.slug}`;
+    navigate(`/projects/${next.slug}`);
   };
 
   return (
     <footer
       id="project-footer"
       className="pf-sticky-wrap"
-      aria-label={`Next project — ${next.title}`}
+      aria-label={`Next project: ${next.title}`}
     >
       {/* Quiet backdrop: next project's featured image, static, dimmed */}
       <div className="pf-backdrop" aria-hidden="true">
@@ -36,17 +37,17 @@ export default function ProjectFooter({ next }: ProjectFooterProps) {
             Next Project
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/45">
-            {next.year} — {next.client}
+            {next.year}, {next.client}
           </span>
         </div>
 
         {/* Huge centered NEXT PROJECT name */}
         <div className="pf-cta-container">
           <a
-            href={`#/projects/${next.slug}`}
+            href={`/projects/${next.slug}`}
             onClick={goNext}
             className="pf-cta-link group"
-            aria-label={`Open next case study — ${next.title}`}
+            aria-label={`Open next case study: ${next.title}`}
           >
             <span className="pf-cta-text font-display font-bold uppercase tracking-[-0.035em]">
               {next.title}

@@ -1,5 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import Nav from "@/components/Nav";
+import { navigate } from "@/utils/router";
+import { updateSEO } from "@/utils/seo";
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -11,7 +13,12 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useLayoutEffect(() => {
-    document.title = "Contact — OPERATOR.X";
+    updateSEO({
+      title: "Contact | Yash Puniwala",
+      description:
+        "Get in touch with Yash Puniwala for brand identity, graphic design, and creative opportunities.",
+      url: "/contact",
+    });
     window.scrollTo(0, 0);
   }, []);
 
@@ -37,7 +44,11 @@ export default function ContactPage() {
           {/* Top category / back link */}
           <div className="contact-top-row">
             <a
-              href="#home"
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/");
+              }}
               className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/60 transition-colors duration-300 hover:text-white"
             >
               ← Back to portfolio
@@ -50,7 +61,7 @@ export default function ContactPage() {
               Let's <span className="script-accent">Talk.</span>
             </h1>
             <p className="contact-subtitle">
-              Have an idea, opportunity, or just want to make something interesting? Let's talk.
+              Interested in collaborating, discussing new roles, or exploring design opportunities? Let's connect.
             </p>
           </header>
 
@@ -67,7 +78,7 @@ export default function ContactPage() {
                     Thank you, {formState.name}.
                   </h3>
                   <p className="mt-4 max-w-md text-sm leading-relaxed text-white/60 md:text-base">
-                    We will review your inquiry and get back to you within 24 to 48 hours.
+                    I will review your message and get back to you promptly.
                   </p>
                   <button
                     type="button"
@@ -133,7 +144,7 @@ export default function ContactPage() {
                       id="contact-message"
                       required
                       rows={4}
-                      placeholder="Tell us about your project, timeline, or scope"
+                      placeholder="Tell me about your project, role, or opportunity"
                       value={formState.message}
                       onChange={(e) =>
                         setFormState({ ...formState, message: e.target.value })
@@ -163,17 +174,17 @@ export default function ContactPage() {
               )}
             </div>
 
-            {/* Direct contact & studio info column */}
+            {/* Direct contact column */}
             <div className="contact-info-col">
               <div className="contact-info-block">
                 <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
                   Direct Inquiries
                 </span>
                 <a
-                  href="mailto:hello@operator-x.agency"
+                  href="mailto:yashpuniwala@gmail.com"
                   className="mt-3 block font-display text-xl font-medium tracking-tight text-white transition-colors duration-300 hover:text-amber-glow md:text-2xl"
                 >
-                  hello@operator-x.agency
+                  yashpuniwala@gmail.com
                 </a>
               </div>
 
@@ -182,19 +193,19 @@ export default function ContactPage() {
                   Location &amp; Availability
                 </span>
                 <p className="mt-3 font-display text-base leading-relaxed text-white/80">
-                  Berlin — New York — Tokyo
+                  Mumbai, India, Available Worldwide
                 </p>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">
-                  Accepting select projects for Q2/Q3
+                  Open to full-time roles &amp; select projects
                 </p>
               </div>
 
               <div className="contact-info-block border-t border-white/10 pt-8">
                 <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
-                  Core Practice
+                  Core Expertise
                 </span>
                 <p className="mt-3 text-xs leading-relaxed text-white/60">
-                  Brand Strategy, Typography Systems, Digital Experiences, Motion Direction, Creative Technology.
+                  Brand Identity, Visual Systems, Social Media Design, Typography, Art Direction.
                 </p>
               </div>
             </div>
@@ -206,10 +217,10 @@ export default function ContactPage() {
       <footer className="contact-bottom-bar">
         <div className="contact-container flex items-center justify-between">
           <span className="font-display text-xs font-bold uppercase tracking-[0.35em] text-white/50">
-            Operator.X
+            Yash Puniwala
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">
-            © {new Date().getFullYear()} — All Rights Reserved
+            © {new Date().getFullYear()}, All Rights Reserved
           </span>
         </div>
       </footer>

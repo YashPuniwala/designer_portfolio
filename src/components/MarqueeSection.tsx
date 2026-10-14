@@ -1,7 +1,7 @@
 import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
 
 const MARQUEE_TEXT =
-  "OPERATOR.X — BRAND — GRAPHIC — WEB — DIGITAL EXPERIENCE —";
+  "YASH PUNIWALA — BRAND — GRAPHIC — SOCIAL — DIGITAL DESIGN —";
 
 const TOOLTIP_TEXT = "LET'S MAKE SOMETHING BETTER. ✦";
 
@@ -24,7 +24,7 @@ export default function MarqueeSection({
   return (
     <Tag
       id="marquee"
-      aria-label="Operator.X marquee"
+      aria-label="Yash Puniwala marquee"
       className={`marquee-section${className ? ` ${className}` : ""}`}
     >
       <InfiniteTextMarquee
