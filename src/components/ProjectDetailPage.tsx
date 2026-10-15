@@ -69,7 +69,7 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduceMotion.matches) return;
 
-    const lenis = new Lenis({ lerp: 0.09, smoothWheel: true, syncTouch: true });
+    const lenis = new Lenis({ lerp: 0.12, smoothWheel: true, syncTouch: true, wheelMultiplier: 1.8, touchMultiplier: 1.5 });
     const onScroll = () => ScrollTrigger.update();
     const raf = (time: number) => lenis.raf(time * 1000);
     lenis.on("scroll", onScroll);
@@ -86,9 +86,9 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
         scrollTrigger: {
           trigger: intro,
           start: "top top",
-          end: "+=220%",
+          end: "+=140%",
           pin: true,
-          scrub: 0.8,
+          scrub: 0.6,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },

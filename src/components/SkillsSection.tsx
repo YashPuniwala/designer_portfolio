@@ -251,7 +251,7 @@ export default function SkillsSection() {
       ref={sectionRef}
       id="skills"
       aria-label="Tools & Skills"
-      className="relative flex min-h-[100svh] w-full flex-col justify-center bg-white py-12 sm:py-16 lg:py-20 text-[#141414] overflow-hidden"
+      className="relative flex min-h-[100svh] w-full flex-col justify-center bg-white py-12 sm:py-14 lg:py-12 xl:py-18 text-[#141414] overflow-visible"
     >
       <div className="mx-auto w-full max-w-[1240px] px-6 sm:px-8 lg:px-12 flex flex-col justify-center">
         {/* Top Area: Left column (Heading & blurb) + Right area (6 Tool Cards) */}

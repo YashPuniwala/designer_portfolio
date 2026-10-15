@@ -67,16 +67,14 @@ export default function ServicesSection() {
 
         if (isMobile.matches) {
           // ── Mobile: pinned sequential card reveal ───────────────────
-          // Cards use CSS left:50% for horizontal centering. GSAP must
-          // preserve that centering while animating Y.
-          // Use xPercent:-50 (equivalent to translateX(-50%)) so GSAP
-          // owns the full transform and centering is never lost.
+          // Horizontal centering is handled cleanly in CSS (left:0; right:0; margin:auto).
+          // GSAP animates ONLY Y so there are no conflicting horizontal transforms.
+          gsap.set(cards, { clearProps: "x,xPercent" });
 
           // Card 1 is already visible at its CSS top offset position
-          gsap.set(cards[0], { xPercent: -50, y: 0 });
-          // Cards 2-4 start off-screen below, still horizontally centered
+          gsap.set(cards[0], { y: 0 });
+          // Cards 2-4 start off-screen below
           gsap.set(cards.slice(1), {
-            xPercent: -50,
             y: () => window.innerHeight * 1.15,
           });
 
@@ -85,7 +83,9 @@ export default function ServicesSection() {
               id: "services-reveal",
               trigger: section,
               start: "top top",
-              end: () => `+=${window.innerHeight * 4.2}`,
+              // Mobile: 2.6× gives each of the 3 cards comfortable scrub room
+              // without leaving a large black void before the marquee.
+              end: () => `+=${window.innerHeight * 2.6}`,
               pin: true,
               scrub: 0.8,
               anticipatePin: 1,
@@ -96,9 +96,8 @@ export default function ServicesSection() {
           cards.slice(1).forEach((card, index) => {
             timeline.fromTo(
               card,
-              { xPercent: -50, y: () => window.innerHeight * 1.15 },
+              { y: () => window.innerHeight * 1.15 },
               {
-                xPercent: -50,
                 y: 0,
                 duration: 1,
                 ease: "none",

@@ -83,9 +83,11 @@ function HomePage({ isLoaded = true }: { isLoaded?: boolean }) {
     }
 
     const lenis = new Lenis({
-      lerp: 0.09,
+      lerp: 0.12,
       smoothWheel: true,
       syncTouch: true,
+      wheelMultiplier: 1.8,
+      touchMultiplier: 1.5,
     });
     lenisRef.current = lenis;
     if (!isLoaded) {
@@ -135,11 +137,19 @@ function HomePage({ isLoaded = true }: { isLoaded?: boolean }) {
         target.textContent?.toLowerCase().includes("toolkit")
       ) {
         e.preventDefault();
-        const trigger = ScrollTrigger.getById("showcase-transition");
-        const targetScroll = trigger
-          ? trigger.start + (trigger.end - trigger.start) * 0.9
-          : skillsPanel;
-        lenis.scrollTo(targetScroll, { duration: 1.1, easing: easeOut });
+        const isDesktop = window.matchMedia("(min-width: 1024px) and (min-height: 650px)").matches;
+        if (isDesktop) {
+          const trigger = ScrollTrigger.getById("showcase-transition");
+          const targetScroll = trigger
+            ? trigger.start + (trigger.end - trigger.start) * 0.95
+            : skillsPanel;
+          lenis.scrollTo(targetScroll, { duration: 1.1, easing: easeOut });
+        } else {
+          const el = document.getElementById("skills") || skillsPanel;
+          if (el) {
+            lenis.scrollTo(el, { duration: 1.1, easing: easeOut, offset: -24 });
+          }
+        }
       } else if (
         href === "#home" ||
         href === "/" ||
@@ -192,98 +202,193 @@ function HomePage({ isLoaded = true }: { isLoaded?: boolean }) {
         aboutPanel.querySelector<HTMLElement>(".about-statement");
       const words = aboutPanel.querySelectorAll<HTMLElement>(".about-word");
 
-      // ── Timing configuration ──
-      const ABOUT_ENTRY = 0.42;        // 1. Hero pinned; About slides UP from bottom
-      const ABOUT_WORD_REVEAL = 0.82;  // 2. Words brighten one-by-one to 100% white
-      const ABOUT_WORD_DURATION = 0.08;
-      const SKILLS_ENTRY = 1.15;       // 3. Skills rises smoothly over About (dedicated 150vh–200vh range)
-      const SKILLS_HOLD = 0.28;        // 4. Arrival moment: Skills holds fully visible before moving to next section
+      const mm = gsap.matchMedia();
 
-      // About waits just below viewport
-      gsap.set(aboutPanel, { yPercent: 100 });
-      // Skills waits just below viewport
-      gsap.set(skillsPanel, { yPercent: 100 });
-      gsap.set(skillsInner, { clearProps: "transform" });
+      // ─────────────────────────────────────────────────────────────
+      // 1. DESKTOP / LARGE SCREENS (where all Skills content fits in 1 screen)
+      // ─────────────────────────────────────────────────────────────
+      mm.add("(min-width: 1024px) and (min-height: 650px)", () => {
+        // About waits just below viewport
+        gsap.set(aboutPanel, { yPercent: 100 });
+        // Skills waits just below viewport
+        gsap.set(skillsPanel, { yPercent: 100 });
+        gsap.set(skillsInner, { clearProps: "transform" });
 
-      if (statement) {
-        gsap.set(statement, { autoAlpha: 1, y: 0 });
-      }
-      if (words.length > 0) {
-        gsap.set(words, { color: "rgba(255, 255, 255, 0.18)" });
-      }
+        if (statement) {
+          gsap.set(statement, { autoAlpha: 1, y: 0 });
+        }
+        if (words.length > 0) {
+          gsap.set(words, { color: "rgba(255, 255, 255, 0.18)" });
+        }
 
-      const masterTimeline = gsap.timeline({
-        id: "showcase-transition",
-        paused: true,
-      });
+        const masterTimeline = gsap.timeline({
+          id: "showcase-transition",
+          paused: true,
+        });
 
-      // 1. Hero stays put; About slides UP from bottom over it.
-      masterTimeline.fromTo(
-        aboutPanel,
-        { yPercent: 100 },
-        { yPercent: 0, duration: ABOUT_ENTRY, ease: "power3.in" },
-        0
-      );
+        // Balanced animation timings: generous word-by-word reveal for comfortable reading
+        const ABOUT_ENTRY = 0.35;
+        const ABOUT_WORD_REVEAL = 1.10;
+        const ABOUT_WORD_DURATION = 0.16;
+        const ABOUT_HOLD = 0.22;
+        const SKILLS_ENTRY = 0.40;
+        const SKILLS_HOLD = 0.15;
 
-      // 2. Word-by-word reveal once About has landed.
-      if (words.length > 0) {
+        // 1. Hero stays put; About slides UP from bottom over it.
         masterTimeline.fromTo(
-          words,
-          { color: "rgba(255, 255, 255, 0.18)" },
-          {
-            color: "#ffffff",
-            stagger: { each: ABOUT_WORD_REVEAL / words.length },
-            duration: ABOUT_WORD_DURATION,
-            ease: "none",
-          },
-          ABOUT_ENTRY
+          aboutPanel,
+          { yPercent: 100 },
+          { yPercent: 0, duration: ABOUT_ENTRY, ease: "power3.in" },
+          0
         );
-      }
 
-      masterTimeline.addLabel("about-complete", masterTimeline.duration());
+        // 2. Word-by-word reveal once About has landed, fading smoothly from grey to white.
+        if (words.length > 0) {
+          masterTimeline.fromTo(
+            words,
+            { color: "rgba(255, 255, 255, 0.18)" },
+            {
+              color: "#ffffff",
+              stagger: { each: ABOUT_WORD_REVEAL / words.length },
+              duration: ABOUT_WORD_DURATION,
+              ease: "power1.out",
+            },
+            ABOUT_ENTRY
+          );
+        }
 
-      // 3. Once word reveal is 100% complete: Skills rises steadily over About (100% → 0%)
-      masterTimeline.fromTo(
-        skillsPanel,
-        { yPercent: 100 },
-        { yPercent: 0, duration: SKILLS_ENTRY, ease: "none" },
-        "about-complete"
-      );
+        // 3. Reading hold once all words are illuminated white so user can read comfortably
+        masterTimeline.to(
+          {},
+          { duration: ABOUT_HOLD },
+          ABOUT_ENTRY + ABOUT_WORD_REVEAL + ABOUT_WORD_DURATION
+        );
 
-      masterTimeline.addLabel("skills-arrived", "about-complete+=" + SKILLS_ENTRY);
+        masterTimeline.addLabel("about-complete", masterTimeline.duration());
 
-      // 4. Arrival hold: Skills remains fully visible so the user experiences the section
-      masterTimeline.to(
-        {},
-        { duration: SKILLS_HOLD },
-        "skills-arrived"
-      );
+        // 4. Immediately once reading hold is complete: Skills rises smoothly over About (100% → 0%)
+        masterTimeline.fromTo(
+          skillsPanel,
+          { yPercent: 100 },
+          { yPercent: 0, duration: SKILLS_ENTRY, ease: "none" },
+          "about-complete"
+        );
 
-      masterTimeline.addLabel("skills-complete", masterTimeline.duration());
+        masterTimeline.addLabel("skills-arrived", "about-complete+=" + SKILLS_ENTRY);
 
-      // Scroll budget matching the exact per-phase scroll speed
-      const getCinematicDistance = () =>
-        masterTimeline.duration() *
-        stage.clientHeight *
-        (1.55 / 0.65);
+        // 5. Brief hold so the user can experience the section
+        masterTimeline.to(
+          {},
+          { duration: SKILLS_HOLD },
+          "skills-arrived"
+        );
 
-      const cinematicPin = ScrollTrigger.create({
-        id: "cinematic-pin",
-        trigger: stage,
-        start: "top top",
-        end: () => `+=${getCinematicDistance()}`,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
+        masterTimeline.addLabel("skills-complete", masterTimeline.duration());
+
+        // Pinned scroll budget: 1.05x viewport height per timeline duration
+        const getCinematicDistance = () =>
+          masterTimeline.duration() * stage.clientHeight * 1.05;
+
+        const cinematicPin = ScrollTrigger.create({
+          id: "cinematic-pin",
+          trigger: stage,
+          start: "top top",
+          end: () => `+=${getCinematicDistance()}`,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+
+        ScrollTrigger.create({
+          id: "showcase-transition",
+          start: () => cinematicPin.start,
+          end: () => cinematicPin.start + getCinematicDistance(),
+          animation: masterTimeline,
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+        });
       });
 
-      ScrollTrigger.create({
-        id: "showcase-transition",
-        start: () => cinematicPin.start,
-        end: () => cinematicPin.start + getCinematicDistance(),
-        animation: masterTimeline,
-        scrub: 0.8,
-        invalidateOnRefresh: true,
+      // ─────────────────────────────────────────────────────────────
+      // 2. TABLET, MOBILE & COMPACT SCREENS (Skills expands & scrolls naturally)
+      // ─────────────────────────────────────────────────────────────
+      mm.add("(max-width: 1023px), (max-height: 649px)", () => {
+        // Reset skills panel to normal document flow
+        gsap.set(skillsPanel, { clearProps: "all" });
+        gsap.set(skillsInner, { clearProps: "all" });
+
+        // About waits just below viewport
+        gsap.set(aboutPanel, { yPercent: 100 });
+        if (statement) {
+          gsap.set(statement, { autoAlpha: 1, y: 0 });
+        }
+        if (words.length > 0) {
+          gsap.set(words, { color: "rgba(255, 255, 255, 0.18)" });
+        }
+
+        const mobileTimeline = gsap.timeline({
+          id: "showcase-transition-mobile",
+          paused: true,
+        });
+
+        const ABOUT_ENTRY = 0.35;
+        const ABOUT_WORD_REVEAL = 0.95;
+        const ABOUT_WORD_DURATION = 0.16;
+        const ABOUT_HOLD = 0.20;
+
+        // 1. Hero stays put; About slides UP from bottom over it.
+        mobileTimeline.fromTo(
+          aboutPanel,
+          { yPercent: 100 },
+          { yPercent: 0, duration: ABOUT_ENTRY, ease: "power3.in" },
+          0
+        );
+
+        // 2. Word-by-word reveal once About has landed, fading smoothly from grey to white.
+        if (words.length > 0) {
+          mobileTimeline.fromTo(
+            words,
+            { color: "rgba(255, 255, 255, 0.18)" },
+            {
+              color: "#ffffff",
+              stagger: { each: ABOUT_WORD_REVEAL / words.length },
+              duration: ABOUT_WORD_DURATION,
+              ease: "power1.out",
+            },
+            ABOUT_ENTRY
+          );
+        }
+
+        // 3. Reading hold once all words are illuminated white so user can read comfortably
+        mobileTimeline.to(
+          {},
+          { duration: ABOUT_HOLD },
+          ABOUT_ENTRY + ABOUT_WORD_REVEAL + ABOUT_WORD_DURATION
+        );
+
+        // Pinned distance: covers About entry, comfortable reading scroll, and hold
+        const getMobileDistance = () =>
+          mobileTimeline.duration() * window.innerHeight * 1.0;
+
+        // Pin stage only for the Hero → About transition
+        const mobilePin = ScrollTrigger.create({
+          id: "cinematic-pin",
+          trigger: stage,
+          start: "top top",
+          end: () => `+=${getMobileDistance()}`,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+
+        ScrollTrigger.create({
+          id: "showcase-transition",
+          start: () => mobilePin.start,
+          end: () => mobilePin.start + getMobileDistance(),
+          animation: mobileTimeline,
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+        });
       });
 
       const horiz = horizontalRef.current;
@@ -293,12 +398,26 @@ function HomePage({ isLoaded = true }: { isLoaded?: boolean }) {
           horiz.querySelector<HTMLElement>(".horizontal-progress");
 
         if (track) {
-          let cachedScrollAmount = Math.max(
-            0,
-            track.scrollWidth - window.innerWidth
-          );
+          const calculateScrollAmount = () => {
+            const isMobile = window.innerWidth < 768;
+            const outro = track.querySelector<HTMLElement>(".horizontal-outro");
+            if (isMobile && outro) {
+              const outroRect = outro.getBoundingClientRect();
+              const trackRect = track.getBoundingClientRect();
+              const outroOffset = outroRect.left - trackRect.left;
+              const outroTargetLeft = Math.max(
+                16,
+                (window.innerWidth - outroRect.width) / 2
+              );
+              return Math.max(0, outroOffset - outroTargetLeft);
+            }
+            return Math.max(0, track.scrollWidth - window.innerWidth);
+          };
+
+          const getMultiplier = () => (window.innerWidth < 768 ? 1.0 : 1.2);
+
+          let cachedScrollAmount = calculateScrollAmount();
           const getScrollAmount = () => cachedScrollAmount;
-          const HORIZONTAL_SCROLL_MULTIPLIER = 1.7;
 
           const horizontalTween = gsap.to(track, {
             x: () => -getScrollAmount(),
@@ -310,16 +429,13 @@ function HomePage({ isLoaded = true }: { isLoaded?: boolean }) {
             trigger: horiz,
             start: "top top",
             end: () =>
-              `+=${getScrollAmount() * HORIZONTAL_SCROLL_MULTIPLIER}`,
+              `+=${getScrollAmount() * getMultiplier()}`,
             pin: true,
             scrub: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
             onRefresh: () => {
-              cachedScrollAmount = Math.max(
-                0,
-                track.scrollWidth - window.innerWidth
-              );
+              cachedScrollAmount = calculateScrollAmount();
             },
             animation: horizontalTween,
             onUpdate: (self) => {
@@ -415,6 +531,26 @@ function HomePage({ isLoaded = true }: { isLoaded?: boolean }) {
             }
           }, 200);
         });
+      } else if (hash === "#skills" || hash.includes("skills") || hash.includes("toolkit")) {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const isDesktop = window.matchMedia("(min-width: 1024px) and (min-height: 650px)").matches;
+            if (isDesktop) {
+              const trigger = ScrollTrigger.getById("showcase-transition");
+              const targetScroll = trigger
+                ? trigger.start + (trigger.end - trigger.start) * 0.95
+                : skillsPanelRef.current;
+              if (targetScroll && lenisRef.current) {
+                lenisRef.current.scrollTo(targetScroll, { duration: 1.1 });
+              }
+            } else {
+              const el = document.getElementById("skills") || skillsPanelRef.current;
+              if (el && lenisRef.current) {
+                lenisRef.current.scrollTo(el, { duration: 1.1, offset: -24 });
+              }
+            }
+          }, 200);
+        });
       } else if (hash === "#contact-cta") {
         requestAnimationFrame(() => {
           setTimeout(scrollToFooter, 200);
@@ -432,6 +568,22 @@ function HomePage({ isLoaded = true }: { isLoaded?: boolean }) {
           currentHash === "#work"
         ) {
           scrollToRecentProjects();
+        } else if (currentHash === "#skills" || currentHash.includes("skills") || currentHash.includes("toolkit")) {
+          const isDesktop = window.matchMedia("(min-width: 1024px) and (min-height: 650px)").matches;
+          if (isDesktop) {
+            const trigger = ScrollTrigger.getById("showcase-transition");
+            const targetScroll = trigger
+              ? trigger.start + (trigger.end - trigger.start) * 0.95
+              : skillsPanelRef.current;
+            if (targetScroll && lenisRef.current) {
+              lenisRef.current.scrollTo(targetScroll, { duration: 1.1 });
+            }
+          } else {
+            const el = document.getElementById("skills") || skillsPanelRef.current;
+            if (el && lenisRef.current) {
+              lenisRef.current.scrollTo(el, { duration: 1.1, offset: -24 });
+            }
+          }
         } else if (currentHash === "#contact-cta") {
           scrollToFooter();
         }

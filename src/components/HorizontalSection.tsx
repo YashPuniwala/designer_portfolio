@@ -189,7 +189,7 @@ export default function HorizontalSection({
          * dynamically, so this panel is always fully reachable regardless
          * of how many cards are in the track.
          */}
-        <div className="horizontal-outro flex h-full w-[80vw] shrink-0 flex-col items-start justify-center pl-6 pr-[6vw] md:w-[44vw] md:pl-16 md:pr-[6vw]">
+        <div className="horizontal-outro flex h-full w-[84vw] shrink-0 flex-col items-start justify-center px-6 md:w-[44vw] md:pl-16 md:pr-[6vw]">
           <h2 className="font-display text-[8.5vw] font-bold uppercase leading-[0.9] text-white md:text-[4.5vw]">
             Let's build
             <br />
