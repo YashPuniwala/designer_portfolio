@@ -132,72 +132,17 @@ html.lenis body {
   inset: 0;
   z-index: 20;
   will-change: transform;
-  overflow: visible;
+  overflow: hidden;
   background: #ffffff;
 }
 
 .skills-inner-wrap {
   position: relative;
-  height: 100%;
-  transform-origin: bottom left;
+  width: 100%;
+  min-height: 100%;
+  height: auto;
   will-change: transform;
   overflow: visible;
-}
-
-/* ------------------------------------------------------------------ */
-/* Mobile / tablet / short screens: Skills flows naturally            */
-/* On screens < 1024px or height < 650px, skills-panel becomes a      */
-/* normal document-flow element so the section grows naturally and    */
-/* is fully scrollable without clipping or traps.                     */
-/* ------------------------------------------------------------------ */
-@media (max-width: 1023px), (max-height: 649px) {
-  /* Stage expands to contain the skills panel's natural height */
-  .cinematic-stage {
-    height: auto;
-    overflow: visible;
-  }
-
-  /* Hero becomes a full-viewport block (base of Hero → About transition) */
-  .hero-pinned-wrapper {
-    position: relative;
-    height: 100vh;
-    height: 100svh;
-    z-index: 1;
-  }
-
-  /* About: positioned over the hero area */
-  .about-panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100vh;
-    height: 100svh;
-    z-index: 10;
-  }
-
-  .about-inner {
-    height: 100%;
-  }
-
-  /* Skills: flows as a normal document block directly below Hero & About */
-  .skills-panel {
-    position: relative;
-    inset: auto;
-    z-index: 20;
-    overflow: visible;
-    transform: none !important;
-    height: auto;
-    background: #ffffff;
-  }
-
-  /* Skills inner: natural height, no inner scrollbar */
-  .skills-inner-wrap {
-    height: auto;
-    overflow: visible;
-    overflow-y: visible;
-    transform: none !important;
-  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -594,21 +539,46 @@ html.lenis body {
   height: 100%;
   width: max-content;
   align-items: center;
-  gap: 2.5vw;
-  padding: 0 6vw;
+  gap: 16px;
+  padding: 0 5vw;
   will-change: transform;
   /*
    * --card-h: the single source of truth for card height.
    * Each card's width = calc(--card-h * aspectRatio) — computed
    * inline per card in HorizontalSection.tsx so portrait and
    * near-square artwork maintain their real proportions.
+   *
+   * Mobile (<640px): Proportionally reduced so even the widest card
+   * (0.95 aspect ratio) fits comfortably within the viewport width (~80vw)
+   * with generous vertical margin.
    */
-  --card-h: 64vh;
+  --card-h: clamp(260px, 45vh, 340px);
 }
 
+/* Small tablets / large mobile (640px - 767px) */
+@media (min-width: 640px) {
+  .horizontal-track {
+    --card-h: clamp(320px, 48vh, 400px);
+    gap: 20px;
+    padding: 0 6vw;
+  }
+}
+
+/* Tablets (768px - 1023px) */
 @media (min-width: 768px) {
   .horizontal-track {
+    --card-h: clamp(380px, 52vh, 480px);
+    gap: 24px;
+    padding: 0 6vw;
+  }
+}
+
+/* Desktop (>= 1024px): 100% preserved exact original dimensions and spacing */
+@media (min-width: 1024px) {
+  .horizontal-track {
     --card-h: 70vh;
+    gap: 2.5vw;
+    padding: 0 6vw;
   }
 }
 
