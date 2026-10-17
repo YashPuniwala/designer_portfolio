@@ -216,8 +216,11 @@ export default function HeroSection2({ isLoaded = true }: { isLoaded?: boolean }
         @media (min-width: 1024px) {
           .h2-root {
             --nm: clamp(5rem, 12.5vw, 14rem);
-            padding-top: clamp(5.5rem, 10vh, 8.5rem);
-            padding-bottom: clamp(2.5rem, 5vh, 5rem);
+            height: 100vh;
+            height: 100svh;
+            padding-top: clamp(4.5rem, 7.5vh, 6.5rem);
+            padding-bottom: clamp(1rem, 2vh, 2rem);
+            box-sizing: border-box;
           }
           .h2-name { padding: 0 clamp(1.5rem, 3vw, 3rem); white-space: nowrap; }
           .h2-stage {
@@ -228,13 +231,16 @@ export default function HeroSection2({ isLoaded = true }: { isLoaded?: boolean }
             align-items: start;
             row-gap: 0;
             /* overlap only the bottom of the letters (portrait sits lower) */
-            margin-top: calc(var(--nm) * -0.28);
+            margin-top: calc(var(--nm) * -0.30);
             padding: 0 clamp(1.5rem, 3vw, 3rem);
           }
-          .h2-portrait { width: clamp(210px, 20vw, 330px); margin-top: 0; }
+          .h2-portrait {
+            width: clamp(210px, min(20vw, 42vh), 330px);
+            margin-top: 0;
+          }
           .h2-meta {
             font-size: clamp(0.8rem, 1vw, 1rem);
-            padding-top: calc(var(--nm) * 0.5);
+            padding-top: calc(var(--nm) * 0.48);
           }
           .h2-loc  { justify-self: start; text-align: left; }
           /* desktop: big role line sits BELOW the portrait, centred */
@@ -242,13 +248,11 @@ export default function HeroSection2({ isLoaded = true }: { isLoaded?: boolean }
             justify-self: center;
             text-align: center;
             padding-top: 0;
-            margin-top: clamp(1.25rem, 2.2vw, 2.75rem);
-            font-size: clamp(2rem, 4.4vw, 5.5rem);
+            margin-top: clamp(0.75rem, min(1.8vw, 2.2vh), 1.75rem);
+            font-size: clamp(2.2rem, min(4.2vw, 6vh), 5rem);
           }
           .h2-statement {
-            margin-top: clamp(2.5rem, 4.5vh, 4.5rem);
-            width: min(680px, 50vw);
-            font-size: clamp(2rem, 2.9vw, 3rem);
+            display: none;
           }
         }
       `}</style>
