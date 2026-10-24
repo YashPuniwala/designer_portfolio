@@ -83,8 +83,6 @@ export default function ServicesSection() {
               id: "services-reveal",
               trigger: section,
               start: "top top",
-              // Mobile: 2.6× gives each of the 3 cards comfortable scrub room
-              // without leaving a large black void before the marquee.
               end: () => `+=${window.innerHeight * 2.6}`,
               pin: true,
               scrub: 0.8,
